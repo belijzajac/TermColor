@@ -1,7 +1,5 @@
-add_subdirectory(dominantcolor)
-add_subdirectory(exception)
-
 set(TERMCOLOR_SOURCES
   ${TERMCOLOR_SOURCES}
+  backend/exception/Exception.h
   PARENT_SCOPE
 )
