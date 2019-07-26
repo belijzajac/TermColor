@@ -1,34 +1,32 @@
 #ifndef DOMINANTCOLOR_H
 #define DOMINANTCOLOR_H
 
-#include <opencv2/core/mat.hpp>
 #include <string>
+#include <memory>
+#include <vector>
+
+struct color {
+    int r, g, b;
+};
 
 class DominantColor {
-private:
-    cv::Mat img;
-
-    struct color {
-        int r, g, b;
-    };
-
-    std::vector<color> colors;
+    class DominantColorImpl;
 
 public:
-    DominantColor() = default;
-    ~DominantColor() = default;
+    DominantColor();
+    ~DominantColor();
 
     // This function attempts to read to img;
     void readImage(const std::string &name);
 
-    // This function returns the number of unique colors (clusters)
-    // that appear in the image
-    int getNumOfClusters();
-
     // This function obtains dominant colors using kmeans algorithm
     void performKMeans();
 
-    const std::vector<color> getColors() const { return colors; }
+    // Gets dominant colors from an image
+    const std::vector<color> getColors() const;
+
+private:
+    std::unique_ptr<DominantColorImpl> pimpl_;
 };
 
 #endif // DOMINANTCOLOR_H

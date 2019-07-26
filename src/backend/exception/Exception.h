@@ -6,11 +6,11 @@
 
 class Exception : public std::exception {
 public:
-    explicit Exception(const std::string &msg) : msg{msg} {}
-    const char *what() const noexcept override { return msg.c_str(); }
+    explicit Exception(const std::string &msg) : msg_{msg} {}
+    const char *what() const noexcept override { return msg_.c_str(); }
 
 private:
-    std::string msg;
+    std::string msg_;
 };
 
 #endif // EXCEPTION_H
