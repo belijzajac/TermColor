@@ -8,6 +8,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+# Look for moc files in the binary dir
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 find_package(OpenCV 3.2 REQUIRED)
 
 find_package(Qt5 5.11.3 REQUIRED
@@ -17,6 +20,10 @@ find_package(Qt5 5.11.3 REQUIRED
   Widgets
 )
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# For UNIT testing
+enable_testing()
+find_package(Qt5Test REQUIRED)
+add_subdirectory(tests)
 
+# Project source code location
 add_subdirectory(src)
