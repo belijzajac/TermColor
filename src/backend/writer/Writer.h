@@ -15,7 +15,7 @@ public:
     virtual ~Writer() = default;
 
     // Get username of current user logged in on Linux
-    static std::string getUsername() {
+    static const std::string getUsername() {
         uid_t uid { geteuid() };
         struct passwd *pw { getpwuid(uid) };
         if(pw)
@@ -24,7 +24,9 @@ public:
     }
 
     // Writes color-scheme to file
-    virtual void writeToLocation(const std::string &name, const std::vector<color> &colors) const = 0;
+    virtual void writeToLocation(const std::string &name,
+                                 const std::vector<color> &,
+                                 const std::vector<color> &) const = 0;
 
     // Returns an absolute location to color schemes save folder
     const std::string absolutePath(const std::string &fileName) const {

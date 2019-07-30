@@ -8,7 +8,9 @@ public:
     explicit KonsoleWriter();
     ~KonsoleWriter() = default;
 
-    void writeToLocation(const std::string &name, const std::vector<color> &colors) const override;
+    void writeToLocation(const std::string &name,
+                         const std::vector<color> &,
+                         const std::vector<color> &) const override;
 
 private:
     std::vector<std::string> nameColors_;
