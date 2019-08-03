@@ -1,14 +1,15 @@
-#include "backend/dominantcolor/DominantColor.h"
 #include <QApplication>
+#include <ui/gui/MainWindow.h>
 
 int main(int argc, char *argv[]) {
     // Create application instance
-    QApplication a(argc, argv);
+    QApplication app{argc, argv};
+    MainWindow gui{argc, argv};
 
     // Set application metadata
     QCoreApplication::setApplicationName("TermColor");
 
-    //...
+    gui.show();
 
-    return a.exec();
+    return app.exec();
 }
