@@ -4,5 +4,9 @@ set(TERMCOLOR_SOURCES
   ui/gui/MainWindow.cpp
   ui/gui/GuiModel.h
   ui/gui/GuiModel.cpp
+  ui/gui/ColorsTableWidget.h
+  ui/gui/ColorsTableWidget.cpp
+  ui/gui/ColorButton.h
+  ui/gui/ColorButton.cpp
   PARENT_SCOPE
 )

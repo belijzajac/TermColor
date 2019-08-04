@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class ColorButton;
+
 class MainWindow : public QMainWindow {
     class MainWindowImpl;
 
