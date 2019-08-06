@@ -10,7 +10,13 @@ class ColorButton : public QWidget {
     Q_OBJECT
 public:
     ColorButton(const std::string &name, const color &color, QWidget *parent = nullptr);
-    
+
+    // Hovering over a button will the text to be displayed
+    void registerToolTip();
+
+    // Set button's stylesheet to mathc its color
+    void setStylesheet();
+
 private slots:
     void onClicked();
 
