@@ -1,7 +1,6 @@
 #include "ColorButton.h"
 
 #include <QPushButton>
-#include <QLabel>
 #include <QToolTip>
 #include <QVBoxLayout>
 

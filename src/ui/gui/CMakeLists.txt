@@ -8,5 +8,7 @@ set(TERMCOLOR_SOURCES
   ui/gui/ColorsTableWidget.cpp
   ui/gui/ColorButton.h
   ui/gui/ColorButton.cpp
+  ui/gui/DisplayWidget.h
+  ui/gui/DisplayWidget.cpp
   PARENT_SCOPE
 )
