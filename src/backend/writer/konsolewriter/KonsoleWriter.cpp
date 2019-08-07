@@ -22,7 +22,7 @@ void KonsoleWriter::writeToLocation(const std::string &name,
         throw Exception{"bad file name: " + pathToFile};
 
     // Write dominant colors
-    unsigned long colCount = 0;
+    int colCount = 0;
     std::for_each(domColors.begin(), domColors.end(), [this, &f, &colCount](const color &color) {
         f << "[" + nameColors_.at(colCount) + "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";

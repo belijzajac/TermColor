@@ -1,7 +1,6 @@
-add_subdirectory(konsolewriter)
-
 set(TERMCOLOR_SOURCES
   ${TERMCOLOR_SOURCES}
-  backend/writer/Writer.h
+  ui/gui/guimodel/GuiModel.h
+  ui/gui/guimodel/GuiModel.cpp
   PARENT_SCOPE
 )

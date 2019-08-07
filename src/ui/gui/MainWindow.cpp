@@ -1,9 +1,9 @@
 #include "MainWindow.h"
-#include "ColorsTableWidget.h"
-#include "DisplayWidget.h"
+#include <ui/gui/colorstablewidget/ColorsTableWidget.h>
+#include <ui/gui/displaywidget/DisplayWidget.h>
+#include <ui/gui/guimodel/GuiModel.h>
 #include <QHBoxLayout>
 #include <memory>
-#include "GuiModel.h"
 
 class MainWindow::MainWindowImpl : public QWidget {
     Q_OBJECT

@@ -1,5 +1,5 @@
 #include "ColorsTableWidget.h"
-#include "ColorButton.h"
+#include <ui/gui/colorbutton/ColorButton.h>
 #include <QGridLayout>
 #include <QLabel>
 
