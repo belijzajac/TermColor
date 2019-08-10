@@ -3,6 +3,8 @@
 #include <QMimeData>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <ui/gui/droparea/DropArea.h>
+#include <QDebug>
 
 class ImageDropWidget::ImageDropWidgetImpl : public QWidget {
     Q_OBJECT
@@ -11,40 +13,29 @@ public:
     QVBoxLayout *getLayout(){ return layout_; }
 
 private:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void dropEvent(QDropEvent *event) override;
     void doLayout();
 
     QVBoxLayout *layout_;
+    DropArea *dropArea_;
     ImageDropWidget *parent_;
 };
 
 ImageDropWidget::ImageDropWidgetImpl::ImageDropWidgetImpl(ImageDropWidget *parent) : QWidget{parent}, parent_{parent} {
-    setAcceptDrops(true); // to enable drop events
+    dropArea_ = new DropArea{this, {500, 500}};
+    connect(dropArea_, SIGNAL(imageDropped(QString)), parent_, SLOT(onImageDrop(QString)));
     doLayout();
 }
 
 void ImageDropWidget::ImageDropWidgetImpl::doLayout() {
-    auto label = new QLabel{this};
-    label->setText("<< Drop Image >>");
-
     layout_ = new QVBoxLayout{this};
-    layout_->addWidget(label);
+    layout_->setMargin(0);
+    layout_->addWidget(dropArea_);
+
+    setMinimumSize(500, 500);
 }
 
-// To inform about the types of data that the widget accepts
-void ImageDropWidget::ImageDropWidgetImpl::dragEnterEvent(QDragEnterEvent *event) {
-    if(const bool hasImage = event->mimeData()->hasImage()){
-        event->setAccepted(hasImage);
-        emit parent_->imageDropped(event->mimeData()->text());
-    }else{
-        event->ignore();
-    }
-}
-
-// To unpack dropped data and handle it
-void ImageDropWidget::ImageDropWidgetImpl::dropEvent(QDropEvent *event) {
-    //...
+void ImageDropWidget::onImageDrop(const QString& path) {
+    qDebug() << "ImageDropWidget::onImageDrop():" << path;
 }
 
 // ImageDropWidget

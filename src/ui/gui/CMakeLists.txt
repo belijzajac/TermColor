@@ -3,6 +3,7 @@ add_subdirectory(colorstablewidget)
 add_subdirectory(displaywidget)
 add_subdirectory(guimodel)
 add_subdirectory(imagedropwidget)
+add_subdirectory(droparea)
 
 set(TERMCOLOR_SOURCES
   ${TERMCOLOR_SOURCES}
