@@ -4,13 +4,15 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <ui/gui/droparea/DropArea.h>
-#include <QDebug>
 
 class ImageDropWidget::ImageDropWidgetImpl : public QWidget {
     Q_OBJECT
 public:
     explicit ImageDropWidgetImpl(ImageDropWidget *parent);
     QVBoxLayout *getLayout(){ return layout_; }
+
+private slots:
+    void onImageDrop(const QString& path);
 
 private:
     void doLayout();
@@ -21,8 +23,8 @@ private:
 };
 
 ImageDropWidget::ImageDropWidgetImpl::ImageDropWidgetImpl(ImageDropWidget *parent) : QWidget{parent}, parent_{parent} {
-    dropArea_ = new DropArea{this, {500, 500}};
-    connect(dropArea_, SIGNAL(imageDropped(QString)), parent_, SLOT(onImageDrop(QString)));
+    dropArea_ = new DropArea{this, {845, 500}};
+    connect(dropArea_, SIGNAL(imageDropped(QString)), this, SLOT(onImageDrop(QString)));
     doLayout();
 }
 
@@ -30,12 +32,10 @@ void ImageDropWidget::ImageDropWidgetImpl::doLayout() {
     layout_ = new QVBoxLayout{this};
     layout_->setMargin(0);
     layout_->addWidget(dropArea_);
-
-    setMinimumSize(500, 500);
 }
 
-void ImageDropWidget::onImageDrop(const QString& path) {
-    qDebug() << "ImageDropWidget::onImageDrop():" << path;
+void ImageDropWidget::ImageDropWidgetImpl::onImageDrop(const QString& path) {
+    emit parent_->imageDropped(path);
 }
 
 // ImageDropWidget
@@ -43,6 +43,11 @@ void ImageDropWidget::onImageDrop(const QString& path) {
 ImageDropWidget::ImageDropWidget(QWidget *parent) : QWidget{parent} {
     pimpl_ = std::make_unique<ImageDropWidgetImpl>(this);
     this->setLayout(pimpl_->getLayout());
+}
+
+void ImageDropWidget::hideWidget() {
+    this->hide();
+    emit onHideWidget();
 }
 
 ImageDropWidget::~ImageDropWidget() = default;

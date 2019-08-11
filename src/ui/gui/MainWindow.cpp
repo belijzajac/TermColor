@@ -12,9 +12,12 @@ public:
     explicit MainWindowImpl(MainWindow *parent);
     QHBoxLayout *getLayout() { return layout_; }
 
+public slots:
+    void undoHideWidgets();
+
 private:
     void doLayout();
-    //void connectInputToModel();
+    void doConnections();
 
     QHBoxLayout *layout_;
 
@@ -37,7 +40,7 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
     colorsTableWidget_->hide();
     displayWidget_->hide();
 
-    //connectInputToModel();
+    doConnections();
 }
 
 void MainWindow::MainWindowImpl::doLayout() {
@@ -46,11 +49,28 @@ void MainWindow::MainWindowImpl::doLayout() {
     layout_->addWidget(displayWidget_, 0, Qt::AlignTop);
 }
 
+void MainWindow::MainWindowImpl::doConnections() {
+    // Connect ImageDropWidget (view) to model
+    connect(imageDropWidget_, SIGNAL(imageDropped(QString)), guiModel_, SLOT(onImageDropped(QString)));
+    connect(guiModel_, SIGNAL(hideImageDropWidget()), imageDropWidget_, SLOT(hideWidget()));
+
+    // Connect ImageDropWidget (view) to controller
+    connect(imageDropWidget_, SIGNAL(onHideWidget()), this, SLOT(undoHideWidgets()));
+
+    // Do the rest of connections...
+}
+
+void MainWindow::MainWindowImpl::undoHideWidgets() {
+    colorsTableWidget_->show();
+    displayWidget_->show();
+}
+
+// MainWindow
+
 MainWindow::MainWindow(int, char *[], QWidget *parent) : QMainWindow{parent} {
     pimpl_ = new MainWindowImpl{this};
     setCentralWidget(pimpl_);
-    setFixedSize(500, 500);
-    //setFixedSize(pimpl_->getLayout()->totalMinimumSize());
+    setFixedSize(845, 500);
 }
 
 #include "MainWindow.moc"

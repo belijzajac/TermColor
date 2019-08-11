@@ -11,8 +11,12 @@ public:
     explicit ImageDropWidget(QWidget *parent = nullptr);
     ~ImageDropWidget();
 
-private slots:
-    void onImageDrop(const QString& path);
+signals:
+    void imageDropped(const QString& path);
+    void onHideWidget();
+
+public slots:
+    void hideWidget();
 
 private:
     std::unique_ptr<ImageDropWidgetImpl> pimpl_;

@@ -7,7 +7,6 @@ class ColorButton;
 
 class MainWindow : public QMainWindow {
     class MainWindowImpl;
-
 public:
     MainWindow(int argc, char *argv[], QWidget *parent = nullptr);
 
