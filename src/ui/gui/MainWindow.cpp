@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <memory>
 
+// Main window (controller)
 class MainWindow::MainWindowImpl : public QWidget {
     Q_OBJECT
 public:
@@ -14,18 +15,25 @@ public:
 
 public slots:
     void undoHideWidgets();
+    void onProcessColors(const std::string &imgPath);
 
 private:
     void doLayout();
     void doConnections();
 
     QHBoxLayout *layout_;
-
     MainWindow &parent_;
+
+    // Views
     ColorsTableWidget *colorsTableWidget_;
     DisplayWidget *displayWidget_;
     ImageDropWidget *imageDropWidget_;
+
+    // Model
     GuiModel *guiModel_;
+
+    // Where the logic about image processing lives
+    std::unique_ptr<DominantColor> domColor;
 };
 
 MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}, parent_{*parent} {
@@ -33,6 +41,7 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
     colorsTableWidget_ = new ColorsTableWidget{this};
     displayWidget_     = new DisplayWidget{this};
     imageDropWidget_   = new ImageDropWidget{this};
+    domColor           = std::make_unique<DominantColor>();
 
     layout_ = new QHBoxLayout{this};
     doLayout();
@@ -53,6 +62,7 @@ void MainWindow::MainWindowImpl::doConnections() {
     // Connect ImageDropWidget (view) to model
     connect(imageDropWidget_, SIGNAL(imageDropped(QString)), guiModel_, SLOT(onImageDropped(QString)));
     connect(guiModel_, SIGNAL(hideImageDropWidget()), imageDropWidget_, SLOT(hideWidget()));
+    connect(guiModel_, SIGNAL(doProcessColors(std::string)), this, SLOT(onProcessColors(std::string)));
 
     // Connect ImageDropWidget (view) to controller
     connect(imageDropWidget_, SIGNAL(onHideWidget()), this, SLOT(undoHideWidgets()));
@@ -63,6 +73,18 @@ void MainWindow::MainWindowImpl::doConnections() {
 void MainWindow::MainWindowImpl::undoHideWidgets() {
     colorsTableWidget_->show();
     displayWidget_->show();
+}
+
+// TODO: try-catch and noexcept (in the views??)
+void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
+    domColor->readImage(imgPath);
+    domColor->performKMeans();
+
+    auto dominantColors = domColor->getColors();
+    auto intenseColors  = domColor->intenseColors();
+
+    dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
+    guiModel_->setColors(dominantColors);
 }
 
 // MainWindow

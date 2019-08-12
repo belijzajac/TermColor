@@ -22,12 +22,14 @@ public:
     };
 
     const Colors &getColors() const;
+    void setColors(const std::vector<color> &colors);
 
 public slots:
     void onImageDropped(const QString& path);
 
 signals:
     void hideImageDropWidget();
+    void doProcessColors(const std::string &);
 
 private:
     std::unique_ptr<GuiModelImpl> pimpl_;

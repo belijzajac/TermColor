@@ -7,6 +7,7 @@ class DropArea : public QLabel {
     Q_OBJECT
 public:
     explicit DropArea(QWidget *parent = nullptr, const QSize &size = {200,200});
+    void setLabelText(const QString &text);
 
 signals:
     void imageDropped(const QString &path);

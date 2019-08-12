@@ -35,6 +35,7 @@ void ImageDropWidget::ImageDropWidgetImpl::doLayout() {
 }
 
 void ImageDropWidget::ImageDropWidgetImpl::onImageDrop(const QString& path) {
+    dropArea_->setLabelText("Working on image...");
     emit parent_->imageDropped(path);
 }
 

@@ -33,6 +33,11 @@ void DropArea::dragLeaveEvent(QDragLeaveEvent *event) {
 }
 
 void DropArea::resetLabel() {
-    setText(tr("<< Drop Image >>"));
+    setLabelText("<< Drop Image >>");
     setBackgroundRole(QPalette::Midlight);
+}
+
+void DropArea::setLabelText(const QString &text) {
+    setText(text);
+    repaint();
 }

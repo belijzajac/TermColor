@@ -1,11 +1,14 @@
 #include "GuiModel.h"
+#include <QDebug>
 
 class GuiModel::GuiModelImpl {
 public:
     explicit GuiModelImpl(GuiModel &p);
     const GuiModel::Colors &getColors() const { return colors_; }
+    void setColors(const std::vector<color> &colors);
 
     void setImagePath(const QString &path);
+    const std::string getImagePath() const;
 
 private:
     GuiModel &parent_;
@@ -18,7 +21,20 @@ GuiModel::GuiModelImpl::GuiModelImpl(GuiModel &p) : parent_{p}, colors_{} {
 }
 
 void GuiModel::GuiModelImpl::setImagePath(const QString &path) {
-    imagePath_ = path.toStdString();
+    const auto pathStr = path.toStdString(); // "file:///home/username/Pictures/xxxxxxx.png"
+    imagePath_ = pathStr.substr(7);          // removes "file://"
+}
+
+const std::string GuiModel::GuiModelImpl::getImagePath() const {
+    return imagePath_;
+}
+
+void GuiModel::GuiModelImpl::setColors(const std::vector<color> &colors) {
+    const auto size = colors.size();
+
+    // "Cut" colors in half and assign each halve to both Colors::regular_ and Colors::intense_
+    colors_.regular_.insert(colors_.regular_.begin(), colors.begin(), colors.begin() + size/2);
+    colors_.intense_.insert(colors_.intense_.begin(), colors.begin() + size/2, colors.end());
 }
 
 // GuiModel
@@ -40,9 +56,10 @@ const GuiModel::Colors &GuiModel::getColors() const {
 void GuiModel::onImageDropped(const QString &path) {
     pimpl_->setImagePath(path);
 
-    // TODO:
-    // 1) proceed to obtain colors
-    // 2) hide widget
-
+    emit doProcessColors(pimpl_->getImagePath());
     emit hideImageDropWidget();
+}
+
+void GuiModel::setColors(const std::vector<color> &colors) {
+    pimpl_->setColors(colors);
 }
