@@ -1,4 +1,5 @@
 #include "GuiModel.h"
+#include <backend/dominantcolor/DominantColor.h>
 #include <QDebug>
 
 class GuiModel::GuiModelImpl {
@@ -31,6 +32,10 @@ const std::string GuiModel::GuiModelImpl::getImagePath() const {
 
 void GuiModel::GuiModelImpl::setColors(const std::vector<color> &colors) {
     const auto size = colors.size();
+
+    // Clear existing colors
+    colors_.regular_.clear();
+    colors_.intense_.clear();
 
     // "Cut" colors in half and assign each halve to both Colors::regular_ and Colors::intense_
     colors_.regular_.insert(colors_.regular_.begin(), colors.begin(), colors.begin() + size/2);

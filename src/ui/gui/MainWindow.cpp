@@ -38,7 +38,7 @@ private:
 
 MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}, parent_{*parent} {
     guiModel_          = new GuiModel{this};
-    colorsTableWidget_ = new ColorsTableWidget{this};
+    colorsTableWidget_ = new ColorsTableWidget{*guiModel_, this};
     displayWidget_     = new DisplayWidget{this};
     imageDropWidget_   = new ImageDropWidget{this};
     domColor           = std::make_unique<DominantColor>();
@@ -67,6 +67,9 @@ void MainWindow::MainWindowImpl::doConnections() {
     // Connect ImageDropWidget (view) to controller
     connect(imageDropWidget_, SIGNAL(onHideWidget()), this, SLOT(undoHideWidgets()));
 
+    // Connect ColorsTableWidget (view) to model
+    connect(guiModel_, SIGNAL(modelChanged()), colorsTableWidget_, SLOT(onModelChanged()));
+
     // Do the rest of connections...
 }
 
@@ -85,6 +88,8 @@ void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
 
     dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
     guiModel_->setColors(dominantColors);
+
+    emit guiModel_->modelChanged();
 }
 
 // MainWindow

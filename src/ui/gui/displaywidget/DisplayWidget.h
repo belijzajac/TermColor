@@ -3,8 +3,6 @@
 
 #include <QWidget>
 
-class QTextEdit;
-
 class DisplayWidget : public QWidget {
     class DisplayWidgetImpl;
     Q_OBJECT

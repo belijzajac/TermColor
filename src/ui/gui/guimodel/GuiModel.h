@@ -30,6 +30,7 @@ public slots:
 signals:
     void hideImageDropWidget();
     void doProcessColors(const std::string &);
+    void modelChanged();
 
 private:
     std::unique_ptr<GuiModelImpl> pimpl_;

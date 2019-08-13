@@ -14,8 +14,11 @@ public:
     // Hovering over a button will the text to be displayed
     void registerToolTip();
 
-    // Set button's stylesheet to mathc its color
+    // Set button's stylesheet to match its color
     void setStylesheet();
+
+    // Set button's color
+    void setColor(const color &color);
 
 private slots:
     void onClicked();
@@ -28,7 +31,6 @@ private:
 
     std::string name_;
     color color_;
-
     QPushButton *btn_;
 };
 
