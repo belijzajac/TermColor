@@ -50,7 +50,7 @@ GuiModel::GuiModel(QObject *parent) : QObject{parent} {
 
 GuiModel::~GuiModel() = default;
 
-GuiModel::Colors::Colors() : BGFG_{{121, 129, 139}, {197, 200, 198}}, regular_{}, intense_{} {
+GuiModel::Colors::Colors() : BGFG_{{40, 38, 45}, {197, 200, 198}}, regular_{}, intense_{} {
 
 }
 

@@ -39,15 +39,12 @@ private:
 MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}, parent_{*parent} {
     guiModel_          = new GuiModel{this};
     colorsTableWidget_ = new ColorsTableWidget{*guiModel_, this};
-    displayWidget_     = new DisplayWidget{this};
+    displayWidget_     = new DisplayWidget{*guiModel_, this};
     imageDropWidget_   = new ImageDropWidget{this};
     domColor           = std::make_unique<DominantColor>();
 
     layout_ = new QHBoxLayout{this};
     doLayout();
-
-    colorsTableWidget_->hide();
-    displayWidget_->hide();
 
     doConnections();
 }
@@ -56,6 +53,9 @@ void MainWindow::MainWindowImpl::doLayout() {
     layout_->addWidget(imageDropWidget_, 0, Qt::AlignCenter);
     layout_->addWidget(colorsTableWidget_, 0, Qt::AlignTop);
     layout_->addWidget(displayWidget_, 0, Qt::AlignTop);
+
+    colorsTableWidget_->hide();
+    displayWidget_->hide();
 }
 
 void MainWindow::MainWindowImpl::doConnections() {
@@ -70,7 +70,8 @@ void MainWindow::MainWindowImpl::doConnections() {
     // Connect ColorsTableWidget (view) to model
     connect(guiModel_, SIGNAL(modelChanged()), colorsTableWidget_, SLOT(onModelChanged()));
 
-    // Do the rest of connections...
+    // Connect DisplayWidget (view) to model
+    connect(guiModel_, SIGNAL(modelChanged()), displayWidget_, SLOT(onModelChanged()));
 }
 
 void MainWindow::MainWindowImpl::undoHideWidgets() {
