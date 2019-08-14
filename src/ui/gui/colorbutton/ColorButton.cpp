@@ -1,7 +1,5 @@
 #include "ColorButton.h"
-
 #include <QPushButton>
-#include <QToolTip>
 #include <QVBoxLayout>
 
 ColorButton::ColorButton(const std::string &name, const color &color, QWidget *parent) : QWidget{parent}, name_{name},
@@ -16,10 +14,17 @@ void ColorButton::registerToolTip() {
 
 void ColorButton::setStylesheet() {
     btn_->setFlat(true);
+    btn_->setAutoFillBackground(true);
+    setColor(this->color_);
+
+    registerToolTip();
+}
+
+void ColorButton::setColor(const color &color) {
+    color_ = color;
 
     QPalette pal = btn_->palette();
     pal.setColor(QPalette::Button, QColor(QColor::fromRgb(color_.r, color_.g, color_.b)));
-    btn_->setAutoFillBackground(true);
     btn_->setPalette(pal);
     btn_->update();
 }
@@ -32,11 +37,9 @@ void ColorButton::onClicked() {
     emit clicked(dsplText);
 }
 
-
 void ColorButton::setup() {
     // button
     btn_ = new QPushButton{QString::fromStdString(name_), this};
-    registerToolTip();
     setStylesheet();
 
     // connect button's signals and slots
