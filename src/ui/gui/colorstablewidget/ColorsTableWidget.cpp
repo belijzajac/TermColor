@@ -69,12 +69,9 @@ void ColorsTableWidget::ColorsTableWidgetImpl::layoutButtons() {
 }
 
 void ColorsTableWidget::ColorsTableWidgetImpl::layoutOtherButtons(const std::vector<ColorButton *> &btns, int column) {
-    int rowNum = 2;
-
-    // Regular colors
-    std::for_each(btns.begin(), btns.end(), [this, &rowNum, column](ColorButton *btn) {
-        gridLayout_->addWidget(btn, rowNum, column);
-        ++rowNum;
+    std::for_each(btns.begin(), btns.end(), [this, row = 2, column](ColorButton *btn) mutable {
+        gridLayout_->addWidget(btn, row, column);
+        ++row;
     });
 }
 

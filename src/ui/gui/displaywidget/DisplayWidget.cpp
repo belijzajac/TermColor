@@ -97,7 +97,7 @@ void DisplayWidget::DisplayWidgetImpl::initTextPieces() {
 
 void DisplayWidget::DisplayWidgetImpl::doTextDspl() {
     // Save previous text info
-    auto oldTextColor = textDspl_->textColor();
+    const auto oldTextColor = textDspl_->textColor();
 
     std::for_each(textPiece_.begin(), textPiece_.end(), [&oldTextColor, this](const auto &t) {
         // Extract color representing key
