@@ -21,8 +21,21 @@ public:
         std::vector<color> intense_;  // Intense colors
     };
 
+    // Methods for Colors
     const Colors &getColors() const;
     void setColors(const std::vector<color> &colors);
+
+    // Storing terminals data
+    struct Terminals {
+        Terminals();
+
+        std::vector<std::string> supported_; // names of supported terminal emulators
+        std::vector<std::string> installed_; // installed terminal emulators in /bin
+    };
+
+    // Methods for Terminals
+    const Terminals &getTerminals() const;
+    void setTerminals(const std::vector<std::string> &term);
 
 public slots:
     void onImageDropped(const QString& path);

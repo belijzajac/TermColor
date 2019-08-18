@@ -3,7 +3,9 @@
 #include <ui/gui/displaywidget/DisplayWidget.h>
 #include <ui/gui/guimodel/GuiModel.h>
 #include <ui/gui/imagedropwidget/ImageDropWidget.h>
+#include <ui/gui/exportwidget/ExportWidget.h>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <memory>
 
 // Main window (controller)
@@ -28,6 +30,7 @@ private:
     ColorsTableWidget *colorsTableWidget_;
     DisplayWidget *displayWidget_;
     ImageDropWidget *imageDropWidget_;
+    ExportWidget *exportWidget_;
 
     // Model
     GuiModel *guiModel_;
@@ -41,6 +44,7 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
     colorsTableWidget_ = new ColorsTableWidget{*guiModel_, this};
     displayWidget_     = new DisplayWidget{*guiModel_, this};
     imageDropWidget_   = new ImageDropWidget{this};
+    exportWidget_      = new ExportWidget{*guiModel_, this};
     domColor           = std::make_unique<DominantColor>();
 
     layout_ = new QHBoxLayout{this};
@@ -50,12 +54,21 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
 }
 
 void MainWindow::MainWindowImpl::doLayout() {
+    auto vLayout = new QVBoxLayout;
+
     layout_->addWidget(imageDropWidget_, 0, Qt::AlignCenter);
     layout_->addWidget(colorsTableWidget_, 0, Qt::AlignTop);
-    layout_->addWidget(displayWidget_, 0, Qt::AlignTop);
 
+    vLayout->addWidget(displayWidget_, 0, Qt::AlignTop);
+    vLayout->addWidget(exportWidget_, 0, Qt::AlignBottom);
+
+    layout_->addLayout(vLayout);
+
+    // By default these should be hidden as long as we don't drop
+    // an image onto ImageDropWidget
     colorsTableWidget_->hide();
     displayWidget_->hide();
+    exportWidget_->hide();
 }
 
 void MainWindow::MainWindowImpl::doConnections() {
@@ -77,6 +90,7 @@ void MainWindow::MainWindowImpl::doConnections() {
 void MainWindow::MainWindowImpl::undoHideWidgets() {
     colorsTableWidget_->show();
     displayWidget_->show();
+    exportWidget_->show();
 }
 
 // TODO: try-catch and noexcept (in the views??)

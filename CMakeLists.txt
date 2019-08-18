@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
 project(TermColor)
 
+# We're using C++17
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # For running moc/uic/rcc automatically (for Qt5)
 set(CMAKE_AUTOMOC ON)
