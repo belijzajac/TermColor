@@ -5,7 +5,7 @@
 #include <ui/gui/imagedropwidget/ImageDropWidget.h>
 #include <ui/gui/exportwidget/ExportWidget.h>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <filesystem>
 #include <memory>
 
 // Main window (controller)
@@ -23,6 +23,11 @@ private:
     void doLayout();
     void doConnections();
 
+    // Functions to update model's data
+    void doImageColors(const std::string &imgPath);
+    void doTerminals();
+
+private:
     QHBoxLayout *layout_;
     MainWindow &parent_;
 
@@ -85,6 +90,9 @@ void MainWindow::MainWindowImpl::doConnections() {
 
     // Connect DisplayWidget (view) to model
     connect(guiModel_, SIGNAL(modelChanged()), displayWidget_, SLOT(onModelChanged()));
+
+    // Connect ExportWidget (view) to model
+    connect(guiModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
 }
 
 void MainWindow::MainWindowImpl::undoHideWidgets() {
@@ -93,16 +101,49 @@ void MainWindow::MainWindowImpl::undoHideWidgets() {
     exportWidget_->show();
 }
 
-// TODO: try-catch and noexcept (in the views??)
-void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
+void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
+    // Passes an image to opencv's cv::imread function
+    // and later performs the k-means' algorithm
     domColor->readImage(imgPath);
     domColor->performKMeans();
 
+    // Obtains extracted colors
     auto dominantColors = domColor->getColors();
-    auto intenseColors  = domColor->intenseColors();
+    auto intenseColors = domColor->intenseColors();
 
+    // Populates model with new data (colors, in this case)
     dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
     guiModel_->setColors(dominantColors);
+}
+
+void MainWindow::MainWindowImpl::doTerminals() {
+    const GuiModel::Terminals &terminals = guiModel_->getTerminals();
+    auto supportedTerminals = terminals.supported_;
+
+    // Find supported terminals in /bin
+    for (const auto &dirEntry : std::filesystem::recursive_directory_iterator("/bin")) {
+        const auto strEntry = dirEntry.path().string(); // e.g. "/bin/konsole"
+
+        // Loop through terminals
+        for (auto it = supportedTerminals.begin(); it != supportedTerminals.end();) {
+            // We compare the length in case of an entry such as "/bin/konsoleprofile" if we
+            // only need "/bin/konsole". Then we compare its substring against supported terminals
+            if (strEntry.length() - 5 == it->length() && strEntry.substr(5, it->length()) == *it) {
+                // Update model and remove already found entry
+                guiModel_->insertTerminal(*it);
+                it = supportedTerminals.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
+    // Update model's data with new colors
+    // And available terminal emulators
+    doImageColors(imgPath);
+    doTerminals();
 
     emit guiModel_->modelChanged();
 }

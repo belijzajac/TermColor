@@ -35,7 +35,7 @@ public:
 
     // Methods for Terminals
     const Terminals &getTerminals() const;
-    void setTerminals(const std::vector<std::string> &term);
+    void insertTerminal(const std::string &term);
 
 public slots:
     void onImageDropped(const QString& path);

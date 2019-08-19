@@ -13,6 +13,10 @@ public:
     explicit ExportWidget(const GuiModel &g, QWidget *parent = nullptr);
     ~ExportWidget();
 
+public slots:
+    // call this slot when the model has terminal emulators data updated
+    void onModelChanged();
+
 private:
     std::unique_ptr<ExportWidgetImpl> pimpl_;
 };
