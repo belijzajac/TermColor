@@ -4,6 +4,8 @@
 #include <ui/gui/guimodel/GuiModel.h>
 #include <ui/gui/imagedropwidget/ImageDropWidget.h>
 #include <ui/gui/exportwidget/ExportWidget.h>
+#include <backend/writer/Writer.h>
+#include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <QHBoxLayout>
 #include <filesystem>
 #include <memory>
@@ -15,9 +17,10 @@ public:
     explicit MainWindowImpl(MainWindow *parent);
     QHBoxLayout *getLayout() { return layout_; }
 
-public slots:
+private slots:
     void undoHideWidgets();
     void onProcessColors(const std::string &imgPath);
+    void onProcessSave(const std::string &saveOption);
 
 private:
     void doLayout();
@@ -65,7 +68,7 @@ void MainWindow::MainWindowImpl::doLayout() {
     layout_->addWidget(colorsTableWidget_, 0, Qt::AlignTop);
 
     vLayout->addWidget(displayWidget_, 0, Qt::AlignTop);
-    vLayout->addWidget(exportWidget_, 0, Qt::AlignBottom);
+    vLayout->addWidget(exportWidget_, 0, Qt::AlignRight);
 
     layout_->addLayout(vLayout);
 
@@ -91,8 +94,9 @@ void MainWindow::MainWindowImpl::doConnections() {
     // Connect DisplayWidget (view) to model
     connect(guiModel_, SIGNAL(modelChanged()), displayWidget_, SLOT(onModelChanged()));
 
-    // Connect ExportWidget (view) to model
+    // Connect ExportWidget (view) to model and back to controller (here), to do the logic
     connect(guiModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
+    connect(exportWidget_, SIGNAL(saveBtnClicked(std::string)), this, SLOT(onProcessSave(std::string)));
 }
 
 void MainWindow::MainWindowImpl::undoHideWidgets() {
@@ -109,11 +113,19 @@ void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
 
     // Obtains extracted colors
     auto dominantColors = domColor->getColors();
-    auto intenseColors = domColor->intenseColors();
+    auto intenseColors = domColor->intenseColors(dominantColors);
+
+    // Obtain predefined BG/FG colors
+    auto bgfg = domColor->getBGFGColors();
+    auto bgfgIntense = domColor->intenseColors(bgfg);
+
+    // Copy colors to one continuous vector<color> DS
+    dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
+    bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());
 
     // Populates model with new data (colors, in this case)
-    dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
-    guiModel_->setColors(dominantColors);
+    guiModel_->setImgColors(dominantColors);
+    guiModel_->setBGFGColors(bgfg);
 }
 
 void MainWindow::MainWindowImpl::doTerminals() {
@@ -146,6 +158,23 @@ void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
     doTerminals();
 
     emit guiModel_->modelChanged();
+}
+
+void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
+    const auto termType = GuiModel::terminalToEnum_[saveOption];
+
+    // A functional approach in applying the Factory design pattern to construct a writer
+    const auto writer = [termType] {
+        switch (termType) {
+            case TerminalType::Konsole:
+                return std::make_unique<KonsoleWriter>();
+            case TerminalType::GnomeTerminal:
+                std::make_unique<KonsoleWriter>();
+        }
+    }();
+
+    const GuiModel::Colors &colors = guiModel_->getColors();
+    writer->writeToLocation("NEW_NEW_", colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
 }
 
 // MainWindow

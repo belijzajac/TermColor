@@ -29,21 +29,10 @@ void ColorButton::setColor(const color &color) {
     btn_->update();
 }
 
-void ColorButton::onClicked() {
-    std::string dsplText{"(" + std::to_string(color_.r) + ", "
-                         + std::to_string(color_.g) + ", "
-                         + std::to_string(color_.b) + ")"};
-
-    emit clicked(dsplText);
-}
-
 void ColorButton::setup() {
     // button
     btn_ = new QPushButton{QString::fromStdString(name_), this};
     setStylesheet();
-
-    // connect button's signals and slots
-    connect(btn_, SIGNAL(clicked()), this, SLOT(onClicked()));
 
     // adding everything together
     auto layout = new QVBoxLayout{this};

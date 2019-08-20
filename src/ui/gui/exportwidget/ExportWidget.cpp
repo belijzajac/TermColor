@@ -11,6 +11,13 @@ public:
     QHBoxLayout *getLayout() { return hLayout_; }
     void onModelChanged();
 
+    // Returns current item that is selected in comboBox_
+    const QString getComboboxItem() const;
+
+private:
+    void doLayout();
+    void doConnections();
+
 private:
     const GuiModel &guiModel_;
     ExportWidget *parent_;
@@ -25,16 +32,33 @@ private:
 
 ExportWidget::ExportWidgetImpl::ExportWidgetImpl(const GuiModel &g, ExportWidget *parent)
  : QWidget{parent}, parent_{parent}, guiModel_{g}, hLayout_{new QHBoxLayout{this}} {
+    // Layouts everything together and connectes button via signal/slot
+    doLayout();
+    doConnections();
+}
+
+void ExportWidget::ExportWidgetImpl::doLayout() {
     // Construct a combo-box
     comboBox_ = new QComboBox{this};
-    comboBox_->setFixedSize(200, 30);
+    comboBox_->setFixedSize(150, 30);
 
     // Construct a button
     saveButton_ = new QPushButton{"Save!", this};
     saveButton_->setFixedSize(100, 30);
 
-    hLayout_->addWidget(comboBox_, 0, Qt::AlignJustify);
-    hLayout_->addWidget(saveButton_, 0, Qt::AlignJustify);
+    // A spacer
+    auto rightSpacer = new QSpacerItem{5, 0, QSizePolicy::Fixed, QSizePolicy::Fixed};
+
+    // Adding everything together
+    hLayout_->addWidget(comboBox_, 0, Qt::AlignRight);
+    hLayout_->addWidget(saveButton_, 0, Qt::AlignRight);
+    hLayout_->addSpacerItem(rightSpacer);
+}
+
+void ExportWidget::ExportWidgetImpl::doConnections() {
+    connect(saveButton_, &QPushButton::clicked, [=]() {
+        parent_->onSaveBtnClicked();
+    });
 }
 
 void ExportWidget::ExportWidgetImpl::onModelChanged() {
@@ -42,6 +66,13 @@ void ExportWidget::ExportWidgetImpl::onModelChanged() {
 
     for(const auto &term : installedTerm)
         comboBox_->addItem(QString::fromStdString(term));
+}
+
+// By default, for an empty combo box or a combo box
+// in which no current item is set, this property contains an invalid QVariant
+const QString ExportWidget::ExportWidgetImpl::getComboboxItem() const {
+    const auto comboItem = comboBox_->currentData(Qt::DisplayRole);
+    return comboItem.toString();
 }
 
 // ExportWidget
@@ -53,6 +84,14 @@ ExportWidget::ExportWidget(const GuiModel &g, QWidget *parent) {
 
 void ExportWidget::onModelChanged() {
     pimpl_->onModelChanged();
+}
+
+void ExportWidget::onSaveBtnClicked() {
+    // Obtain currently selected element in combo-box
+    const auto comboItem = pimpl_->getComboboxItem();
+
+    // Send string via signal to MainWindow and do logic there
+    emit saveBtnClicked(comboItem.toStdString());
 }
 
 ExportWidget::~ExportWidget() = default;

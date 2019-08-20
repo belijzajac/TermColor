@@ -11,7 +11,8 @@ public:
     void readImage(const std::string &name);
     void performKMeans();
     const std::vector<color> getColors() const;
-    const std::vector<color> intenseColors() const;
+    const std::vector<color> getBGFGColors() const;
+    const std::vector<color> intenseColors(const std::vector<color> &colors) const;
 
 private:
     // This function returns the number of unique colors (clusters)
@@ -152,15 +153,18 @@ const color brightenColor(const color &c, double multiplier) {
     };
 }
 
-const std::vector<color> DominantColor::DominantColorImpl::intenseColors() const {
-    auto oldColors = colors_;
+const std::vector<color> DominantColor::DominantColorImpl::intenseColors(const std::vector<color> &colors) const {
     std::vector<color> intenseColors;
 
-    std::for_each(oldColors.begin(), oldColors.end(), [&intenseColors](const color &color){
+    std::for_each(colors.begin(), colors.end(), [&intenseColors](const color &color){
         intenseColors.push_back({brightenColor(color, 1.5)});
     });
 
     return intenseColors;
+}
+
+const std::vector<color> DominantColor::DominantColorImpl::getBGFGColors() const {
+    return std::vector<color>{{40, 38, 45}, {197, 200, 198}};
 }
 
 /// DominantColor
@@ -183,6 +187,10 @@ const std::vector<color> DominantColor::getColors() const {
     return pimpl_->getColors();
 }
 
-const std::vector<color> DominantColor::intenseColors() const {
-    return pimpl_->intenseColors();
+const std::vector<color> DominantColor::intenseColors(const std::vector<color> &colors) const {
+    return pimpl_->intenseColors(colors);
+}
+
+const std::vector<color> DominantColor::getBGFGColors() const {
+    return pimpl_->getBGFGColors();
 }

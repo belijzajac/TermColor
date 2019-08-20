@@ -16,6 +16,10 @@ public:
 public slots:
     // call this slot when the model has terminal emulators data updated
     void onModelChanged();
+    void onSaveBtnClicked();
+
+signals:
+    void saveBtnClicked(const std::string &option);
 
 private:
     std::unique_ptr<ExportWidgetImpl> pimpl_;

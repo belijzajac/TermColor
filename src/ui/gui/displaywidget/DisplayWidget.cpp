@@ -36,7 +36,7 @@ DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const GuiModel &g, DisplayWi
     initTextPieces();
 
     textDspl_ = new QTextEdit{this};
-    textDspl_->setFixedSize(600, 380);
+    textDspl_->setFixedSize(600, 415);
     textDspl_->setReadOnly(true);
 
     layout->addWidget(label);

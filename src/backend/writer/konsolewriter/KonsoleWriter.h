@@ -10,6 +10,8 @@ public:
 
     void writeToLocation(const std::string &name,
                          const std::vector<color> &,
+                         const std::vector<color> &,
+                         const std::vector<color> &,
                          const std::vector<color> &) const override;
 
 private:
