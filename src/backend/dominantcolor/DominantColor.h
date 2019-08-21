@@ -26,7 +26,7 @@ public:
     const std::vector<color> getColors() const;
 
     // Returns predefined colors for background and foreground
-    const std::vector<color> getBGFGColors() const;
+    const std::vector<color> getBGFGColors(bool isDark = true) const;
 
     // Returns an intense colors copy of given colors
     const std::vector<color> intenseColors(const std::vector<color> &colors) const;

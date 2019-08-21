@@ -11,7 +11,7 @@ public:
     void readImage(const std::string &name);
     void performKMeans();
     const std::vector<color> getColors() const;
-    const std::vector<color> getBGFGColors() const;
+    const std::vector<color> getBGFGColors(bool) const;
     const std::vector<color> intenseColors(const std::vector<color> &colors) const;
 
 private:
@@ -30,6 +30,10 @@ private:
 private:
     cv::Mat img_;
     std::vector<color> colors_;
+
+    // BG and FG colors
+    const std::vector<color> darkBGFG {{40, 38, 45}, {197, 200, 198}};
+    const std::vector<color> lightBGFG {{255, 255, 255}, {197, 200, 198}};
 };
 
 void DominantColor::DominantColorImpl::readImage(const std::string &name) {
@@ -163,8 +167,11 @@ const std::vector<color> DominantColor::DominantColorImpl::intenseColors(const s
     return intenseColors;
 }
 
-const std::vector<color> DominantColor::DominantColorImpl::getBGFGColors() const {
-    return std::vector<color>{{40, 38, 45}, {197, 200, 198}};
+const std::vector<color> DominantColor::DominantColorImpl::getBGFGColors(bool isDark) const {
+    if (isDark)
+        return darkBGFG;
+    else
+        return lightBGFG;
 }
 
 /// DominantColor
@@ -191,6 +198,6 @@ const std::vector<color> DominantColor::intenseColors(const std::vector<color> &
     return pimpl_->intenseColors(colors);
 }
 
-const std::vector<color> DominantColor::getBGFGColors() const {
-    return pimpl_->getBGFGColors();
+const std::vector<color> DominantColor::getBGFGColors(bool isDark) const {
+    return pimpl_->getBGFGColors(isDark);
 }

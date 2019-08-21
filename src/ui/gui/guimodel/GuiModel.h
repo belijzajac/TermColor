@@ -61,6 +61,7 @@ signals:
     void hideImageDropWidget();
     void doProcessColors(const std::string &);
     void modelChanged();
+    void bgfgColorChanged();
 
 private:
     std::unique_ptr<GuiModelImpl> pimpl_;

@@ -4,6 +4,7 @@
 #include <ui/gui/guimodel/GuiModel.h>
 #include <ui/gui/imagedropwidget/ImageDropWidget.h>
 #include <ui/gui/exportwidget/ExportWidget.h>
+#include <ui/gui/bgfgchooser/BGFGChooser.h>
 #include <backend/writer/Writer.h>
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <QHBoxLayout>
@@ -21,6 +22,7 @@ private slots:
     void undoHideWidgets();
     void onProcessColors(const std::string &imgPath);
     void onProcessSave(const std::string &saveOption);
+    void onRadioBtnClicked(int id);
 
 private:
     void doLayout();
@@ -39,6 +41,7 @@ private:
     DisplayWidget *displayWidget_;
     ImageDropWidget *imageDropWidget_;
     ExportWidget *exportWidget_;
+    BGFGChooser *bgfgChooser_;
 
     // Model
     GuiModel *guiModel_;
@@ -53,6 +56,7 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
     displayWidget_     = new DisplayWidget{*guiModel_, this};
     imageDropWidget_   = new ImageDropWidget{this};
     exportWidget_      = new ExportWidget{*guiModel_, this};
+    bgfgChooser_       = new BGFGChooser{this};
     domColor           = std::make_unique<DominantColor>();
 
     layout_ = new QHBoxLayout{this};
@@ -62,14 +66,20 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
 }
 
 void MainWindow::MainWindowImpl::doLayout() {
-    auto vLayout = new QVBoxLayout;
-
     layout_->addWidget(imageDropWidget_, 0, Qt::AlignCenter);
     layout_->addWidget(colorsTableWidget_, 0, Qt::AlignTop);
 
-    vLayout->addWidget(displayWidget_, 0, Qt::AlignTop);
-    vLayout->addWidget(exportWidget_, 0, Qt::AlignRight);
+    // Align (and group) horizontally
+    auto hLayout = new QHBoxLayout;
+    hLayout->addWidget(bgfgChooser_, 0, Qt::AlignLeft);
+    hLayout->addWidget(exportWidget_, 0, Qt::AlignRight);
 
+    // displayWidget_ will be at top and everything that's in hLayout at the bottom
+    auto vLayout = new QVBoxLayout;
+    vLayout->addWidget(displayWidget_, 0, Qt::AlignTop);
+    vLayout->addLayout(hLayout);
+
+    // Top level layout holds all the other mini-layouts
     layout_->addLayout(vLayout);
 
     // By default these should be hidden as long as we don't drop
@@ -77,6 +87,7 @@ void MainWindow::MainWindowImpl::doLayout() {
     colorsTableWidget_->hide();
     displayWidget_->hide();
     exportWidget_->hide();
+    bgfgChooser_->hide();
 }
 
 void MainWindow::MainWindowImpl::doConnections() {
@@ -90,19 +101,25 @@ void MainWindow::MainWindowImpl::doConnections() {
 
     // Connect ColorsTableWidget (view) to model
     connect(guiModel_, SIGNAL(modelChanged()), colorsTableWidget_, SLOT(onModelChanged()));
+    connect(guiModel_, SIGNAL(bgfgColorChanged()), colorsTableWidget_, SLOT(onbgfgColorChanged()));
 
     // Connect DisplayWidget (view) to model
     connect(guiModel_, SIGNAL(modelChanged()), displayWidget_, SLOT(onModelChanged()));
+    connect(guiModel_, SIGNAL(bgfgColorChanged()), displayWidget_, SLOT(onbgfgColorChanged()));
 
     // Connect ExportWidget (view) to model and back to controller (here), to do the logic
     connect(guiModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
     connect(exportWidget_, SIGNAL(saveBtnClicked(std::string)), this, SLOT(onProcessSave(std::string)));
+
+    // Connect BGFGChooser (view) to controller
+    connect(bgfgChooser_, SIGNAL(radioBtnClicked(int)), this, SLOT(onRadioBtnClicked(int)));
 }
 
 void MainWindow::MainWindowImpl::undoHideWidgets() {
     colorsTableWidget_->show();
     displayWidget_->show();
     exportWidget_->show();
+    bgfgChooser_->show();
 }
 
 void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
@@ -175,6 +192,22 @@ void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
 
     const GuiModel::Colors &colors = guiModel_->getColors();
     writer->writeToLocation("NEW_NEW_", colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
+}
+
+void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {
+    // Dark BG/FG (id = 0) or Light BG/FG (id = 1)
+    // getBGFGColors(true) ==> obtain dark BG/FG, otherwise (if false) - light BG/FG
+    auto bgfg = domColor->getBGFGColors(id == 0);
+    const auto bgfgIntense = domColor->intenseColors(bgfg);
+
+    // Copy colors to one continuous vector<color> DS
+    bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());
+
+    // Populates model with new data (colors, in this case)
+    guiModel_->setBGFGColors(bgfg);
+
+    // Update model
+    emit guiModel_->bgfgColorChanged();
 }
 
 // MainWindow

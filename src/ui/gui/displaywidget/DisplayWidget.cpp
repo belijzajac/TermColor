@@ -11,11 +11,13 @@ class DisplayWidget::DisplayWidgetImpl : public QWidget {
 public:
     DisplayWidgetImpl(const GuiModel &g, DisplayWidget *parent, QVBoxLayout *layout);
     void onModelChanged();
+    void onbgfgColorChanged();
 
 private:
     void initTextPieces();
     void doTextDspl();
     void setDsplLook(const color &color);
+    void setFont();
 
 private:
     const GuiModel &guiModel_;
@@ -38,6 +40,8 @@ DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const GuiModel &g, DisplayWi
     textDspl_ = new QTextEdit{this};
     textDspl_->setFixedSize(600, 415);
     textDspl_->setReadOnly(true);
+
+    setFont();
 
     layout->addWidget(label);
     layout->addWidget(textDspl_);
@@ -120,6 +124,10 @@ void DisplayWidget::DisplayWidgetImpl::setDsplLook(const color &color) {
     palette.setColor(QPalette::Base, QColor::fromRgb(color.r, color.g, color.b));
     textDspl_->setPalette(palette);
 
+    textDspl_->update();
+}
+
+void DisplayWidget::DisplayWidgetImpl::setFont() {
     // Increase font point size
     auto font = textDspl_->font();
     const auto pointSize = font.pointSize();
@@ -141,6 +149,11 @@ void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
     setDsplLook(colors.BGFG_.at(0));
 }
 
+void DisplayWidget::DisplayWidgetImpl::onbgfgColorChanged() {
+    const GuiModel::Colors &colors = guiModel_.getColors();
+    setDsplLook(colors.BGFG_.at(0));
+}
+
 // DisplayWidget
 
 DisplayWidget::DisplayWidget(const GuiModel &g, QWidget *parent) {
@@ -151,4 +164,8 @@ DisplayWidget::DisplayWidget(const GuiModel &g, QWidget *parent) {
 
 void DisplayWidget::onModelChanged() {
     pimpl_->onModelChanged();
+}
+
+void DisplayWidget::onbgfgColorChanged() {
+    pimpl_->onbgfgColorChanged();
 }
