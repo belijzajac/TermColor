@@ -15,6 +15,9 @@ public:
     const std::vector<color> intenseColors(const std::vector<color> &colors) const;
 
 private:
+    // Does K-Mean's algorithm
+    void doKMeans(const cv::Mat &img, cv::Mat &labels, cv::Mat &centers, int clusterCount, int attempts);
+
     // This function returns the number of unique colors (clusters)
     // that appear in the image
     int getNumOfClusters() const;
@@ -32,8 +35,8 @@ private:
     std::vector<color> colors_;
 
     // BG and FG colors
-    const std::vector<color> darkBGFG {{40, 38, 45}, {197, 200, 198}};
-    const std::vector<color> lightBGFG {{255, 255, 255}, {197, 200, 198}};
+    std::vector<color> darkBGFG {{40, 38, 45}};
+    std::vector<color> lightBGFG {{255, 255, 255}};
 };
 
 void DominantColor::DominantColorImpl::readImage(const std::string &name) {
@@ -43,17 +46,10 @@ void DominantColor::DominantColorImpl::readImage(const std::string &name) {
         throw Exception{"empty image"};
 }
 
-void DominantColor::DominantColorImpl::performKMeans() {
-    // Map and rearrange image
-    cv::Mat rearrangedImg = mapAndRearrange();
-
-    // Apply kmeans algorithm
-    int clusterCount = std::min(8, getNumOfClusters());
-    cv::Mat labels, centers;
-    int attempts = 5;
-
+void DominantColor::DominantColorImpl::doKMeans(const cv::Mat &img, cv::Mat &labels, cv::Mat &centers,
+                                                    int clusterCount = 1, int attempts = 1) {
     cv::kmeans(
-            rearrangedImg,
+            img,
             clusterCount,
             labels,
             cv::TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 10, 0.01),
@@ -61,9 +57,32 @@ void DominantColor::DominantColorImpl::performKMeans() {
             cv::KMEANS_PP_CENTERS,
             centers
     );
+}
+
+void DominantColor::DominantColorImpl::performKMeans() {
+    // Map and rearrange image
+    cv::Mat rearrangedImg = mapAndRearrange();
+
+    // Data we'll pass to kmeans function
+    int clusterCount = std::min(8, getNumOfClusters());
+    cv::Mat labels, centers;
+
+    // Apply K-Mean's algorithm for regular colors
+    doKMeans(rearrangedImg, labels, centers, clusterCount, 5);
 
     // Extract colors from centers
     colors_ = extractColors(centers);
+
+    // Apply Mean algorithm for foreground color
+    cv::Mat centers_2;
+    doKMeans(rearrangedImg, labels, centers_2);
+
+    // Make the color brighter
+    auto fgColor = intenseColors(extractColors(centers_2));
+
+    // Append new color
+    darkBGFG.push_back(fgColor.at(0));
+    lightBGFG.push_back(fgColor.at(0));
 }
 
 int DominantColor::DominantColorImpl::getNumOfClusters() const {

@@ -52,51 +52,51 @@ DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const GuiModel &g, DisplayWi
 // I'd have used the builder design pattern together with predefined colors for each C++ reserved keyword
 void DisplayWidget::DisplayWidgetImpl::initTextPieces() {
     // Headers
-    textPiece_.emplace_back("#ifndef EXCEPTION_H \n#define ", "regular_6");
-    textPiece_.emplace_back("EXCEPTION_H \n\n", "regular_3");
+    textPiece_.emplace_back("#ifndef EXCEPTION_H \n#define ", "intense_6");
+    textPiece_.emplace_back("EXCEPTION_H \n\n", "intense_1");
 
     // Include
-    textPiece_.emplace_back("#include ", "regular_6");
-    textPiece_.emplace_back("<bits/exception.h> \n", "regular_2");
+    textPiece_.emplace_back("#include ", "intense_6");
+    textPiece_.emplace_back("<bits/exception.h> \n", "intense_3");
 
     // Include
-    textPiece_.emplace_back("#include ", "regular_6");
-    textPiece_.emplace_back("<string> \n\n", "regular_2");
+    textPiece_.emplace_back("#include ", "intense_6");
+    textPiece_.emplace_back("<string> \n\n", "intense_3");
 
     // Class definition
-    textPiece_.emplace_back("class ", "regular_1");
-    textPiece_.emplace_back("Exception : ", "regular_7");
-    textPiece_.emplace_back("public ", "regular_1");
-    textPiece_.emplace_back("std::exception { \n", "regular_7");
+    textPiece_.emplace_back("class ", "regular_2");
+    textPiece_.emplace_back("Exception : ", "foreground");
+    textPiece_.emplace_back("public ", "regular_2");
+    textPiece_.emplace_back("std::exception { \n", "foreground");
 
     // Class begin
-    textPiece_.emplace_back("public ", "regular_1");
+    textPiece_.emplace_back("public ", "regular_2");
     textPiece_.emplace_back(":\n", "regular_5");
 
     // Class function
-    textPiece_.emplace_back("   explicit ", "regular_1");
-    textPiece_.emplace_back("Exception(", "regular_7");
-    textPiece_.emplace_back("const ", "regular_1");
-    textPiece_.emplace_back("std::string &msg) : msg_{msg} {} \n", "regular_7");
+    textPiece_.emplace_back("   explicit ", "regular_2");
+    textPiece_.emplace_back("Exception(", "foreground");
+    textPiece_.emplace_back("const ", "regular_2");
+    textPiece_.emplace_back("std::string &msg) : msg_{msg} {} \n", "foreground");
 
     // Another class function
-    textPiece_.emplace_back("   const char ", "regular_1");
-    textPiece_.emplace_back("*what() ", "regular_7");
-    textPiece_.emplace_back("const ", "regular_1");
-    textPiece_.emplace_back("noexcept ", "regular_7");
-    textPiece_.emplace_back("override ", "regular_1");
-    textPiece_.emplace_back("{ ", "regular_7");
+    textPiece_.emplace_back("   const char ", "regular_2");
+    textPiece_.emplace_back("*what() ", "foreground");
+    textPiece_.emplace_back("const ", "regular_2");
+    textPiece_.emplace_back("noexcept ", "foreground");
+    textPiece_.emplace_back("override ", "regular_2");
+    textPiece_.emplace_back("{ ", "foreground");
     textPiece_.emplace_back("return ", "regular_5");
-    textPiece_.emplace_back("msg_.c_str(); } \n\n", "regular_7");
+    textPiece_.emplace_back("msg_.c_str(); } \n\n", "foreground");
 
     // Class members
-    textPiece_.emplace_back("private ", "regular_1");
+    textPiece_.emplace_back("private ", "regular_2");
     textPiece_.emplace_back(":\n", "regular_5");
-    textPiece_.emplace_back("   std::string msg_; \n}; \n\n", "regular_7");
+    textPiece_.emplace_back("   std::string msg_; \n}; \n\n", "foreground");
 
     // End of class
-    textPiece_.emplace_back("#endif ", "regular_6");
-    textPiece_.emplace_back("// EXCEPTION_H", "regular_4");
+    textPiece_.emplace_back("#endif ", "intense_6");
+    textPiece_.emplace_back("// EXCEPTION_H", "intense_4");
 }
 
 void DisplayWidget::DisplayWidgetImpl::doTextDspl() {
@@ -140,9 +140,16 @@ void DisplayWidget::DisplayWidgetImpl::setFont() {
 void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
     const GuiModel::Colors &colors = guiModel_.getColors();
 
-    // Populate colorCombos_
+    // Populate colorCombos_ with regular colors
     for (unsigned long i = 0; i < colors.regular_.size(); ++i)
         colorCombos_["regular_" + std::to_string(i)] = colors.regular_.at(i);
+
+    // Populate colorCombos_ with intense colors
+    for (unsigned long i = 0; i < colors.intense_.size(); ++i)
+        colorCombos_["intense_" + std::to_string(i)] = colors.intense_.at(i);
+
+    // Populate colorCombos_ with foreground color
+    colorCombos_["foreground"] = colors.BGFG_.at(1);
 
     // Set textDspl_'s colors
     doTextDspl();

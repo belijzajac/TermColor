@@ -16,12 +16,11 @@ void ColorButton::setStylesheet() {
     btn_->setFlat(true);
     btn_->setAutoFillBackground(true);
     setColor(this->color_);
-
-    registerToolTip();
 }
 
 void ColorButton::setColor(const color &color) {
     color_ = color;
+    registerToolTip();
 
     QPalette pal = btn_->palette();
     pal.setColor(QPalette::Button, QColor(QColor::fromRgb(color_.r, color_.g, color_.b)));
