@@ -13,23 +13,46 @@ KonsoleWriter::KonsoleWriter() : Writer(
 }
 
 void KonsoleWriter::writeToLocation(const std::string &name,
-                                    const std::vector<color> &domColors,
-                                    const std::vector<color> &intColors) const {
+                                    const std::vector<color> &bgfg,
+                                    const std::vector<color> &bgfgIntense,
+                                    const std::vector<color> &regular,
+                                    const std::vector<color> &intense) const {
     const std::string pathToFile{ absolutePath(name) };
     std::ofstream f{pathToFile};
 
     if (!f)
         throw Exception{"bad file name: " + pathToFile};
 
+    // Write general info
+    f << "[General]\n";
+    f << "Description=TermColor " + name + "\n";
+    f << "Wallpaper=\n\n";
+
+    // Write background and foreground info
+    const std::vector<std::string> bgfgTextProp {"Background", "Foreground"};
+    std::for_each(bgfg.begin(), bgfg.end(), [=, &f, count = 0](const color &color) mutable {
+        f << "[" + bgfgTextProp.at(count) + "]\n";
+        f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
+        ++count;
+    });
+
+    // Write background and foreground info of intense colors
+    const std::vector<std::string> bgfgIntTextProp {"BackgroundIntense", "ForegroundIntense"};
+    std::for_each(bgfgIntense.begin(), bgfgIntense.end(), [=, &f, count = 0](const color &color) mutable {
+        f << "[" + bgfgIntTextProp.at(count) + "]\n";
+        f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
+        ++count;
+    });
+
     // Write dominant colors
-    std::for_each(domColors.begin(), domColors.end(), [=, &f, count = 0](const color &color) mutable {
+    std::for_each(regular.begin(), regular.end(), [=, &f, count = 0](const color &color) mutable {
         f << "[" + nameColors_.at(count) + "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
         ++count;
     });
 
     // Write intense colors
-    std::for_each(intColors.begin(), intColors.end(), [=, &f, count = 0](const color &color) mutable {
+    std::for_each(intense.begin(), intense.end(), [=, &f, count = 0](const color &color) mutable {
         f << "[" + nameColors_.at(count) + "Intense" + "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
         ++count;

@@ -14,6 +14,7 @@ public:
 public slots:
     // call this slot when the model is populated with new colors
     void onModelChanged();
+    void onbgfgColorChanged();
 
 private:
     DisplayWidgetImpl *pimpl_;

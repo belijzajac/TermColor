@@ -6,8 +6,8 @@
 #include <pwd.h>
 
 struct filename {
-    std::string prefix; // termcolor_
-    std::string format; // .colorscheme
+    std::string prefix; // i.e. "termcolor_"
+    std::string format; // for Konsole it's ".colorscheme"
 };
 
 class Writer {
@@ -25,8 +25,10 @@ public:
 
     // Writes color-scheme to file
     virtual void writeToLocation(const std::string &name,
-                                 const std::vector<color> &,
-                                 const std::vector<color> &) const = 0;
+                                 const std::vector<color> &,              // BG/FG colors
+                                 const std::vector<color> &,              // Intense BG/FG colors
+                                 const std::vector<color> &,              // Regular colors
+                                 const std::vector<color> &) const = 0;   // Intense colors
 
     // Returns an absolute location to color schemes save folder
     const std::string absolutePath(const std::string &fileName) const {

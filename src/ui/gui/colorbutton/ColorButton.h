@@ -20,12 +20,6 @@ public:
     // Set button's color
     void setColor(const color &color);
 
-private slots:
-    void onClicked();
-
-signals:
-    void clicked(std::string color);
-
 private:
     void setup();
 

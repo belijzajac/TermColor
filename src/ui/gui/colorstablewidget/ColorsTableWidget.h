@@ -16,6 +16,7 @@ public:
 public slots:
     // call this slot when the model is populated with new colors
     void onModelChanged();
+    void onbgfgColorChanged();
 
 private:
     std::unique_ptr<ColorsTableWidgetImpl> pimpl_;

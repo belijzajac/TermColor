@@ -10,6 +10,7 @@ public:
     explicit ColorsTableWidgetImpl(const GuiModel &g, ColorsTableWidget *parent);
     QVBoxLayout *getLayout() { return verticalLayout_; }
     void onModelChanged();
+    void onbgfgColorChanged();
 
 private:
     void allocateButtons();
@@ -88,6 +89,11 @@ void ColorsTableWidget::ColorsTableWidgetImpl::onModelChanged() {
     updateBtnsColors(intenseBtns_, colors.intense_);
 }
 
+void ColorsTableWidget::ColorsTableWidgetImpl::onbgfgColorChanged() {
+    const GuiModel::Colors &colors = guiModel_.getColors();
+    updateBtnsColors(bgfgBtns_, colors.BGFG_);
+}
+
 void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vector<ColorButton *> &btns,
                                                                 const std::vector<color> &colors) {
     for (unsigned long btnInd = 0; btnInd < btns.size(); ++btnInd) {
@@ -108,6 +114,10 @@ ColorsTableWidget::ColorsTableWidget(const GuiModel &g, QWidget *parent) {
 
 void ColorsTableWidget::onModelChanged() {
     pimpl_->onModelChanged();
+}
+
+void ColorsTableWidget::onbgfgColorChanged() {
+    pimpl_->onbgfgColorChanged();
 }
 
 ColorsTableWidget::~ColorsTableWidget() = default;

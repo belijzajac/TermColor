@@ -25,8 +25,11 @@ public:
     // Gets dominant colors from an image
     const std::vector<color> getColors() const;
 
-    // Returns an intense colors copy of dominant colors
-    const std::vector<color> intenseColors() const;
+    // Returns predefined colors for background and foreground
+    const std::vector<color> getBGFGColors(bool isDark = true) const;
+
+    // Returns an intense colors copy of given colors
+    const std::vector<color> intenseColors(const std::vector<color> &colors) const;
 
 private:
     std::unique_ptr<DominantColorImpl> pimpl_;
