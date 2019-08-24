@@ -26,13 +26,13 @@ public:
     };
 
     // To mark which application run was that: was it first or the following one onwards?
-    enum class RunState { First, Following };
+    enum class ChangedState { None, NewTerminals };
 
     // Storing terminals data
     struct Terminals {
         Terminals();
 
-        RunState runState_;
+        ChangedState changedState_;
 
         std::vector<std::string> supported_; // names of supported terminal emulators
         std::vector<std::string> installed_; // installed terminal emulators in /bin

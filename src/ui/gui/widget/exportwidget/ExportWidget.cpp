@@ -62,10 +62,16 @@ void ExportWidget::ExportWidgetImpl::doConnections() {
 }
 
 void ExportWidget::ExportWidgetImpl::onModelChanged() {
-    const auto &installedTerm = terminalsModel_.getTerminals().installed_;
+    const auto &terminals = terminalsModel_.getTerminals();
+    const auto state = terminals.changedState_;
 
-    for(const auto &term : installedTerm)
-        comboBox_->addItem(QString::fromStdString(term));
+    // On first run append combo-box with new terminals
+    if (state == TerminalsModel::ChangedState::None) {
+        // Nothing to do...
+    } else if (state == TerminalsModel::ChangedState::NewTerminals) {
+        for (const auto &term : terminals.installed_)
+            comboBox_->addItem(QString::fromStdString(term));
+    }
 }
 
 // By default, for an empty combo box or a combo box
