@@ -9,7 +9,7 @@ class QButtonGroup;
 class BGFGChooser : public QWidget {
     Q_OBJECT
 public:
-    BGFGChooser(QWidget *parent = nullptr);
+    explicit BGFGChooser(QWidget *parent = nullptr);
 
 signals:
     void radioBtnClicked(int id);

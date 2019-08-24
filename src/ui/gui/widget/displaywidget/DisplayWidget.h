@@ -3,18 +3,17 @@
 
 #include <QWidget>
 
-class GuiModel;
+class ColorsModel;
 
 class DisplayWidget : public QWidget {
     class DisplayWidgetImpl;
     Q_OBJECT
 public:
-    explicit DisplayWidget(const GuiModel &g, QWidget *parent = nullptr);
+    explicit DisplayWidget(const ColorsModel &c, QWidget *parent = nullptr);
 
 public slots:
     // call this slot when the model is populated with new colors
     void onModelChanged();
-    void onbgfgColorChanged();
 
 private:
     DisplayWidgetImpl *pimpl_;
