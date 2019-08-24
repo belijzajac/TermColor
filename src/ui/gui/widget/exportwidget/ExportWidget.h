@@ -4,13 +4,13 @@
 #include <QWidget>
 #include <memory>
 
-class GuiModel;
+class TerminalsModel;
 
 class ExportWidget : public QWidget {
     class ExportWidgetImpl;
     Q_OBJECT
 public:
-    explicit ExportWidget(const GuiModel &g, QWidget *parent = nullptr);
+    explicit ExportWidget(const TerminalsModel &t, QWidget *parent = nullptr);
     ~ExportWidget();
 
 public slots:

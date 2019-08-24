@@ -1,10 +1,11 @@
 #include "MainWindow.h"
-#include <ui/gui/colorstablewidget/ColorsTableWidget.h>
-#include <ui/gui/displaywidget/DisplayWidget.h>
-#include <ui/gui/guimodel/GuiModel.h>
-#include <ui/gui/imagedropwidget/ImageDropWidget.h>
-#include <ui/gui/exportwidget/ExportWidget.h>
-#include <ui/gui/bgfgchooser/BGFGChooser.h>
+#include <ui/gui/widget/colorstablewidget/ColorsTableWidget.h>
+#include <ui/gui/widget/displaywidget/DisplayWidget.h>
+#include <ui/gui/model/colorsmodel/ColorsModel.h>
+#include <ui/gui/model/terminalsmodel/TerminalsModel.h>
+#include <ui/gui/widget/imagedropwidget/ImageDropWidget.h>
+#include <ui/gui/widget/exportwidget/ExportWidget.h>
+#include <ui/gui/widget/bgfgchooser/BGFGChooser.h>
 #include <backend/writer/Writer.h>
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <QHBoxLayout>
@@ -16,7 +17,6 @@ class MainWindow::MainWindowImpl : public QWidget {
     Q_OBJECT
 public:
     explicit MainWindowImpl(MainWindow *parent);
-    QHBoxLayout *getLayout() { return layout_; }
 
 private slots:
     void undoHideWidgets();
@@ -34,7 +34,6 @@ private:
 
 private:
     QHBoxLayout *layout_;
-    MainWindow &parent_;
 
     // Views
     ColorsTableWidget *colorsTableWidget_;
@@ -43,19 +42,21 @@ private:
     ExportWidget *exportWidget_;
     BGFGChooser *bgfgChooser_;
 
-    // Model
-    GuiModel *guiModel_;
+    // Models
+    ColorsModel *colorsModel_;
+    TerminalsModel *terminalsModel_;
 
     // Where the logic about image processing lives
     std::unique_ptr<DominantColor> domColor;
 };
 
-MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}, parent_{*parent} {
-    guiModel_          = new GuiModel{this};
-    colorsTableWidget_ = new ColorsTableWidget{*guiModel_, this};
-    displayWidget_     = new DisplayWidget{*guiModel_, this};
+MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent} {
+    colorsModel_       = new ColorsModel{this};
+    terminalsModel_    = new TerminalsModel{this};
+    colorsTableWidget_ = new ColorsTableWidget{*colorsModel_, this};
+    displayWidget_     = new DisplayWidget{*colorsModel_, this};
     imageDropWidget_   = new ImageDropWidget{this};
-    exportWidget_      = new ExportWidget{*guiModel_, this};
+    exportWidget_      = new ExportWidget{*terminalsModel_, this};
     bgfgChooser_       = new BGFGChooser{this};
     domColor           = std::make_unique<DominantColor>();
 
@@ -92,23 +93,21 @@ void MainWindow::MainWindowImpl::doLayout() {
 
 void MainWindow::MainWindowImpl::doConnections() {
     // Connect ImageDropWidget (view) to model
-    connect(imageDropWidget_, SIGNAL(imageDropped(QString)), guiModel_, SLOT(onImageDropped(QString)));
-    connect(guiModel_, SIGNAL(hideImageDropWidget()), imageDropWidget_, SLOT(hideWidget()));
-    connect(guiModel_, SIGNAL(doProcessColors(std::string)), this, SLOT(onProcessColors(std::string)));
+    connect(imageDropWidget_, SIGNAL(imageDropped(QString)), colorsModel_, SLOT(onImageDropped(QString)));
+    connect(colorsModel_, SIGNAL(hideImageDropWidget()), imageDropWidget_, SLOT(hideWidget()));
+    connect(colorsModel_, SIGNAL(doProcessColors(std::string)), this, SLOT(onProcessColors(std::string)));
 
     // Connect ImageDropWidget (view) to controller
     connect(imageDropWidget_, SIGNAL(onHideWidget()), this, SLOT(undoHideWidgets()));
 
     // Connect ColorsTableWidget (view) to model
-    connect(guiModel_, SIGNAL(modelChanged()), colorsTableWidget_, SLOT(onModelChanged()));
-    connect(guiModel_, SIGNAL(bgfgColorChanged()), colorsTableWidget_, SLOT(onbgfgColorChanged()));
+    connect(colorsModel_, SIGNAL(modelChanged()), colorsTableWidget_, SLOT(onModelChanged()));
 
     // Connect DisplayWidget (view) to model
-    connect(guiModel_, SIGNAL(modelChanged()), displayWidget_, SLOT(onModelChanged()));
-    connect(guiModel_, SIGNAL(bgfgColorChanged()), displayWidget_, SLOT(onbgfgColorChanged()));
+    connect(colorsModel_, SIGNAL(modelChanged()), displayWidget_, SLOT(onModelChanged()));
 
     // Connect ExportWidget (view) to model and back to controller (here), to do the logic
-    connect(guiModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
+    connect(terminalsModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
     connect(exportWidget_, SIGNAL(saveBtnClicked(std::string)), this, SLOT(onProcessSave(std::string)));
 
     // Connect BGFGChooser (view) to controller
@@ -141,13 +140,14 @@ void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
     bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());
 
     // Populates model with new data (colors, in this case)
-    guiModel_->setImgColors(dominantColors);
-    guiModel_->setBGFGColors(bgfg);
+    colorsModel_->setImgColors(dominantColors);
+    colorsModel_->setBGFGColors(bgfg);
 }
 
 void MainWindow::MainWindowImpl::doTerminals() {
-    const GuiModel::Terminals &terminals = guiModel_->getTerminals();
+    const TerminalsModel::Terminals &terminals = terminalsModel_->getTerminals();
     auto supportedTerminals = terminals.supported_;
+    std::vector<std::string> terminalsFound; // Found terminals in /bin
 
     // Find supported terminals in /bin
     for (const auto &dirEntry : std::filesystem::recursive_directory_iterator("/bin")) {
@@ -158,14 +158,16 @@ void MainWindow::MainWindowImpl::doTerminals() {
             // We compare the length in case of an entry such as "/bin/konsoleprofile" if we
             // only need "/bin/konsole". Then we compare its substring against supported terminals
             if (strEntry.length() - 5 == it->length() && strEntry.substr(5, it->length()) == *it) {
-                // Update model and remove already found entry
-                guiModel_->insertTerminal(*it);
+                // Append list of found terminals and remove already found entry
+                terminalsFound.push_back(*it);
                 it = supportedTerminals.erase(it);
             } else {
                 ++it;
             }
         }
     }
+    // Populate model with new terminals
+    terminalsModel_->insertTerminals(terminalsFound);
 }
 
 void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
@@ -173,24 +175,22 @@ void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
     // And available terminal emulators
     doImageColors(imgPath);
     doTerminals();
-
-    emit guiModel_->modelChanged();
 }
 
 void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
-    const auto termType = GuiModel::terminalToEnum_[saveOption];
+    const auto termType = TerminalsModel::terminalToEnum_[saveOption];
 
     // A functional approach in applying the Factory design pattern to construct a writer
     const auto writer = [termType] {
         switch (termType) {
-            case TerminalType::Konsole:
+            case TerminalsModel::TerminalType::Konsole:
                 return std::make_unique<KonsoleWriter>();
-            case TerminalType::GnomeTerminal:
+            case TerminalsModel::TerminalType::GnomeTerminal:
                 std::make_unique<KonsoleWriter>();
         }
     }();
 
-    const GuiModel::Colors &colors = guiModel_->getColors();
+    const ColorsModel::Colors &colors = colorsModel_->getColors();
     writer->writeToLocation("NEW_NEW_", colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
 }
 
@@ -204,10 +204,7 @@ void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {
     bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());
 
     // Populates model with new data (colors, in this case)
-    guiModel_->setBGFGColors(bgfg);
-
-    // Update model
-    emit guiModel_->bgfgColorChanged();
+    colorsModel_->setBGFGColors(bgfg);
 }
 
 // MainWindow

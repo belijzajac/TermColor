@@ -3,7 +3,7 @@
 #include <QMimeData>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <ui/gui/droparea/DropArea.h>
+#include <ui/gui/widget/droparea/DropArea.h>
 
 class ImageDropWidget::ImageDropWidgetImpl : public QWidget {
     Q_OBJECT

@@ -1,16 +1,15 @@
 #include "ColorsTableWidget.h"
-#include <ui/gui/colorbutton/ColorButton.h>
-#include <ui/gui/guimodel/GuiModel.h>
+#include <ui/gui/widget/colorbutton/ColorButton.h>
+#include <ui/gui/model/colorsmodel/ColorsModel.h>
 #include <QGridLayout>
 #include <QLabel>
 
 class ColorsTableWidget::ColorsTableWidgetImpl : public QWidget {
     Q_OBJECT
 public:
-    explicit ColorsTableWidgetImpl(const GuiModel &g, ColorsTableWidget *parent);
+    explicit ColorsTableWidgetImpl(const ColorsModel &c, ColorsTableWidget *parent);
     QVBoxLayout *getLayout() { return verticalLayout_; }
     void onModelChanged();
-    void onbgfgColorChanged();
 
 private:
     void allocateButtons();
@@ -18,7 +17,7 @@ private:
     void layoutOtherButtons(const std::vector<ColorButton *> &btns, int column);
     void updateBtnsColors(const std::vector<ColorButton *> &btns, const std::vector<color> &colors);
 
-    const GuiModel &guiModel_;
+    const ColorsModel &colorsModel_;
     ColorsTableWidget *parent_;
 
     // Layouts
@@ -31,9 +30,9 @@ private:
     std::vector<ColorButton *> intenseBtns_;   // Buttons of intense colors (8)
 };
 
-ColorsTableWidget::ColorsTableWidgetImpl::ColorsTableWidgetImpl(const GuiModel &g, ColorsTableWidget *parent)
+ColorsTableWidget::ColorsTableWidgetImpl::ColorsTableWidgetImpl(const ColorsModel &c, ColorsTableWidget *parent)
         : QWidget{parent}, parent_{parent}, verticalLayout_{new QVBoxLayout{this}}, gridLayout_{new QGridLayout},
-          guiModel_{g} {
+          colorsModel_{c} {
 
     auto label = new QLabel{this};
     label->setText("Terminal colors");
@@ -77,21 +76,20 @@ void ColorsTableWidget::ColorsTableWidgetImpl::layoutOtherButtons(const std::vec
 }
 
 void ColorsTableWidget::ColorsTableWidgetImpl::onModelChanged() {
-    const GuiModel::Colors &colors = guiModel_.getColors();
+    const ColorsModel::Colors &colors = colorsModel_.getColors();
+    const auto state = colors.changedState_;
 
-    // Background and Foreground
-    updateBtnsColors(bgfgBtns_, colors.BGFG_);
+    if (state == ColorsModel::ChangedState::NewColors) {
+        // Regular colors and Intense colors
+        updateBtnsColors(regularBtns_, colors.regular_);
+        updateBtnsColors(intenseBtns_, colors.intense_);
 
-    // Regular colors
-    updateBtnsColors(regularBtns_, colors.regular_);
-
-    // Intense colors
-    updateBtnsColors(intenseBtns_, colors.intense_);
-}
-
-void ColorsTableWidget::ColorsTableWidgetImpl::onbgfgColorChanged() {
-    const GuiModel::Colors &colors = guiModel_.getColors();
-    updateBtnsColors(bgfgBtns_, colors.BGFG_);
+    } else if (state == ColorsModel::ChangedState::Background) {
+        // Background and Foreground
+        updateBtnsColors(bgfgBtns_, colors.BGFG_);
+    } else {
+        // Do nothing
+    }
 }
 
 void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vector<ColorButton *> &btns,
@@ -107,17 +105,13 @@ void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vecto
 
 // ColorsTableWidget
 
-ColorsTableWidget::ColorsTableWidget(const GuiModel &g, QWidget *parent) {
-    pimpl_ = std::make_unique<ColorsTableWidgetImpl>(g, this);
+ColorsTableWidget::ColorsTableWidget(const ColorsModel &c, QWidget *parent) {
+    pimpl_ = std::make_unique<ColorsTableWidgetImpl>(c, this);
     this->setLayout(pimpl_->getLayout());
 }
 
 void ColorsTableWidget::onModelChanged() {
     pimpl_->onModelChanged();
-}
-
-void ColorsTableWidget::onbgfgColorChanged() {
-    pimpl_->onbgfgColorChanged();
 }
 
 ColorsTableWidget::~ColorsTableWidget() = default;

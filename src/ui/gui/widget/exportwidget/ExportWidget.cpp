@@ -1,5 +1,5 @@
 #include "ExportWidget.h"
-#include <ui/gui/guimodel/GuiModel.h>
+#include <ui/gui/model/terminalsmodel/TerminalsModel.h>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QComboBox>
@@ -7,7 +7,7 @@
 class ExportWidget::ExportWidgetImpl : public QWidget {
     Q_OBJECT
 public:
-    explicit ExportWidgetImpl(const GuiModel &g, ExportWidget *parent);
+    explicit ExportWidgetImpl(const TerminalsModel &t, ExportWidget *parent);
     QHBoxLayout *getLayout() { return hLayout_; }
     void onModelChanged();
 
@@ -19,7 +19,7 @@ private:
     void doConnections();
 
 private:
-    const GuiModel &guiModel_;
+    const TerminalsModel &terminalsModel_;
     ExportWidget *parent_;
 
     // Widgets to be put on a layout
@@ -30,8 +30,8 @@ private:
     QHBoxLayout *hLayout_;
 };
 
-ExportWidget::ExportWidgetImpl::ExportWidgetImpl(const GuiModel &g, ExportWidget *parent)
- : QWidget{parent}, parent_{parent}, guiModel_{g}, hLayout_{new QHBoxLayout{this}} {
+ExportWidget::ExportWidgetImpl::ExportWidgetImpl(const TerminalsModel &t, ExportWidget *parent)
+ : QWidget{parent}, parent_{parent}, terminalsModel_{t}, hLayout_{new QHBoxLayout{this}} {
     // Layouts everything together and connectes button via signal/slot
     doLayout();
     doConnections();
@@ -62,7 +62,7 @@ void ExportWidget::ExportWidgetImpl::doConnections() {
 }
 
 void ExportWidget::ExportWidgetImpl::onModelChanged() {
-    const auto &installedTerm = guiModel_.getTerminals().installed_;
+    const auto &installedTerm = terminalsModel_.getTerminals().installed_;
 
     for(const auto &term : installedTerm)
         comboBox_->addItem(QString::fromStdString(term));
@@ -77,8 +77,8 @@ const QString ExportWidget::ExportWidgetImpl::getComboboxItem() const {
 
 // ExportWidget
 
-ExportWidget::ExportWidget(const GuiModel &g, QWidget *parent) {
-    pimpl_ = std::make_unique<ExportWidgetImpl>(g, this);
+ExportWidget::ExportWidget(const TerminalsModel &t, QWidget *parent) {
+    pimpl_ = std::make_unique<ExportWidgetImpl>(t, this);
     this->setLayout(pimpl_->getLayout());
 }
 

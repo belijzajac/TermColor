@@ -4,19 +4,18 @@
 #include <QWidget>
 #include <memory>
 
-class GuiModel;
+class ColorsModel;
 
 class ColorsTableWidget : public QWidget {
     class ColorsTableWidgetImpl;
     Q_OBJECT
 public:
-    explicit ColorsTableWidget(const GuiModel &g, QWidget *parent = nullptr);
+    explicit ColorsTableWidget(const ColorsModel &c, QWidget *parent = nullptr);
     ~ColorsTableWidget();
 
 public slots:
     // call this slot when the model is populated with new colors
     void onModelChanged();
-    void onbgfgColorChanged();
 
 private:
     std::unique_ptr<ColorsTableWidgetImpl> pimpl_;

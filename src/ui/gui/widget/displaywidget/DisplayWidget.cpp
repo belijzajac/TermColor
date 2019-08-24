@@ -1,5 +1,5 @@
 #include "DisplayWidget.h"
-#include <ui/gui/guimodel/GuiModel.h>
+#include <ui/gui/model/colorsmodel/ColorsModel.h>
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <unordered_map>
@@ -9,9 +9,8 @@
 
 class DisplayWidget::DisplayWidgetImpl : public QWidget {
 public:
-    DisplayWidgetImpl(const GuiModel &g, DisplayWidget *parent, QVBoxLayout *layout);
+    DisplayWidgetImpl(const ColorsModel &c, DisplayWidget *parent, QVBoxLayout *layout);
     void onModelChanged();
-    void onbgfgColorChanged();
 
 private:
     void initTextPieces();
@@ -20,7 +19,7 @@ private:
     void setFont();
 
 private:
-    const GuiModel &guiModel_;
+    const ColorsModel &colorsModel_;
     QTextEdit *textDspl_;
 
     // Possible combinations of colors
@@ -30,8 +29,8 @@ private:
     std::vector<std::tuple<std::string, std::string>> textPiece_; // e.g. {"#ifndef", "regular_1"}
 };
 
-DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const GuiModel &g, DisplayWidget *parent, QVBoxLayout *layout)
-        : QWidget{parent}, guiModel_{g} {
+DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const ColorsModel &c, DisplayWidget *parent, QVBoxLayout *layout)
+        : QWidget{parent}, colorsModel_{c} {
     auto label = new QLabel{this};
     label->setText("Terminal preview");
 
@@ -100,6 +99,9 @@ void DisplayWidget::DisplayWidgetImpl::initTextPieces() {
 }
 
 void DisplayWidget::DisplayWidgetImpl::doTextDspl() {
+    // Reset textDspl_
+    textDspl_->clear();
+
     // Save previous text info
     const auto oldTextColor = textDspl_->textColor();
 
@@ -138,41 +140,39 @@ void DisplayWidget::DisplayWidgetImpl::setFont() {
 }
 
 void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
-    const GuiModel::Colors &colors = guiModel_.getColors();
+    const ColorsModel::Colors &colors = colorsModel_.getColors();
+    const auto state = colors.changedState_;
 
-    // Populate colorCombos_ with regular colors
-    for (unsigned long i = 0; i < colors.regular_.size(); ++i)
-        colorCombos_["regular_" + std::to_string(i)] = colors.regular_.at(i);
+    if (state == ColorsModel::ChangedState::NewColors) {
+        // Populate colorCombos_ with regular colors
+        for (unsigned long i = 0; i < colors.regular_.size(); ++i)
+            colorCombos_["regular_" + std::to_string(i)] = colors.regular_.at(i);
 
-    // Populate colorCombos_ with intense colors
-    for (unsigned long i = 0; i < colors.intense_.size(); ++i)
-        colorCombos_["intense_" + std::to_string(i)] = colors.intense_.at(i);
+        // Populate colorCombos_ with intense colors
+        for (unsigned long i = 0; i < colors.intense_.size(); ++i)
+            colorCombos_["intense_" + std::to_string(i)] = colors.intense_.at(i);
 
-    // Populate colorCombos_ with foreground color
-    colorCombos_["foreground"] = colors.BGFG_.at(1);
+    } else if (state == ColorsModel::ChangedState::Background) {
+        // Populate colorCombos_ with foreground color
+        // If the key already exists, just change the foreground
+        colorCombos_.try_emplace("foreground", colors.BGFG_.at(1));
 
-    // Set textDspl_'s colors
-    doTextDspl();
-    setDsplLook(colors.BGFG_.at(0));
-}
-
-void DisplayWidget::DisplayWidgetImpl::onbgfgColorChanged() {
-    const GuiModel::Colors &colors = guiModel_.getColors();
-    setDsplLook(colors.BGFG_.at(0));
+        // Only at this point of the state we have sufficient data for the textDspl_
+        setDsplLook(colors.BGFG_.at(0));
+        doTextDspl();
+    } else {
+        // Do nothing
+    }
 }
 
 // DisplayWidget
 
-DisplayWidget::DisplayWidget(const GuiModel &g, QWidget *parent) {
+DisplayWidget::DisplayWidget(const ColorsModel &c, QWidget *parent) {
     auto layout = new QVBoxLayout{this};
-    pimpl_ = new DisplayWidgetImpl{g, this, layout};
+    pimpl_ = new DisplayWidgetImpl{c, this, layout};
     layout->addWidget(pimpl_);
 }
 
 void DisplayWidget::onModelChanged() {
     pimpl_->onModelChanged();
-}
-
-void DisplayWidget::onbgfgColorChanged() {
-    pimpl_->onbgfgColorChanged();
 }
