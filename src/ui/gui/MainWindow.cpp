@@ -8,6 +8,7 @@
 #include <ui/gui/widget/bgfgchooser/BGFGChooser.h>
 #include <backend/writer/Writer.h>
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
+#include <backend/writer/xfce4terminalwriter/Xfce4TerminalWriter.h>
 #include <QHBoxLayout>
 #include <filesystem>
 #include <memory>
@@ -31,6 +32,9 @@ private:
     // Functions to update model's data
     void doImageColors(const std::string &imgPath);
     void doTerminals();
+
+    // Construct appropriate terminal writer
+    const std::unique_ptr<Writer> writerFactory(TerminalsModel::TerminalType t) const;
 
 private:
     QHBoxLayout *layout_;
@@ -180,15 +184,8 @@ void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
 void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
     const auto termType = TerminalsModel::terminalToEnum_[saveOption];
 
-    // A functional approach in applying the Factory design pattern to construct a writer
-    const auto writer = [termType] {
-        switch (termType) {
-            case TerminalsModel::TerminalType::Konsole:
-                return std::make_unique<KonsoleWriter>();
-            case TerminalsModel::TerminalType::GnomeTerminal:
-                std::make_unique<KonsoleWriter>();
-        }
-    }();
+    // Construct a writer
+    const auto writer = writerFactory(termType);
 
     const ColorsModel::Colors &colors = colorsModel_->getColors();
     writer->writeToLocation("NEW_NEW_", colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
@@ -205,6 +202,15 @@ void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {
 
     // Populates model with new data (colors, in this case)
     colorsModel_->setBGFGColors(bgfg);
+}
+
+const std::unique_ptr<Writer> MainWindow::MainWindowImpl::writerFactory(TerminalsModel::TerminalType t) const {
+    switch (t) {
+        case TerminalsModel::TerminalType::Konsole:
+            return std::make_unique<KonsoleWriter>();
+        case TerminalsModel::TerminalType::Xfce4Terminal:
+            return std::make_unique<Xfce4TerminalWriter>();
+    }
 }
 
 // MainWindow
