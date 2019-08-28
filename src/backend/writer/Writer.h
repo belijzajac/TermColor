@@ -1,5 +1,5 @@
-#ifndef ABSTRACTWRITER_H
-#define ABSTRACTWRITER_H
+#ifndef WRITER_H
+#define WRITER_H
 
 #include <backend/dominantcolor/DominantColor.h>
 
@@ -37,4 +37,4 @@ protected:
     filename fileInfo_;
 };
 
-#endif // ABSTRACTWRITER_H
+#endif // WRITER_H

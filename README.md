@@ -10,6 +10,7 @@
 
 * OpenCV >= 3.2.0
 * Qt5 >= 5.11.3
+* Boost >= 1.67
 * CMake >= 3.13
 * g++ (any C++17 compatible version)
 
@@ -18,6 +19,7 @@ For Debian (stable/__testing__/__sid__), the following packages should be enough
 ```bash
 libopencv-dev *
 qt5-default
+libboost-dev
 cmake
 g++
 ```

@@ -1,5 +1,6 @@
 add_subdirectory(konsolewriter)
 add_subdirectory(xfce4terminalwriter)
+add_subdirectory(gnometerminalwriter)
 
 set(TERMCOLOR_SOURCES
   ${TERMCOLOR_SOURCES}
