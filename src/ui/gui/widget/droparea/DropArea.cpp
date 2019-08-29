@@ -20,8 +20,23 @@ void DropArea::dragEnterEvent(QDragEnterEvent *event) {
 void DropArea::dropEvent(QDropEvent *event) {
     const QMimeData *mimeData = event->mimeData();
 
-    if (mimeData->hasText())
-        emit imageDropped(mimeData->text());
+    if (mimeData->hasText()) {
+        auto picLocation = mimeData->text();
+        const auto picLocationStr = picLocation.toStdString();
+
+        // Remove new line symbol ("\r\n") in case it gets appended to the dropped mimeData
+        const std::string newLn {"\r\n"};
+        const auto loc = picLocationStr.find(newLn);
+
+        if (loc != std::string::npos) {
+            const auto goodStr = picLocationStr.substr(0, loc);
+
+            // Replace picLocation with correct input
+            picLocation.clear();
+            picLocation = QString::fromStdString(goodStr);
+        }
+        emit imageDropped(picLocation);
+    }
 
     setBackgroundRole(QPalette::Midlight);
     event->acceptProposedAction();

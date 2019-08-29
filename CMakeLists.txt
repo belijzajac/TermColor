@@ -13,8 +13,10 @@ set(CMAKE_AUTORCC ON)
 # Look for moc files in the binary dir
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# OpenCV
 find_package(OpenCV 3.2 REQUIRED)
 
+# Qt5
 find_package(Qt5 5.11.3 REQUIRED
   COMPONENTS
   Core
