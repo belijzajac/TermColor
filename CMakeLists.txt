@@ -24,17 +24,6 @@ find_package(Qt5 5.11.3 REQUIRED
   Widgets
 )
 
-# Boost
-add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
-
-find_package(Boost 1.67 REQUIRED)
-
-if (Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    set (CMAKE_CXX_FLAGS "-pthread")
-endif ()
-# End of Boost
-
 # For UNIT testing
 enable_testing()
 find_package(Qt5Test REQUIRED)
