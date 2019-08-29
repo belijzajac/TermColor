@@ -9,7 +9,6 @@
 #include <backend/writer/Writer.h>
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <backend/writer/xfce4terminalwriter/Xfce4TerminalWriter.h>
-#include <backend/writer/gnometerminalwriter/GnomeTerminalWriter.h>
 #include <QHBoxLayout>
 #include <filesystem>
 #include <memory>
@@ -211,8 +210,6 @@ const std::unique_ptr<Writer> MainWindow::MainWindowImpl::writerFactory(Terminal
             return std::make_unique<KonsoleWriter>();
         case TerminalsModel::TerminalType::Xfce4Terminal:
             return std::make_unique<Xfce4TerminalWriter>();
-        case TerminalsModel::TerminalType::GnomeTerminal:
-            return std::make_unique<GnomeTerminalWriter>();
     }
 }
 

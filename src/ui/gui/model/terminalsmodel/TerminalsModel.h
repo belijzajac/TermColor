@@ -15,7 +15,6 @@ public:
     // Terminal type
     enum class TerminalType {
         Konsole,
-        GnomeTerminal,
         Xfce4Terminal
     };
 
@@ -23,7 +22,6 @@ public:
     // is in creating the Factory design pattern for writing color-schemes to files
     static inline std::map<std::string, TerminalType> terminalToEnum_ {
         {"konsole",        TerminalType::Konsole},
-        {"gnome-terminal", TerminalType::GnomeTerminal},
         {"xfce4-terminal", TerminalType::Xfce4Terminal}
     };
 
