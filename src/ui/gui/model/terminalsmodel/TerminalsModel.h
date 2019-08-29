@@ -15,14 +15,16 @@ public:
     // Terminal type
     enum class TerminalType {
         Konsole,
-        Xfce4Terminal
+        Xfce4Terminal,
+        LXTerminal
     };
 
     // Keys are strings and values are string-representing enums. The main purposes of this
     // is in creating the Factory design pattern for writing color-schemes to files
     static inline std::map<std::string, TerminalType> terminalToEnum_ {
         {"konsole",        TerminalType::Konsole},
-        {"xfce4-terminal", TerminalType::Xfce4Terminal}
+        {"xfce4-terminal", TerminalType::Xfce4Terminal},
+        {"lxterminal",     TerminalType::LXTerminal}
     };
 
     // To mark which application run was that: was it first or the following one onwards?

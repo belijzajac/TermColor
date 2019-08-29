@@ -1,12 +1,12 @@
-#ifndef XFCE4TERMINALWRITER_H
-#define XFCE4TERMINALWRITER_H
+#ifndef LXTERMINALWRITER_H
+#define LXTERMINALWRITER_H
 
 #include "../Writer.h"
 
-class Xfce4TerminalWriter : public Writer {
+class LXTerminalWriter : public Writer {
 public:
-    explicit Xfce4TerminalWriter();
-    ~Xfce4TerminalWriter() = default;
+    explicit LXTerminalWriter();
+    ~LXTerminalWriter() = default;
 
     void writeToLocation(const std::string &name,
                          const std::vector<color> &,
@@ -15,4 +15,4 @@ public:
                          const std::vector<color> &) const override;
 };
 
-#endif // XFCE4TERMINALWRITER_H
+#endif // LXTERMINALWRITER_H
