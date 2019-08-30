@@ -2,6 +2,8 @@
 
 ![TermColor-preview](/img/TermColor_preview)
 
+[YouTube link](https://youtu.be/QqSbcSTW530)
+
 ## About
 
 A simple program written in modern C++17, Qt5 framework, and OpenCV library for dynamically generating color-schemes for terminal emulators. Main functions include:
