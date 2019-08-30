@@ -22,12 +22,12 @@ void Xfce4TerminalWriter::writeToLocation(const std::string &name,
 
     // Write general info
     f << "[Scheme]\n";
-    f << "Name=" + name + "\n";
+    f << "Name=" << this->fileInfo_.prefix << name << "\n";
 
     // Write background and foreground
     const std::vector<std::string> bgfgStr {"ColorBackground=", "ColorForeground="};
     std::for_each(bgfg.begin(), bgfg.end(), [=, &f, count = 0](const color &color) mutable {
-        f << bgfgStr.at(count) + "rgb(" << color.r << "," <<  color.g << "," << color.b << ")\n";
+        f << bgfgStr.at(count) << "rgb(" << color.r << "," <<  color.g << "," << color.b << ")\n";
         ++count;
     });
 

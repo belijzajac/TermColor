@@ -10,9 +10,11 @@
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <backend/writer/xfce4terminalwriter/Xfce4TerminalWriter.h>
 #include <backend/writer/lxterminalwriter/LXTerminalWriter.h>
+#include <backend/exception/Exception.h>
 #include <QHBoxLayout>
 #include <filesystem>
 #include <memory>
+#include <ctime>
 
 // Main window (controller)
 class MainWindow::MainWindowImpl : public QWidget {
@@ -127,26 +129,31 @@ void MainWindow::MainWindowImpl::undoHideWidgets() {
 }
 
 void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
-    // Passes an image to opencv's cv::imread function
-    // and later performs the k-means' algorithm
-    domColor->readImage(imgPath);
-    domColor->performKMeans();
+    try {
+        // Passes an image to opencv's cv::imread function
+        // and later performs the k-means' algorithm
+        domColor->readImage(imgPath);
+        domColor->performKMeans();
 
-    // Obtains extracted colors
-    auto dominantColors = domColor->getColors();
-    auto intenseColors = domColor->intenseColors(dominantColors);
+        // Obtains extracted colors
+        auto dominantColors = domColor->getColors();
+        auto intenseColors = domColor->intenseColors(dominantColors);
 
-    // Obtain predefined BG/FG colors
-    auto bgfg = domColor->getBGFGColors();
-    auto bgfgIntense = domColor->intenseColors(bgfg);
+        // Obtain predefined BG/FG colors
+        auto bgfg = domColor->getBGFGColors();
+        auto bgfgIntense = domColor->intenseColors(bgfg);
 
-    // Copy colors to one continuous vector<color> DS
-    dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
-    bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());
+        // Copy colors to one continuous vector<color> DS
+        dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
+        bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());
 
-    // Populates model with new data (colors, in this case)
-    colorsModel_->setImgColors(dominantColors);
-    colorsModel_->setBGFGColors(bgfg);
+        // Populates model with new data (colors, in this case)
+        colorsModel_->setImgColors(dominantColors);
+        colorsModel_->setBGFGColors(bgfg);
+
+    } catch (Exception &e) {
+        throw;
+    }
 }
 
 void MainWindow::MainWindowImpl::doTerminals() {
@@ -171,8 +178,17 @@ void MainWindow::MainWindowImpl::doTerminals() {
             }
         }
     }
-    // Populate model with new terminals
-    terminalsModel_->insertTerminals(terminalsFound);
+
+    // Check if there are any found terminals
+    try {
+        if(terminalsFound.empty())
+            throw Exception{"We didn't find any supported terminals in /bin"};
+
+        // Populate model with new terminals
+        terminalsModel_->insertTerminals(terminalsFound);
+    } catch (Exception &e) {
+        throw;
+    }
 }
 
 void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
@@ -182,14 +198,30 @@ void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
     doTerminals();
 }
 
+const std::string currentTimestamp() {
+    std::time_t  time = std::time(nullptr);
+    std::tm *timeNow  = std::localtime(&time);
+
+    return std::to_string(timeNow->tm_year + 1900) + '-' +
+           std::to_string(timeNow->tm_mon + 1) + '-' +
+           std::to_string(timeNow->tm_mday) + "-" +
+           std::to_string(timeNow->tm_hour) + "-" +
+           std::to_string(timeNow->tm_min) + "-" +
+           std::to_string(timeNow->tm_sec);
+}
+
 void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
-    const auto termType = TerminalsModel::terminalToEnum_[saveOption];
+    try {
+        const auto termType = TerminalsModel::terminalToEnum_[saveOption];
 
-    // Construct a writer
-    const auto writer = writerFactory(termType);
+        // Construct a writer
+        const auto writer = writerFactory(termType);
 
-    const ColorsModel::Colors &colors = colorsModel_->getColors();
-    writer->writeToLocation("NEW_NEW_", colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
+        const ColorsModel::Colors &colors = colorsModel_->getColors();
+        writer->writeToLocation(currentTimestamp(), colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
+    } catch (Exception &e) {
+        throw;
+    }
 }
 
 void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {

@@ -25,13 +25,13 @@ void KonsoleWriter::writeToLocation(const std::string &name,
 
     // Write general info
     f << "[General]\n";
-    f << "Description=TermColor " + name + "\n";
+    f << "Description=TermColor " << name << "\n";
     f << "Wallpaper=\n\n";
 
     // Write background and foreground info
     const std::vector<std::string> bgfgTextProp {"Background", "Foreground"};
     std::for_each(bgfg.begin(), bgfg.end(), [=, &f, count = 0](const color &color) mutable {
-        f << "[" + bgfgTextProp.at(count) + "]\n";
+        f << "[" << bgfgTextProp.at(count) << "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
         ++count;
     });
@@ -39,21 +39,21 @@ void KonsoleWriter::writeToLocation(const std::string &name,
     // Write background and foreground info of intense colors
     const std::vector<std::string> bgfgIntTextProp {"BackgroundIntense", "ForegroundIntense"};
     std::for_each(bgfgIntense.begin(), bgfgIntense.end(), [=, &f, count = 0](const color &color) mutable {
-        f << "[" + bgfgIntTextProp.at(count) + "]\n";
+        f << "[" << bgfgIntTextProp.at(count) << "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
         ++count;
     });
 
     // Write dominant colors
     std::for_each(regular.begin(), regular.end(), [=, &f, count = 0](const color &color) mutable {
-        f << "[" + nameColors_.at(count) + "]\n";
+        f << "[" << nameColors_.at(count) << "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
         ++count;
     });
 
     // Write intense colors
     std::for_each(intense.begin(), intense.end(), [=, &f, count = 0](const color &color) mutable {
-        f << "[" + nameColors_.at(count) + "Intense" + "]\n";
+        f << "[" << nameColors_.at(count) << "Intense" << "]\n";
         f << "Color=" << color.r << "," << color.g << "," << color.b << "\n\n";
         ++count;
     });

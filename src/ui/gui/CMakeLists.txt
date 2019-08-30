@@ -1,3 +1,4 @@
+add_subdirectory(application)
 add_subdirectory(model)
 add_subdirectory(widget)
 

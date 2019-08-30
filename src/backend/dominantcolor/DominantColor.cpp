@@ -43,7 +43,7 @@ void DominantColor::DominantColorImpl::readImage(const std::string &name) {
     img_ = cv::imread(name, 1);
 
     if (img_.empty())
-        throw Exception{"empty image"};
+        throw Exception{"Empty image (or not an image)"};
 }
 
 void DominantColor::DominantColorImpl::doKMeans(const cv::Mat &img, cv::Mat &labels, cv::Mat &centers,
@@ -66,6 +66,10 @@ void DominantColor::DominantColorImpl::performKMeans() {
     // Data we'll pass to kmeans function
     int clusterCount = std::min(8, getNumOfClusters());
     cv::Mat labels, centers;
+
+    // An image doesn't have sufficient amount of colors (we need 8 for both regular and intense colors)
+    if (clusterCount != 8)
+        throw Exception{"Image doesn't have enough colors"};
 
     // Apply K-Mean's algorithm for regular colors
     doKMeans(rearrangedImg, labels, centers, clusterCount, 5);
