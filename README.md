@@ -1,10 +1,19 @@
 # TermColor
 
-## TODO: gif
+![TermColor-preview](/img/TermColor_preview)
 
 ## About
 
-### TODO: Description
+A simple program written in modern C++17, Qt5 framework, and OpenCV library for dynamically generating color-schemes for terminal emulators. Main functions include:
+* It uses the K-means clustering algorithm to detect dominant colors in an image
+* It then brightens the latter colors to obtain intense colors
+* It's fast (thanks to C++)
+
+### Supported terminal emulators:
+
+* Konsole (KDE)
+* Xfce4 Terminal (Xfce4)
+* LXTerminal (LXDE)
 
 ## Dependencies
 
