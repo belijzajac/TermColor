@@ -20,8 +20,10 @@ void DropArea::dragEnterEvent(QDragEnterEvent *event) {
 void DropArea::dropEvent(QDropEvent *event) {
     const QMimeData *mimeData = event->mimeData();
 
-    if (mimeData->hasText()) {
-        auto picLocation = mimeData->text();
+    if (mimeData->hasUrls()) {
+        // There is only ONE available text/url that we can read,
+        // therefore there's no need to loop through mimeData->urls()
+        auto picLocation = mimeData->urls().at(0).toString();
         const auto picLocationStr = picLocation.toStdString();
 
         // Remove new line symbol ("\r\n") in case it gets appended to the dropped mimeData
