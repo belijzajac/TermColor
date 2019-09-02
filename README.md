@@ -17,7 +17,7 @@ A simple program written in modern C++17, Qt5 framework, and OpenCV library for 
 * Xfce4 Terminal (Xfce4)
 * LXTerminal (LXDE)
 
-[Status](Status.md)
+[Status](STATUS.md)
 
 ## Dependencies
 
