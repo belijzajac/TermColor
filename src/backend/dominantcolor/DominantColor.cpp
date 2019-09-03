@@ -1,6 +1,5 @@
 #include "DominantColor.h"
 #include "backend/exception/Exception.h"
-
 #include <opencv2/opencv.hpp>
 #include <algorithm>
 
@@ -77,7 +76,7 @@ void DominantColor::DominantColorImpl::performKMeans() {
     // Extract colors from centers
     colors_ = extractColors(centers);
 
-    // Apply Mean algorithm for foreground color
+    // Apply K-Mean's algorithm for foreground color
     cv::Mat centers_2;
     doKMeans(rearrangedImg, labels, centers_2);
 
@@ -167,16 +166,16 @@ const std::vector<color> DominantColor::DominantColorImpl::getColors() const {
     return colors_;
 }
 
-// A helper function to clamp the color value to 255 if it goes over
-int doBrightenColor(int color, double multiplier) {
-    return std::min(255, static_cast<int>(color * multiplier));
-}
+// Linearly interpolate between the original color and the target color (often white)
+// Formula: C = A + (B - A) * time,
+// C - in-between color, A and B - two colors, 0 <= time < 16
+const color brightenColor(const color &c, int time) {
+    const auto whiteColor = color{255, 255, 255};
 
-// Processes each color to function doBrightenColor
-const color brightenColor(const color &c, double multiplier) {
-    return { doBrightenColor(c.r, multiplier),
-             doBrightenColor(c.g, multiplier),
-             doBrightenColor(c.b, multiplier)
+    return color{
+        c.r + (time * (whiteColor.r - c.r)) / 15,
+        c.g + (time * (whiteColor.g - c.g)) / 15,
+        c.b + (time * (whiteColor.b - c.b)) / 15,
     };
 }
 
@@ -184,7 +183,7 @@ const std::vector<color> DominantColor::DominantColorImpl::intenseColors(const s
     std::vector<color> intenseColors;
 
     std::for_each(colors.begin(), colors.end(), [&intenseColors](const color &color){
-        intenseColors.push_back({brightenColor(color, 1.5)});
+        intenseColors.push_back({brightenColor(color, 6)});
     });
 
     return intenseColors;
