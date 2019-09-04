@@ -7,8 +7,10 @@
 
 struct color {
     int r, g, b;
-};
 
+    const std::string getCommaSeparatedStr();
+    const std::string getHexStr();
+};
 class DominantColor {
     class DominantColorImpl;
 
