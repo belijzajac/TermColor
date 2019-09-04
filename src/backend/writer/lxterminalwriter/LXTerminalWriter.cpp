@@ -37,22 +37,24 @@ void LXTerminalWriter::writeToLocation(const std::string &name,
     while (std::getline(fIn, tempStr)) {
         // background
         if (tempStr.find(bgColor) != std::string::npos)
-            fOut << bgColor << "rgb(" << bgfg.at(0).r << "," << bgfg.at(0).g << "," << bgfg.at(0).b << ")\n";
+            fOut << bgColor << "rgb(" << bgfg.at(0).getCommaSeparatedStr() << ")\n";
         // foreground
         else if (tempStr.find(fgColor) != std::string::npos)
-            fOut << fgColor << "rgb(" << bgfg.at(1).r << "," << bgfg.at(1).g << "," << bgfg.at(1).b << ")\n";
+            fOut << fgColor << "rgb(" << bgfg.at(1).getCommaSeparatedStr() << ")\n";
         // colors
         else if (tempStr.find(cPallete) != std::string::npos) {
             // regular colors
             if (cIterNo < regular.size())
-                fOut << cPallete << std::to_string(cIterNo) << "=rgb(" << regular.at(cIterNo).r << ","
-                                                                       << regular.at(cIterNo).g << ","
-                                                                       << regular.at(cIterNo).b << ")\n";
+                fOut << cPallete
+                     << std::to_string(cIterNo) << "=rgb("
+                                                << regular.at(cIterNo).getCommaSeparatedStr()
+                                                << ")\n";
             // intense colors
             else
-                fOut << cPallete << std::to_string(cIterNo) << "=rgb(" << intense.at(cIterNo - regular.size()).r << ","
-                                                                       << intense.at(cIterNo - regular.size()).g << ","
-                                                                       << intense.at(cIterNo - regular.size()).b << ")\n";
+                fOut << cPallete
+                     << std::to_string(cIterNo) << "=rgb("
+                                                << intense.at(cIterNo - regular.size()).getCommaSeparatedStr()
+                                                << ")\n";
             ++cIterNo;
         }
         // name of color-scheme

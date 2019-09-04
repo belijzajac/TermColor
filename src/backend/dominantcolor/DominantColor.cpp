@@ -226,13 +226,13 @@ const std::vector<color> DominantColor::getBGFGColors(bool isDark) const {
 
 // color
 
-const std::string color::getCommaSeparatedStr() {
+const std::string color::getCommaSeparatedStr() const {
     return std::to_string(r) + "," + std::to_string(g) + "," + std::to_string(b);
 }
 
-const std::string color::getHexStr() {
+const std::string color::getHexStr() const {
     std::stringstream ss;
 
     ss << std::hex << r << std::hex << g << std::hex << b;
-    return std::string{ss.str()};
+    return std::string{"#" + ss.str()};
 }
