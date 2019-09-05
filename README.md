@@ -90,10 +90,12 @@ In case you're on Debian (netinst) and you didn't install the `libopencv-dev` fr
 ## Building
 
 ``` Shell
+git clone https://github.com/belijzajac/TermColor.git
 cd TermColor
+git submodule update --init --recursive
 mkdir build && cd build
 cmake ..
-make all
+make TermColor
 ```
 
 ## Running
