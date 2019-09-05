@@ -27,7 +27,7 @@ void Xfce4TerminalWriter::writeToLocation(const std::string &name,
     // Write background and foreground
     const std::vector<std::string> bgfgStr {"ColorBackground=", "ColorForeground="};
     std::for_each(bgfg.begin(), bgfg.end(), [=, &f, count = 0](const color &color) mutable {
-        f << bgfgStr.at(count) << "rgb(" << color.r << "," <<  color.g << "," << color.b << ")\n";
+        f << bgfgStr.at(count) << "rgb(" << color.getCommaSeparatedStr() << ")\n";
         ++count;
     });
 
@@ -36,12 +36,12 @@ void Xfce4TerminalWriter::writeToLocation(const std::string &name,
 
     // Regular colors
     std::for_each(regular.begin(), regular.end(), [=, &f](const color &color) {
-        f << "rgb(" << color.r << "," << color.g << "," << color.b << ");";
+        f << "rgb(" << color.getCommaSeparatedStr() << ");";
     });
 
     // Intense colors
     std::for_each(intense.begin(), intense.end(), [=, &f](const color &color) {
-        f << "rgb(" << color.r << "," << color.g << "," << color.b << ");";
+        f << "rgb(" << color.getCommaSeparatedStr() << ");";
     });
 
     f.close();

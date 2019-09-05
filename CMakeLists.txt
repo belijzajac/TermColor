@@ -24,6 +24,9 @@ find_package(Qt5 5.11.3 REQUIRED
   Widgets
 )
 
+# Include Git Submodules
+add_subdirectory(lib)
+
 # For UNIT testing
 enable_testing()
 find_package(Qt5Test REQUIRED)
