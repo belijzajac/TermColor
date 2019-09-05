@@ -10,6 +10,7 @@
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <backend/writer/xfce4terminalwriter/Xfce4TerminalWriter.h>
 #include <backend/writer/lxterminalwriter/LXTerminalWriter.h>
+#include <backend/writer/jsonwriter/JsonWriter.h>
 #include <backend/exception/Exception.h>
 #include <QHBoxLayout>
 #include <filesystem>
@@ -26,6 +27,7 @@ private slots:
     void undoHideWidgets();
     void onProcessColors(const std::string &imgPath);
     void onProcessSave(const std::string &saveOption);
+    void onSaveToJson(const std::string &saveLocation);
     void onRadioBtnClicked(int id);
 
 private:
@@ -116,6 +118,7 @@ void MainWindow::MainWindowImpl::doConnections() {
     // Connect ExportWidget (view) to model and back to controller (here), to do the logic
     connect(terminalsModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
     connect(exportWidget_, SIGNAL(saveBtnClicked(std::string)), this, SLOT(onProcessSave(std::string)));
+    connect(exportWidget_, SIGNAL(saveToJsonBtnClicked(std::string)), this, SLOT(onSaveToJson(std::string)));
 
     // Connect BGFGChooser (view) to controller
     connect(bgfgChooser_, SIGNAL(radioBtnClicked(int)), this, SLOT(onRadioBtnClicked(int)));
@@ -180,14 +183,11 @@ void MainWindow::MainWindowImpl::doTerminals() {
     }
 
     // Check if there are any found terminals
-    try {
-        if(terminalsFound.empty())
-            throw Exception{"We didn't find any supported terminals in /bin"};
-
+    if(terminalsFound.empty()) {
+        exportWidget_->disableSaveBtn();
+    } else {
         // Populate model with new terminals
         terminalsModel_->insertTerminals(terminalsFound);
-    } catch (Exception &e) {
-        throw;
     }
 }
 
@@ -222,6 +222,12 @@ void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
     } catch (Exception &e) {
         throw;
     }
+}
+
+void MainWindow::MainWindowImpl::onSaveToJson(const std::string &saveLocation) {
+    const auto jsonWriter = std::make_unique<JsonWriter>();
+    const ColorsModel::Colors &colors = colorsModel_->getColors();
+    jsonWriter->writeToLocation(saveLocation, colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
 }
 
 void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {

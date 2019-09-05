@@ -9,7 +9,7 @@
 using namespace rapidjson;
 
 JsonWriter::JsonWriter()
-    : Writer("Downloads/", {"termcolor_", ".json"}) {
+    : Writer("", {"termcolor_", ".json"}) {
 }
 
 // A helper function for writing comma separated color values
@@ -44,11 +44,9 @@ void JsonWriter::writeToLocation(const std::string &name,
                                  const std::vector<color> &regular,
                                  const std::vector<color> &intense) const {
 
-    const std::string pathToFile{ absolutePath(name) };
-    std::ofstream f{pathToFile};
-
+    std::ofstream f{name};
     if (!f)
-        throw Exception{"bad file name: " + pathToFile};
+        throw Exception{"bad file name: " + name};
 
     // Prepare buffer and document
     StringBuffer stringBuff;
