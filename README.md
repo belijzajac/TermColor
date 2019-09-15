@@ -24,7 +24,7 @@ A simple program written in modern C++17, Qt5 framework, and OpenCV library for 
 * OpenCV >= 3.2.0
 * Qt5 >= 5.11.3
 * CMake >= 3.13
-* g++ (any C++17 compatible version)
+* g++ (preferably version 9.2.1)
 
 For Debian (stable/__testing__/__sid__), the following packages should be enough:
 
@@ -86,6 +86,14 @@ make install
 ```
 
 In case you're on Debian (netinst) and you didn't install the `libopencv-dev` from the `sid` branch, there's a great chance that you'll also need the `zlib1g-dev` package in order to build TermColor
+
+## Ubuntu
+
+The project builds successfully on Ubuntu 19.04, however, for the g++ (the C++ compiler), install the package `g++-9`. See the [Issue #9](https://github.com/belijzajac/TermColor/issues/9) for a detailed workaround
+
+## Arch Linux
+
+As one person has pointed out, you need `opencv3-opt` from the AUR in order to build TermColor properly
 
 ## Building
 
