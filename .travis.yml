@@ -1,6 +1,6 @@
 language: cpp
 dist: disco
-sudo: false
+sudo: true
 
 compiler:
 - gcc
