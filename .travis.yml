@@ -16,7 +16,7 @@ addons:
     - libopencv-dev
     - qt5-default
 
-install:
+before_install:
   # Link gcc-9 and g++-9 to their standard commands
   - ln -s /usr/bin/gcc-9 /usr/local/bin/gcc
   - ln -s /usr/bin/g++-9 /usr/local/bin/g++
