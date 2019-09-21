@@ -1,0 +1,34 @@
+language: cpp
+dist: bionic
+sudo: false
+
+compiler:
+- gcc
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - cmake
+    - gcc-9
+    - g++-9
+    - libopencv-dev
+    - qt5-default
+
+install:
+  # Link gcc-9 and g++-9 to their standard commands
+  - ln -s /usr/bin/gcc-9 /usr/local/bin/gcc
+  - ln -s /usr/bin/g++-9 /usr/local/bin/g++
+  # Export CC and CXX to tell cmake which compiler to use
+  - export CC=/usr/bin/gcc-9
+  - export CXX=/usr/bin/g++-9
+  # Check versions of gcc, g++, and cmake
+  - g++ --version
+  - gcc --version
+  - cmake --version
+
+script:
+- mkdir -p build && cd build
+- cmake ..
+- make TermColor
