@@ -11,6 +11,7 @@ struct color {
     const std::string getCommaSeparatedStr() const;
     const std::string getHexStr() const;
 };
+
 class DominantColor {
     class DominantColorImpl;
 

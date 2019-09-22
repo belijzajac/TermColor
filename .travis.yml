@@ -1,35 +1,40 @@
 language: cpp
 dist: disco
-sudo: required
 
 compiler:
-- gcc
+  - gcc
 
 addons:
   apt:
     update: true
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - cmake
-    - gcc-9
-    - g++-9
-    - libopencv-dev
-    - qt5-default
+      - cmake
+      - gcc-9
+      - g++-9
+      - libopencv-dev
+      - qt5-default
 
 before_install:
-  # Link gcc-9 and g++-9 to their standard commands
-  - sudo ln -s /usr/bin/gcc-9 /usr/local/bin/gcc
-  - sudo ln -s /usr/bin/g++-9 /usr/local/bin/g++
+  # Manually install newer version of CMake
+  - mkdir -p cmake
+  - travis_retry wget "https://github.com/Kitware/CMake/releases/download/v3.14.5/cmake-3.14.5-Linux-x86_64.tar.gz"
+  - tar xf cmake-3.14.5-Linux-x86_64.tar.gz -C cmake --strip-components=1
+  - export PATH=${TRAVIS_BUILD_DIR}/cmake/bin:${PATH}
+    
+install:
   # Export CC and CXX to tell cmake which compiler to use
   - export CC=/usr/bin/gcc-9
   - export CXX=/usr/bin/g++-9
   # Check versions of gcc, g++, and cmake
-  - g++ --version
-  - gcc --version
+  - echo ${CC}
+  - echo ${CXX}
+  - ${CXX} --version
+  - ${CC} --version
   - cmake --version
 
 script:
-- mkdir -p build && cd build
-- cmake ..
-- make TermColor
+  - mkdir -p build && cd build
+  - cmake ..
+  - make TermColor
