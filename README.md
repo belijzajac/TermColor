@@ -1,5 +1,9 @@
 # TermColor
 
+[![Build Status](https://travis-ci.org/belijzajac/TermColor.svg?branch=master)](https://travis-ci.org/belijzajac/TermColor)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/05fe181231ee449f98c7ad8bb49c8e62)](https://www.codacy.com/manual/belijzajac/TermColor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=belijzajac/TermColor&amp;utm_campaign=Badge_Grade)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+
 ![TermColor-preview](/img/TermColor_preview)
 
 [YouTube link](https://youtu.be/QqSbcSTW530)
@@ -22,7 +26,7 @@ A simple program written in modern C++17, Qt5 framework, and OpenCV library for 
 ## Dependencies
 
 * OpenCV >= 3.2.0
-* Qt5 >= 5.11.3
+* Qt5 >= 5.9.5
 * CMake >= 3.13
 * g++ (preferably version 9.2.1)
 
@@ -73,11 +77,11 @@ Copy-paste the following commands as root:
 apt install unzip wget cmake g++
 
 # Download OpenCV (you can as well execute wget from your ~/Downloads foler)
-wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv-3.2.0.zip
+wget https://github.com/opencv/opencv/archive/3.4.2.zip -O opencv-3.4.2.zip
 
 # Extract archive
-unzip opencv-3.2.0.zip && rm opencv-3.2.0.zip
-cd opencv-3.2.0 && mkdir build && cd build
+unzip opencv-3.4.2.zip && rm opencv-3.4.2.zip
+cd opencv-3.4.2 && mkdir build && cd build
 
 # Build OpenCV
 cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..

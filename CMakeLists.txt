@@ -17,7 +17,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(OpenCV 3.2 REQUIRED)
 
 # Qt5
-find_package(Qt5 5.11.3 REQUIRED
+find_package(Qt5 5.9.5 REQUIRED
   COMPONENTS
   Core
   Gui
