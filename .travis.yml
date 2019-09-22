@@ -9,7 +9,6 @@ addons:
   apt:
     update: true
     packages:
-      - libopencv-dev
       - qt5-default
 
 before_install:
@@ -21,6 +20,16 @@ before_install:
   - travis_retry wget "https://github.com/Kitware/CMake/releases/download/v3.14.5/cmake-3.14.5-Linux-x86_64.tar.gz"
   - tar xf cmake-3.14.5-Linux-x86_64.tar.gz -C cmake --strip-components=1
   - export PATH=${TRAVIS_BUILD_DIR}/cmake/bin:${PATH}
+  # Manually build OpenCV from source
+  - apt install unzip
+  - wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv-3.2.0.zip
+  - unzip opencv-3.2.0.zip && rm opencv-3.2.0.zip
+  - cd opencv-3.2.0 && mkdir build && cd build
+  # Build OpenCV
+  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+  - make -j $(nproc)
+  - make install
+  - cd ../../
 
 install: 
   # Install gcc-9 and g++-9 for the full C++17 support
