@@ -1,5 +1,6 @@
 language: cpp
 dist: disco
+sudo: required
 
 compiler:
   - gcc
@@ -7,29 +8,32 @@ compiler:
 addons:
   apt:
     update: true
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - cmake
-      - gcc-9
-      - g++-9
       - libopencv-dev
       - qt5-default
 
 before_install:
+  # Add the following repository from which we will obtain gcc-9 and g++-9
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update
   # Manually install newer version of CMake
   - mkdir -p cmake
   - travis_retry wget "https://github.com/Kitware/CMake/releases/download/v3.14.5/cmake-3.14.5-Linux-x86_64.tar.gz"
   - tar xf cmake-3.14.5-Linux-x86_64.tar.gz -C cmake --strip-components=1
   - export PATH=${TRAVIS_BUILD_DIR}/cmake/bin:${PATH}
 
-install:
+install: 
+  # Install gcc-9 and g++-9 for the full C++17 support
+  - sudo apt install g++-9 gcc-9
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 20 --slave /usr/bin/g++ g++ /usr/bin/g++-9
   # Export CC and CXX to tell cmake which compiler to use
   - export CC=/usr/bin/gcc-9
   - export CXX=/usr/bin/g++-9
-  # Check gcc, g++, and cmake
-  - echo ${CC}
+  # Check versions of gcc, g++, and cmake
   - echo ${CXX}
+  - echo ${CC}
+  - ${CXX} --version
+  - ${CC} --version
   - cmake --version
 
 script:
