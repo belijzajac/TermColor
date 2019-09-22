@@ -13,8 +13,8 @@ before_install:
   # Add the following repository from which we will obtain gcc-9 and g++-9
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update
-  # Manually install libopencv-dev and qt5-default
-  - sudo apt install libopencv-dev qt5-default
+  # Manually install qt5-default and unzip (required for unpacking OpenCV)
+  - sudo apt install qt5-default unzip
   # Manually install newer version of CMake
   - mkdir -p cmake
   - travis_retry wget "https://github.com/Kitware/CMake/releases/download/v3.14.5/cmake-3.14.5-Linux-x86_64.tar.gz"
@@ -34,6 +34,15 @@ install:
   - ${CXX} --version
   - ${CC} --version
   - cmake --version
+  # Manually build OpenCV from source
+  - wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv-3.2.0.zip
+  - unzip opencv-3.2.0.zip && rm opencv-3.2.0.zip
+  - cd opencv-3.2.0 && mkdir build && cd build
+  # Build OpenCV
+  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+  - make -j $(nproc)
+  - sudo make install
+  - cd ../../
 
 script:
   - mkdir -p build && cd build
