@@ -11,24 +11,24 @@
 ## About
 
 A simple program written in modern C++17, Qt5 framework, and OpenCV library for dynamically generating color-schemes for terminal emulators. Main functions include:
-* It uses the K-means clustering algorithm to detect dominant colors in an image
-* It then brightens the latter colors to obtain intense colors
-* It's fast (thanks to C++)
+*   It uses the K-means clustering algorithm to detect dominant colors in an image
+*   It then brightens the latter colors to obtain intense colors
+*   It's fast (thanks to C++)
 
-### Supported terminal emulators:
+### Supported terminal emulators
 
-* Konsole (KDE)
-* Xfce4 Terminal (Xfce4)
-* LXTerminal (LXDE)
+*   Konsole (KDE)
+*   Xfce4 Terminal (Xfce4)
+*   LXTerminal (LXDE)
 
 [Status](STATUS.md)
 
 ## Dependencies
 
-* OpenCV >= 3.2.0
-* Qt5 >= 5.9.5
-* CMake >= 3.13
-* g++ (preferably version 9.2.1)
+*   OpenCV >= 3.2.0
+*   Qt5 >= 5.9.5
+*   CMake >= 3.13
+*   g++ (preferably version 9.2.1)
 
 For Debian (stable/__testing__/__sid__), the following packages should be enough:
 
@@ -66,7 +66,6 @@ apt install libopencv-dev
 ```
 
 Once everything is done installing, change back your `/etc/apt/sources.list` file and do `apt clean && apt update`
-
 
 ### Option 2: Building from source
 

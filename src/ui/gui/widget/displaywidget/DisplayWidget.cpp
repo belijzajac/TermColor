@@ -30,7 +30,9 @@ private:
 };
 
 DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const ColorsModel &c, DisplayWidget *parent, QVBoxLayout *layout)
-        : QWidget{parent}, colorsModel_{c} {
+    : QWidget{parent}
+    , colorsModel_{c}
+{
     auto label = new QLabel{this};
     label->setText("Terminal preview");
 

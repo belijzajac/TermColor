@@ -59,7 +59,10 @@ private:
     std::unique_ptr<DominantColor> domColor;
 };
 
-MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent} {
+MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent)
+    : QWidget{parent}
+    , domColor(std::make_unique<DominantColor>())
+{
     colorsModel_       = new ColorsModel{this};
     terminalsModel_    = new TerminalsModel{this};
     colorsTableWidget_ = new ColorsTableWidget{*colorsModel_, this};
@@ -67,7 +70,6 @@ MainWindow::MainWindowImpl::MainWindowImpl(MainWindow *parent) : QWidget{parent}
     imageDropWidget_   = new ImageDropWidget{this};
     exportWidget_      = new ExportWidget{*terminalsModel_, this};
     bgfgChooser_       = new BGFGChooser{this};
-    domColor           = std::make_unique<DominantColor>();
 
     layout_ = new QHBoxLayout{this};
     doLayout();
@@ -244,14 +246,22 @@ void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {
 }
 
 const std::unique_ptr<Writer> MainWindow::MainWindowImpl::writerFactory(TerminalsModel::TerminalType t) const {
+    std::unique_ptr<Writer> tWriter;
+
+    // Construct terminal writer
     switch (t) {
         case TerminalsModel::TerminalType::Konsole:
-            return std::make_unique<KonsoleWriter>();
+            tWriter = std::make_unique<KonsoleWriter>();
+            break;
         case TerminalsModel::TerminalType::Xfce4Terminal:
-            return std::make_unique<Xfce4TerminalWriter>();
+            tWriter = std::make_unique<Xfce4TerminalWriter>();
+            break;
         case TerminalsModel::TerminalType::LXTerminal:
-            return std::make_unique<LXTerminalWriter>();
+            tWriter = std::make_unique<LXTerminalWriter>();
+            break;
     }
+
+    return tWriter;
 }
 
 // MainWindow

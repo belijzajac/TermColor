@@ -4,7 +4,9 @@
 #include <filesystem>
 
 Writer::Writer(const std::string &loc, const filename &fileInfo)
-    : location_{loc}, fileInfo_{fileInfo} {
+    : location_{loc}
+    , fileInfo_{fileInfo}
+{
     checkDirectory("/home/" + getUsername() + "/" + location_);
 }
 

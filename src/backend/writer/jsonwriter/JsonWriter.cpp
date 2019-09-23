@@ -9,7 +9,9 @@
 using namespace rapidjson;
 
 JsonWriter::JsonWriter()
-    : Writer("", {"termcolor_", ".json"}) {
+    : Writer("", {"termcolor_", ".json"})
+{
+
 }
 
 // A helper function for writing comma separated color values

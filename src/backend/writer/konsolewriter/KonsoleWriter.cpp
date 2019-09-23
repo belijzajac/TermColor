@@ -4,8 +4,9 @@
 #include <fstream>
 
 KonsoleWriter::KonsoleWriter()
-    : Writer(".local/share/konsole/", {{"termcolor_"}, {".colorscheme"}}) {
-
+    : Writer(".local/share/konsole/"
+    , {{"termcolor_"}, {".colorscheme"}})
+{
     // Fill nameColors_ with ColorX, where 0 <= X <= 7
     for (int i = 0; i <= 7; ++i)
         nameColors_.push_back("Color" + std::to_string(i));

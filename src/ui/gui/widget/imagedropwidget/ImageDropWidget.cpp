@@ -22,7 +22,10 @@ private:
     ImageDropWidget *parent_;
 };
 
-ImageDropWidget::ImageDropWidgetImpl::ImageDropWidgetImpl(ImageDropWidget *parent) : QWidget{parent}, parent_{parent} {
+ImageDropWidget::ImageDropWidgetImpl::ImageDropWidgetImpl(ImageDropWidget *parent)
+    : QWidget{parent}
+    , parent_{parent}
+{
     dropArea_ = new DropArea{this, {845, 500}};
     connect(dropArea_, SIGNAL(imageDropped(QString)), this, SLOT(onImageDrop(QString)));
     doLayout();

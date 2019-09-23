@@ -35,7 +35,11 @@ private:
 };
 
 ExportWidget::ExportWidgetImpl::ExportWidgetImpl(const TerminalsModel &t, ExportWidget *parent)
- : QWidget{parent}, parent_{parent}, terminalsModel_{t}, hLayout_{new QHBoxLayout{this}} {
+    : QWidget{parent}
+    , parent_{parent}
+    , terminalsModel_{t}
+    , hLayout_{new QHBoxLayout{this}}
+{
     // Layouts everything together and connects buttons via signal/slot
     doLayout();
     doConnections();

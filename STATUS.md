@@ -1,4 +1,4 @@
-## What's this?
+## About
 
 I grabbed the latest builds of Debian iso files, each with a different desktop environment from [debian-iso-download-page](https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/), and did the following with TermColor: compiled it, ran it, and tested support among different terminal emulators. The results are down below.
 

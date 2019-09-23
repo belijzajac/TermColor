@@ -4,7 +4,9 @@
 #include <fstream>
 
 Xfce4TerminalWriter::Xfce4TerminalWriter()
-    : Writer(".local/share/xfce4/terminal/colorschemes/", {"termcolor_", ".theme"}) {
+    : Writer(".local/share/xfce4/terminal/colorschemes/"
+    , {"termcolor_", ".theme"})
+{
 
 }
 

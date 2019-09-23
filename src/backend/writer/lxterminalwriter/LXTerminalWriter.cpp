@@ -4,7 +4,9 @@
 #include <filesystem>
 
 LXTerminalWriter::LXTerminalWriter()
-    : Writer(".config/lxterminal/", {"lxterminal", ".conf"}) {
+    : Writer(".config/lxterminal/"
+    , {"lxterminal", ".conf"})
+{
 
 }
 

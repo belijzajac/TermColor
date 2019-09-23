@@ -31,9 +31,12 @@ private:
 };
 
 ColorsTableWidget::ColorsTableWidgetImpl::ColorsTableWidgetImpl(const ColorsModel &c, ColorsTableWidget *parent)
-        : QWidget{parent}, parent_{parent}, verticalLayout_{new QVBoxLayout{this}}, gridLayout_{new QGridLayout},
-          colorsModel_{c} {
-
+    : QWidget{parent}
+    , parent_{parent}
+    , verticalLayout_{new QVBoxLayout{this}}
+    , gridLayout_{new QGridLayout}
+    , colorsModel_{c}
+{
     auto label = new QLabel{this};
     label->setText("Terminal colors");
 

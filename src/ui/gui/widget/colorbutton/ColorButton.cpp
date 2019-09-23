@@ -2,8 +2,11 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-ColorButton::ColorButton(const std::string &name, const color &color, QWidget *parent) : QWidget{parent}, name_{name},
-                                                                                         color_{color} {
+ColorButton::ColorButton(const std::string &name, const color &color, QWidget *parent)
+    : QWidget{parent}
+    , name_{name}
+    , color_{color}
+{
     setup();
 }
 

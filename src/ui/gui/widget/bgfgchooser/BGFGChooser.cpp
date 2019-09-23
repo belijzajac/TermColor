@@ -5,13 +5,11 @@
 #include <QHBoxLayout>
 
 BGFGChooser::BGFGChooser(QWidget *parent) : QWidget{parent} {
+    // Initialize buttons and a label
     btnGroup_ = new QButtonGroup{this};
-
     darkBtn_  = new QRadioButton{"Dark", this};
     darkBtn_->setChecked(true);
-
     lightBtn_ = new QRadioButton{"Light", this};
-
     auto label = new QLabel{"BG/FG:", this};
 
     // adding everything together

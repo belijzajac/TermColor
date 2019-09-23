@@ -46,7 +46,7 @@ void DominantColor::DominantColorImpl::readImage(const std::string &name) {
 }
 
 void DominantColor::DominantColorImpl::doKMeans(const cv::Mat &img, cv::Mat &labels, cv::Mat &centers,
-                                                    int clusterCount = 1, int attempts = 1) {
+                                                int clusterCount = 1, int attempts = 1) {
     cv::kmeans(
             img,
             clusterCount,
@@ -198,9 +198,7 @@ const std::vector<color> DominantColor::DominantColorImpl::getBGFGColors(bool is
 
 /// DominantColor
 
-DominantColor::DominantColor() {
-    pimpl_ = std::make_unique<DominantColorImpl>();
-}
+DominantColor::DominantColor() : pimpl_(std::make_unique<DominantColorImpl>()) {}
 
 DominantColor::~DominantColor() = default;
 
