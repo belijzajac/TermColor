@@ -4,7 +4,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/05fe181231ee449f98c7ad8bb49c8e62)](https://www.codacy.com/manual/belijzajac/TermColor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=belijzajac/TermColor&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-![TermColor-preview](/img/TermColor_preview)
+![TermColor-preview](img/TermColor_preview.gif)
 
 [YouTube link](https://youtu.be/QqSbcSTW530)
 
@@ -25,7 +25,7 @@ A simple program written in modern C++17, Qt5 framework, and OpenCV library for 
 
 ## Dependencies
 
-*   OpenCV >= 3.2.0
+*   OpenCV >= 3.2.0 (recommended: **3.4.2**)
 *   Qt5 >= 5.9.5
 *   CMake >= 3.13
 *   g++ (preferably version 9.2.1)
@@ -33,41 +33,15 @@ A simple program written in modern C++17, Qt5 framework, and OpenCV library for 
 For Debian (stable/__testing__/__sid__), the following packages should be enough:
 
 ```bash
-libopencv-dev *
 qt5-default
+zlib1g-dev
 cmake
 g++
 ```
 
-`*` - read below on how to properly obtain the OpenCV library
-
 ## Obtaining OpenCV
 
-### Option 1: For Debian users
-
-Considering you're either on Debian stable or testing branches, switch to Debian __sid__ branch by doing the following (as root):
-
-```bash
-nano /etc/apt/sources.list
-```
-
-Change your `/etc/apt/sources.list` file to point to "sid" by having its content similar to this:
-
-```bash
-deb http://ftp.lt.debian.org/debian/ sid main contrib non-free
-deb-src http://ftp.lt.debian.org/debian/ sid main contrib non-free
-```
-
-Save it and exit. Now do the following:
-
-```bash
-apt clean && apt update
-apt install libopencv-dev
-```
-
-Once everything is done installing, change back your `/etc/apt/sources.list` file and do `apt clean && apt update`
-
-### Option 2: Building from source
+### Building from source
 
 Copy-paste the following commands as root:
 
@@ -87,8 +61,6 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
 make -j $(nproc)
 make install
 ```
-
-In case you're on Debian (netinst) and you didn't install the `libopencv-dev` from the `sid` branch, there's a great chance that you'll also need the `zlib1g-dev` package in order to build TermColor
 
 ## Ubuntu
 
