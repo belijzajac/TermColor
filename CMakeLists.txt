@@ -14,7 +14,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # OpenCV
-find_package(OpenCV 3.2 REQUIRED)
+find_package(OpenCV REQUIRED)
+if(OpenCV_VERSION VERSION_LESS "3.2")
+  message(FATAL_ERROR "ERROR: Can't find OpenCV 3.2+")
+endif()
 
 # Qt5
 find_package(Qt5 5.9.5 REQUIRED
@@ -24,8 +27,10 @@ find_package(Qt5 5.9.5 REQUIRED
   Widgets
 )
 
-# Include Git Submodules
-add_subdirectory(lib)
+# To have a shorter path to the include paths
+include_directories(
+  ${PROJECT_SOURCE_DIR}/lib/rapidjson/include/
+)
 
 # For UNIT testing
 enable_testing()
