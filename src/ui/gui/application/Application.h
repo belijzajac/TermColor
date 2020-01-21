@@ -14,6 +14,8 @@
 /// shows them using QMessageBox.
 ///
 
+namespace TermColor {
+
 class Application : public QApplication {
 public:
     Application(int &argc, char *argv[]);
@@ -27,5 +29,7 @@ public:
 private:
     std::exception_ptr _M_e{nullptr};
 };
+
+}
 
 #endif // APPLICATION_H

@@ -1,7 +1,12 @@
 #include "Xfce4TerminalWriter.h"
+
 #include <backend/exception/Exception.h>
 #include <algorithm>
 #include <fstream>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 Xfce4TerminalWriter::Xfce4TerminalWriter()
     : Writer(".local/share/xfce4/terminal/colorschemes/"
@@ -47,4 +52,6 @@ void Xfce4TerminalWriter::writeToLocation(const std::string &name,
     });
 
     f.close();
+}
+
 }

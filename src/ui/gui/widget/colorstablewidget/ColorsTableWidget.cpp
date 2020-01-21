@@ -1,8 +1,13 @@
 #include "ColorsTableWidget.h"
+
 #include <ui/gui/widget/colorbutton/ColorButton.h>
 #include <ui/gui/model/colorsmodel/ColorsModel.h>
 #include <QGridLayout>
 #include <QLabel>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 class ColorsTableWidget::ColorsTableWidgetImpl : public QWidget {
     Q_OBJECT
@@ -118,5 +123,7 @@ void ColorsTableWidget::onModelChanged() {
 }
 
 ColorsTableWidget::~ColorsTableWidget() = default;
+
+}
 
 #include "ColorsTableWidget.moc"

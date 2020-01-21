@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <memory>
 
+namespace TermColor {
+
 class ImageDropWidget : public QWidget {
     class ImageDropWidgetImpl;
     Q_OBJECT
@@ -21,5 +23,7 @@ public slots:
 private:
     std::unique_ptr<ImageDropWidgetImpl> pimpl_;
 };
+
+}
 
 #endif // IMAGEDROPWIDGET_H

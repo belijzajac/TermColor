@@ -6,10 +6,12 @@
 
 class QPushButton;
 
+namespace TermColor {
+
 class ColorButton : public QWidget {
     Q_OBJECT
 public:
-    ColorButton(const std::string &name, const color &color, QWidget *parent = nullptr);
+    ColorButton(const std::string &name, const TermColor::Utils::color &color, QWidget *parent = nullptr);
 
     // Hovering over a button will the text to be displayed
     void registerToolTip();
@@ -18,14 +20,16 @@ public:
     void setStylesheet();
 
     // Set button's color
-    void setColor(const color &color);
+    void setColor(const TermColor::Utils::color &color);
 
 private:
     void setup();
 
     std::string name_;
-    color color_;
+    TermColor::Utils::color color_;
     QPushButton *btn_;
 };
+
+}
 
 #endif // COLORSBUTTON_H

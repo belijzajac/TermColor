@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+namespace TermColor {
+
 class ColorsModel;
 
 class DisplayWidget : public QWidget {
@@ -18,5 +20,7 @@ public slots:
 private:
     DisplayWidgetImpl *pimpl_;
 };
+
+}
 
 #endif // DISPLAYWIDGET_H

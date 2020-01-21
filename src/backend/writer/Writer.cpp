@@ -1,7 +1,10 @@
 #include "Writer.h"
+
 #include <zconf.h>
 #include <pwd.h>
 #include <filesystem>
+
+namespace TermColor {
 
 Writer::Writer(const std::string &loc, const filename &fileInfo)
     : location_{loc}
@@ -29,4 +32,6 @@ void Writer::checkDirectory(const std::string &path) {
     // Create directory if it doesn't exist
     if (!dirEntry.exists())
         std::filesystem::create_directories(dirPath);
+}
+
 }

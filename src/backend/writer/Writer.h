@@ -3,6 +3,8 @@
 
 #include <backend/dominantcolor/DominantColor.h>
 
+namespace TermColor {
+
 class Writer {
 public:
     virtual ~Writer() = default;
@@ -12,10 +14,10 @@ public:
 
     // Writes color-scheme to file
     virtual void writeToLocation(const std::string &name,
-                                 const std::vector<color> &,              // BG/FG colors
-                                 const std::vector<color> &,              // Intense BG/FG colors
-                                 const std::vector<color> &,              // Regular colors
-                                 const std::vector<color> &) const = 0;   // Intense colors
+                                 const std::vector<TermColor::Utils::color> &,              // BG/FG colors
+                                 const std::vector<TermColor::Utils::color> &,              // Intense BG/FG colors
+                                 const std::vector<TermColor::Utils::color> &,              // Regular colors
+                                 const std::vector<TermColor::Utils::color> &) const = 0;   // Intense colors
 
     // Returns an absolute location to color schemes save folder
     const std::string absolutePath(const std::string &fileName) const;
@@ -36,5 +38,7 @@ protected:
     std::string location_;
     filename fileInfo_;
 };
+
+}
 
 #endif // WRITER_H

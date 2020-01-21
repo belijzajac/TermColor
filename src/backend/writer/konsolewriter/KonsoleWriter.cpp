@@ -1,7 +1,12 @@
 #include "KonsoleWriter.h"
+
 #include <backend/exception/Exception.h>
 #include <algorithm>
 #include <fstream>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 KonsoleWriter::KonsoleWriter()
     : Writer(".local/share/konsole/"
@@ -60,4 +65,6 @@ void KonsoleWriter::writeToLocation(const std::string &name,
     });
 
     f.close();
+}
+
 }

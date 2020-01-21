@@ -1,8 +1,11 @@
 #include "BGFGChooser.h"
+
 #include <QButtonGroup>
 #include <QRadioButton>
 #include <QLabel>
 #include <QHBoxLayout>
+
+namespace TermColor {
 
 BGFGChooser::BGFGChooser(QWidget *parent) : QWidget{parent} {
     // Initialize buttons and a label
@@ -30,4 +33,6 @@ void BGFGChooser::doConnections() {
         if (id == 0 || id == 1)
             emit radioBtnClicked(id);
     });
+}
+
 }

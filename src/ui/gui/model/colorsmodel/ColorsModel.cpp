@@ -1,5 +1,9 @@
 #include "ColorsModel.h"
 
+namespace TermColor {
+
+using namespace TermColor::Utils;
+
 class ColorsModel::ColorsModelImpl {
 public:
     explicit ColorsModelImpl(ColorsModel &p);
@@ -8,7 +12,7 @@ public:
     const ColorsModel::Colors &getColors() const { return colors_; }
     void setImgColors(const std::vector<color> &colors);
     void setBGFGColors(const std::vector<color> &bgfg);
-    
+
     // imagePath_ getters/setters
     void setImagePath(const QString &path);
     const std::string getImagePath() const;
@@ -90,4 +94,6 @@ void ColorsModel::setImgColors(const std::vector<color> &colors) {
 
 void ColorsModel::setBGFGColors(const std::vector<color> &bgfg) {
     pimpl_->setBGFGColors(bgfg);
+}
+
 }

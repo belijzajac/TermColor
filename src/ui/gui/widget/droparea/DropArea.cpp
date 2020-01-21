@@ -2,6 +2,8 @@
 #include "qevent.h"
 #include <QMimeData>
 
+namespace TermColor {
+
 DropArea::DropArea(QWidget *parent, const QSize &size) {
     setMinimumSize(size);
     setAlignment(Qt::AlignCenter);
@@ -57,4 +59,6 @@ void DropArea::resetLabel() {
 void DropArea::setLabelText(const QString &text) {
     setText(text);
     repaint();
+}
+
 }

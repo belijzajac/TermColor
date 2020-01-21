@@ -1,4 +1,6 @@
 #include "MainWindow.h"
+
+// Views
 #include <ui/gui/widget/colorstablewidget/ColorsTableWidget.h>
 #include <ui/gui/widget/displaywidget/DisplayWidget.h>
 #include <ui/gui/model/colorsmodel/ColorsModel.h>
@@ -6,16 +8,23 @@
 #include <ui/gui/widget/imagedropwidget/ImageDropWidget.h>
 #include <ui/gui/widget/exportwidget/ExportWidget.h>
 #include <ui/gui/widget/bgfgchooser/BGFGChooser.h>
+
+// Backend
 #include <backend/writer/Writer.h>
 #include <backend/writer/konsolewriter/KonsoleWriter.h>
 #include <backend/writer/xfce4terminalwriter/Xfce4TerminalWriter.h>
 #include <backend/writer/lxterminalwriter/LXTerminalWriter.h>
 #include <backend/writer/jsonwriter/JsonWriter.h>
 #include <backend/exception/Exception.h>
+
 #include <QHBoxLayout>
 #include <filesystem>
 #include <memory>
 #include <ctime>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 // Main window (controller)
 class MainWindow::MainWindowImpl : public QWidget {
@@ -37,9 +46,6 @@ private:
     // Functions to update model's data
     void doImageColors(const std::string &imgPath);
     void doTerminals();
-
-    // Construct appropriate terminal writer
-    const std::unique_ptr<Writer> writerFactory(TerminalsModel::TerminalType t) const;
 
 private:
     QHBoxLayout *layout_;
@@ -216,11 +222,22 @@ void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
     try {
         const auto termType = TerminalsModel::terminalToEnum_[saveOption];
 
-        // Construct a writer
-        const auto writer = writerFactory(termType);
+        // Construct appropriate terminal writer
+        const auto writer = [&]() -> std::unique_ptr<Writer> {
+            switch (termType) {
+                case TerminalsModel::TerminalType::Konsole :
+                    return std::make_unique<KonsoleWriter>();
+                case TerminalsModel::TerminalType::Xfce4Terminal :
+                    return std::make_unique<Xfce4TerminalWriter>();
+                case TerminalsModel::TerminalType::LXTerminal :
+                    std::make_unique<LXTerminalWriter>();
+            }
+            return nullptr;
+        };
 
         const ColorsModel::Colors &colors = colorsModel_->getColors();
-        writer->writeToLocation(currentTimestamp(), colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
+        writer()->writeToLocation(currentTimestamp(), colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
+
     } catch (Exception &e) {
         throw;
     }
@@ -245,31 +262,14 @@ void MainWindow::MainWindowImpl::onRadioBtnClicked(int id) {
     colorsModel_->setBGFGColors(bgfg);
 }
 
-const std::unique_ptr<Writer> MainWindow::MainWindowImpl::writerFactory(TerminalsModel::TerminalType t) const {
-    std::unique_ptr<Writer> tWriter;
-
-    // Construct terminal writer
-    switch (t) {
-        case TerminalsModel::TerminalType::Konsole:
-            tWriter = std::make_unique<KonsoleWriter>();
-            break;
-        case TerminalsModel::TerminalType::Xfce4Terminal:
-            tWriter = std::make_unique<Xfce4TerminalWriter>();
-            break;
-        case TerminalsModel::TerminalType::LXTerminal:
-            tWriter = std::make_unique<LXTerminalWriter>();
-            break;
-    }
-
-    return tWriter;
-}
-
 // MainWindow
 
 MainWindow::MainWindow(int, char *[], QWidget *parent) : QMainWindow{parent} {
     pimpl_ = new MainWindowImpl{this};
     setCentralWidget(pimpl_);
     setFixedSize(845, 500);
+}
+
 }
 
 #include "MainWindow.moc"

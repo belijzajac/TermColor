@@ -3,6 +3,8 @@
 
 #include <QLabel>
 
+namespace TermColor {
+
 class DropArea : public QLabel {
     Q_OBJECT
 public:
@@ -22,5 +24,7 @@ private:
 private:
     QLabel *label_;
 };
+
+}
 
 #endif // DROPAREA_H

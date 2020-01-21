@@ -1,10 +1,14 @@
 #include "ExportWidget.h"
+
 #include <ui/gui/model/terminalsmodel/TerminalsModel.h>
 #include <backend/writer/Writer.h>
+
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QComboBox>
 #include <QFileDialog>
+
+namespace TermColor {
 
 class ExportWidget::ExportWidgetImpl : public QWidget {
     Q_OBJECT
@@ -133,5 +137,7 @@ void ExportWidget::onSaveBtnClicked() {
 }
 
 ExportWidget::~ExportWidget() = default;
+
+}
 
 #include "ExportWidget.moc"

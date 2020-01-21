@@ -1,5 +1,7 @@
 #include "TerminalsModel.h"
 
+namespace TermColor {
+
 class TerminalsModel::TerminalsModelImpl {
 public:
     explicit TerminalsModelImpl(TerminalsModel &p);
@@ -52,4 +54,6 @@ const TerminalsModel::Terminals &TerminalsModel::getTerminals() const {
 
 void TerminalsModel::insertTerminals(const std::vector<std::string> &term) {
     pimpl_->insertTerminals(term);
+}
+
 }
