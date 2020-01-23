@@ -12,9 +12,13 @@ struct color {
 
     const std::string getCommaSeparatedStr() const;
     const std::string getHexStr() const;
+
+    // some operators
+    friend bool operator==(const color &lhs, const color &rhs);
+    friend bool operator!=(const color &lhs, const color &rhs);
 };
 
-}
+} // TermColor::Utils
 
 namespace TermColor {
 
