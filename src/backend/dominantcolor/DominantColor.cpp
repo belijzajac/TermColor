@@ -240,4 +240,16 @@ const std::string color::getHexStr() const {
     return std::string{"#" + ss.str()};
 }
 
+namespace Utils {
+
+bool operator==(const color &lhs, const color &rhs) {
+    return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b;
 }
+
+bool operator!=(const color &lhs, const color &rhs) {
+    return !(lhs == rhs);
+}
+
+} // TermColor::Utils
+
+} // TermColor
