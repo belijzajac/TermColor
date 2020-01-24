@@ -1,6 +1,8 @@
 #include "Application.h"
 #include <QMessageBox>
 
+namespace TermColor {
+
 Application::Application(int &argc, char *argv[]) : QApplication(argc, argv) {}
 
 int Application::run() {
@@ -37,4 +39,6 @@ bool Application::notify(QObject *receiver, QEvent *event) {
         exit();
     }
     return false;
+}
+
 }

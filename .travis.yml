@@ -2,6 +2,11 @@ language: cpp
 dist: bionic
 sudo: required
 
+# Run Travis CI only on the master branch
+branches:
+  only:
+  - master
+
 compiler:
   - gcc
 
@@ -47,4 +52,5 @@ install:
 script:
   - mkdir -p build && cd build
   - cmake ..
-  - make TermColor
+  - make all
+  - make test

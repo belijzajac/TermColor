@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <memory>
 
+namespace TermColor {
+
 class ColorsModel;
 
 class ColorsTableWidget : public QWidget {
@@ -20,5 +22,7 @@ public slots:
 private:
     std::unique_ptr<ColorsTableWidgetImpl> pimpl_;
 };
+
+}
 
 #endif // COLORSTABLEWIDGET_H

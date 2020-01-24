@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+namespace TermColor {
+
 class MainWindow : public QMainWindow {
     class MainWindowImpl;
 public:
@@ -11,5 +13,7 @@ public:
 private:
     MainWindowImpl *pimpl_;
 };
+
+}
 
 #endif // MAINWINDOW_H

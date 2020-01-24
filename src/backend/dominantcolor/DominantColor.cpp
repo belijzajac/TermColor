@@ -1,7 +1,12 @@
 #include "DominantColor.h"
 #include "backend/exception/Exception.h"
+
 #include <opencv2/opencv.hpp>
 #include <algorithm>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 class DominantColor::DominantColorImpl {
 public:
@@ -234,3 +239,17 @@ const std::string color::getHexStr() const {
     ss << std::hex << r << std::hex << g << std::hex << b;
     return std::string{"#" + ss.str()};
 }
+
+namespace Utils {
+
+bool operator==(const color &lhs, const color &rhs) {
+    return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b;
+}
+
+bool operator!=(const color &lhs, const color &rhs) {
+    return !(lhs == rhs);
+}
+
+} // TermColor::Utils
+
+} // TermColor

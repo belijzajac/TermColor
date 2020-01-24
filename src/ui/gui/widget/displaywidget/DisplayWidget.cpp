@@ -1,11 +1,17 @@
 #include "DisplayWidget.h"
+
 #include <ui/gui/model/colorsmodel/ColorsModel.h>
+
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <unordered_map>
 #include <vector>
 #include <tuple>
 #include <QLabel>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 class DisplayWidget::DisplayWidgetImpl : public QWidget {
 public:
@@ -177,4 +183,6 @@ DisplayWidget::DisplayWidget(const ColorsModel &c, QWidget *parent) {
 
 void DisplayWidget::onModelChanged() {
     pimpl_->onModelChanged();
+}
+
 }

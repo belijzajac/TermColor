@@ -5,6 +5,8 @@
 #include <memory>
 #include <map>
 
+namespace TermColor {
+
 class TerminalsModel : public QObject {
     class TerminalsModelImpl;
     Q_OBJECT
@@ -50,5 +52,7 @@ signals:
 private:
     std::unique_ptr<TerminalsModelImpl> pimpl_;
 };
+
+}
 
 #endif // TERMINALSMODEL_H

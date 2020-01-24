@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <memory>
 
+namespace TermColor {
+
 class TerminalsModel;
 
 class ExportWidget : public QWidget {
@@ -28,5 +30,7 @@ signals:
 private:
     std::unique_ptr<ExportWidgetImpl> pimpl_;
 };
+
+}
 
 #endif // EXPORTWIDGET_H

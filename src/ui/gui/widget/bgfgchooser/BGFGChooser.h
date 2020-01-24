@@ -6,6 +6,8 @@
 class QRadioButton;
 class QButtonGroup;
 
+namespace TermColor {
+
 class BGFGChooser : public QWidget {
     Q_OBJECT
 public:
@@ -21,5 +23,7 @@ private:
     QRadioButton *darkBtn_;
     QRadioButton *lightBtn_;
 };
+
+}
 
 #endif // BGFGCHOOSER_H

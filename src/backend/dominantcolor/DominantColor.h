@@ -5,12 +5,22 @@
 #include <memory>
 #include <vector>
 
+namespace TermColor::Utils {
+
 struct color {
     int r, g, b;
 
     const std::string getCommaSeparatedStr() const;
     const std::string getHexStr() const;
+
+    // some operators
+    friend bool operator==(const color &lhs, const color &rhs);
+    friend bool operator!=(const color &lhs, const color &rhs);
 };
+
+} // TermColor::Utils
+
+namespace TermColor {
 
 class DominantColor {
     class DominantColorImpl;
@@ -26,16 +36,18 @@ public:
     void performKMeans();
 
     // Gets dominant colors from an image
-    const std::vector<color> getColors() const;
+    const std::vector<TermColor::Utils::color> getColors() const;
 
     // Returns predefined colors for background and foreground
-    const std::vector<color> getBGFGColors(bool isDark = true) const;
+    const std::vector<TermColor::Utils::color> getBGFGColors(bool isDark = true) const;
 
     // Returns an intense colors copy of given colors
-    const std::vector<color> intenseColors(const std::vector<color> &colors) const;
+    const std::vector<TermColor::Utils::color> intenseColors(const std::vector<TermColor::Utils::color> &colors) const;
 
 private:
     std::unique_ptr<DominantColorImpl> pimpl_;
 };
+
+}
 
 #endif // DOMINANTCOLOR_H

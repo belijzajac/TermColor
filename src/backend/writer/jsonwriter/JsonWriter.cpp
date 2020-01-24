@@ -1,11 +1,17 @@
 #include "JsonWriter.h"
-#include "../../../../lib/rapidjson/include/rapidjson/stringbuffer.h"
-#include "../../../../lib/rapidjson/include/rapidjson/document.h"
-#include "../../../../lib/rapidjson/include/rapidjson/prettywriter.h"
+
+// rapidjson
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
+
 #include <backend/exception/Exception.h>
 #include <algorithm>
 #include <fstream>
 
+namespace TermColor {
+
+using namespace TermColor::Utils;
 using namespace rapidjson;
 
 JsonWriter::JsonWriter()
@@ -83,5 +89,6 @@ void JsonWriter::writeToLocation(const std::string &name,
 
     // Write just generated json bufer to file
     f << stringBuff.GetString();
-    f.close();
+}
+
 }

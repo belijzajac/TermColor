@@ -1,9 +1,13 @@
 #include "ImageDropWidget.h"
+
+#include <ui/gui/widget/droparea/DropArea.h>
+
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <ui/gui/widget/droparea/DropArea.h>
+
+namespace TermColor {
 
 class ImageDropWidget::ImageDropWidgetImpl : public QWidget {
     Q_OBJECT
@@ -55,5 +59,7 @@ void ImageDropWidget::hideWidget() {
 }
 
 ImageDropWidget::~ImageDropWidget() = default;
+
+}
 
 #include "ImageDropWidget.moc"

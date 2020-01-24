@@ -4,6 +4,8 @@
 #include <bits/exception.h>
 #include <string>
 
+namespace TermColor::Utils {
+
 class Exception : public std::exception {
 public:
     explicit Exception(const std::string &msg) : msg_{msg} {}
@@ -12,5 +14,7 @@ public:
 private:
     std::string msg_;
 };
+
+}
 
 #endif // EXCEPTION_H

@@ -1,7 +1,12 @@
 #include "LXTerminalWriter.h"
+
 #include <backend/exception/Exception.h>
 #include <fstream>
 #include <filesystem>
+
+namespace TermColor {
+
+using namespace TermColor::Utils;
 
 LXTerminalWriter::LXTerminalWriter()
     : Writer(".config/lxterminal/"
@@ -72,4 +77,6 @@ void LXTerminalWriter::writeToLocation(const std::string &name,
     // Overwrite file
     std::filesystem::rename(this->absolutePath("_out"), this->absolutePath(""));
     std::filesystem::remove(this->absolutePath("_out"));
+}
+
 }

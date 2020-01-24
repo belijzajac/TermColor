@@ -2,6 +2,10 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+namespace TermColor {
+
+using namespace TermColor::Utils;
+
 ColorButton::ColorButton(const std::string &name, const color &color, QWidget *parent)
     : QWidget{parent}
     , name_{name}
@@ -39,4 +43,6 @@ void ColorButton::setup() {
     // adding everything together
     auto layout = new QVBoxLayout{this};
     layout->addWidget(btn_);
+}
+
 }
