@@ -6,6 +6,7 @@ add_executable(${DOMINANTCOLORTEST_TARGET})
 # which location is unknown to cmake
 include_directories(
   ${CMAKE_SOURCE_DIR}/src
+  ${PROJECT_SOURCE_DIR}/src/backend/dominantcolor/ # to have a shorter path to DominantColor.h
 )
 
 target_sources(${DOMINANTCOLORTEST_TARGET}

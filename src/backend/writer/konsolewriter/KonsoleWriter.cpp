@@ -63,8 +63,6 @@ void KonsoleWriter::writeToLocation(const std::string &name,
         f << "Color=" << color.getCommaSeparatedStr() << "\n\n";
         ++count;
     });
-
-    f.close();
 }
 
 }

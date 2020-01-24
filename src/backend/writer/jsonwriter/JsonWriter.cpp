@@ -89,7 +89,6 @@ void JsonWriter::writeToLocation(const std::string &name,
 
     // Write just generated json bufer to file
     f << stringBuff.GetString();
-    f.close();
 }
 
 }

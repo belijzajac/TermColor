@@ -52,4 +52,5 @@ install:
 script:
   - mkdir -p build && cd build
   - cmake ..
-  - make TermColor
+  - make all
+  - make test

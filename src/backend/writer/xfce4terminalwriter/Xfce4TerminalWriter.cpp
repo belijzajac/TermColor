@@ -50,8 +50,6 @@ void Xfce4TerminalWriter::writeToLocation(const std::string &name,
     std::for_each(intense.begin(), intense.end(), [=, &f](const color &color) {
         f << "rgb(" << color.getCommaSeparatedStr() << ");";
     });
-
-    f.close();
 }
 
 }

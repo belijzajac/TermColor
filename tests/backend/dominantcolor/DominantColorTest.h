@@ -4,7 +4,7 @@
 #include <QObject>
 #include <memory>
 
-#include "../../../src/backend/dominantcolor/DominantColor.h"
+#include "DominantColor.h"
 
 class DominantColorTest : public QObject {
     Q_OBJECT
