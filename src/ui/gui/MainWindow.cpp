@@ -148,11 +148,11 @@ void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
 
         // Obtains extracted colors
         auto dominantColors = domColor->getColors();
-        auto intenseColors = domColor->intenseColors(dominantColors);
+        const auto intenseColors = domColor->intenseColors(dominantColors);
 
         // Obtain predefined BG/FG colors
         auto bgfg = domColor->getBGFGColors();
-        auto bgfgIntense = domColor->intenseColors(bgfg);
+        const auto bgfgIntense = domColor->intenseColors(bgfg);
 
         // Copy colors to one continuous vector<color> DS
         dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
@@ -168,7 +168,7 @@ void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
 }
 
 void MainWindow::MainWindowImpl::doTerminals() {
-    const TerminalsModel::Terminals &terminals = terminalsModel_->getTerminals();
+    const auto &terminals = terminalsModel_->getTerminals();
     auto supportedTerminals = terminals.supported_;
     std::vector<std::string> terminalsFound; // Found terminals in /bin
 

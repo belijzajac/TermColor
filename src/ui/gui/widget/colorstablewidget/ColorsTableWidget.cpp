@@ -84,7 +84,7 @@ void ColorsTableWidget::ColorsTableWidgetImpl::layoutOtherButtons(const std::vec
 }
 
 void ColorsTableWidget::ColorsTableWidgetImpl::onModelChanged() {
-    const ColorsModel::Colors &colors = colorsModel_.getColors();
+    const auto &colors = colorsModel_.getColors();
     const auto state = colors.changedState_;
 
     if (state == ColorsModel::ChangedState::NewColors) {

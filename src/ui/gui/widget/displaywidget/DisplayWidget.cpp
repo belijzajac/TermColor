@@ -148,7 +148,7 @@ void DisplayWidget::DisplayWidgetImpl::setFont() {
 }
 
 void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
-    const ColorsModel::Colors &colors = colorsModel_.getColors();
+    const auto &colors = colorsModel_.getColors();
     const auto state = colors.changedState_;
 
     if (state == ColorsModel::ChangedState::NewColors) {

@@ -43,32 +43,38 @@ void LXTerminalWriter::writeToLocation(const std::string &name,
 
     while (std::getline(fIn, tempStr)) {
         // background
-        if (tempStr.find(bgColor) != std::string::npos)
+        if (tempStr.find(bgColor) != std::string::npos) {
             fOut << bgColor << "rgb(" << bgfg.at(0).getCommaSeparatedStr() << ")\n";
+        }
         // foreground
-        else if (tempStr.find(fgColor) != std::string::npos)
+        else if (tempStr.find(fgColor) != std::string::npos) {
             fOut << fgColor << "rgb(" << bgfg.at(1).getCommaSeparatedStr() << ")\n";
+        }
         // colors
         else if (tempStr.find(cPallete) != std::string::npos) {
             // regular colors
-            if (cIterNo < regular.size())
+            if (cIterNo < regular.size()) {
                 fOut << cPallete
                      << std::to_string(cIterNo) << "=rgb("
-                                                << regular.at(cIterNo).getCommaSeparatedStr()
-                                                << ")\n";
+                     << regular.at(cIterNo).getCommaSeparatedStr()
+                     << ")\n";
+            }
             // intense colors
-            else
+            else {
                 fOut << cPallete
                      << std::to_string(cIterNo) << "=rgb("
-                                                << intense.at(cIterNo - regular.size()).getCommaSeparatedStr()
-                                                << ")\n";
+                     << intense.at(cIterNo - regular.size()).getCommaSeparatedStr()
+                     << ")\n";
+            }
             ++cIterNo;
         }
         // name of color-scheme
-        else if (tempStr.find(cPresent) != std::string::npos)
+        else if (tempStr.find(cPresent) != std::string::npos) {
             fOut << cPresent << "TermColor\n";
-        else
+        }
+        else {
             fOut << tempStr << "\n";
+        }
     }
 
     fIn.close();

@@ -195,10 +195,7 @@ const std::vector<color> DominantColor::DominantColorImpl::intenseColors(const s
 }
 
 const std::vector<color> DominantColor::DominantColorImpl::getBGFGColors(bool isDark) const {
-    if (isDark)
-        return darkBGFG;
-    else
-        return lightBGFG;
+    return (isDark)? darkBGFG : lightBGFG;
 }
 
 /// DominantColor
