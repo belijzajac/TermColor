@@ -24,7 +24,7 @@ public:
     virtual int proc() { return exec(); }
     int run();
 
-    virtual int message(const std::string &);
+    virtual int message(std::string_view);
 
 private:
     std::exception_ptr _M_e{nullptr};

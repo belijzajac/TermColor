@@ -24,8 +24,8 @@ public slots:
     void onSaveBtnClicked();
 
 signals:
-    void saveBtnClicked(const std::string &option);
-    void saveToJsonBtnClicked(const std::string &fileLocation);
+    void saveBtnClicked(std::string_view option);
+    void saveToJsonBtnClicked(std::string_view fileLocation);
 
 private:
     std::unique_ptr<ExportWidgetImpl> pimpl_;

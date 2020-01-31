@@ -2,17 +2,16 @@
 #define EXCEPTION_H
 
 #include <bits/exception.h>
-#include <string>
 
 namespace TermColor::Utils {
 
-class Exception : public std::exception {
+class TermColorException : public std::exception {
 public:
-    explicit Exception(const std::string &msg) : msg_{msg} {}
-    const char *what() const noexcept override { return msg_.c_str(); }
+    explicit TermColorException(std::string_view msg) : msg_{msg} {}
+    const char *what() const noexcept override { return msg_.data(); }
 
 private:
-    std::string msg_;
+    std::string_view msg_;
 };
 
 }

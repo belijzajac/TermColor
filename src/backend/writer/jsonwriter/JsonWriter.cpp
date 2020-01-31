@@ -21,8 +21,8 @@ JsonWriter::JsonWriter()
 }
 
 // A helper function for writing comma separated color values
-void writeCommaSepStr(PrettyWriter<StringBuffer> &writer, const char *blockName, const std::vector<color> &cl) {
-    writer.String(blockName);
+void writeCommaSepStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName, const std::vector<color> &cl) {
+    writer.String(blockName.data());
     writer.StartArray();
 
     std::for_each(cl.begin(), cl.end(), [&writer](const color &c){
@@ -34,8 +34,8 @@ void writeCommaSepStr(PrettyWriter<StringBuffer> &writer, const char *blockName,
 }
 
 // A helper function for writing colors in their hexadecimal format
-void writeHexStr(PrettyWriter<StringBuffer> &writer, const char *blockName, const std::vector<color> &cl) {
-    writer.String(blockName);
+void writeHexStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName, const std::vector<color> &cl) {
+    writer.String(blockName.data());
     writer.StartArray();
 
     std::for_each(cl.begin(), cl.end(), [&writer](const color &c){
@@ -46,15 +46,15 @@ void writeHexStr(PrettyWriter<StringBuffer> &writer, const char *blockName, cons
     writer.EndArray();
 }
 
-void JsonWriter::writeToLocation(const std::string &name,
+void JsonWriter::writeToLocation(std::string_view name,
                                  const std::vector<color> &bgfg,
                                  const std::vector<color> &bgfgIntense,
                                  const std::vector<color> &regular,
                                  const std::vector<color> &intense) const {
 
-    std::ofstream f{name};
+    std::ofstream f{name.data()};
     if (!f)
-        throw Exception{"bad file name: " + name};
+        throw TermColorException{"bad file name: " + std::string(name.data())};
 
     // Prepare buffer and document
     StringBuffer stringBuff;

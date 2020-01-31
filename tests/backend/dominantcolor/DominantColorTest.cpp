@@ -24,7 +24,7 @@ void DominantColorTest::cleanup() {
 }
 
 void DominantColorTest::testDominantColors() {
-    auto domColors = dominantColor_->getColors();
+    const auto domColors = dominantColor_->getColors();
     QVERIFY(!domColors.empty());
 
     std::vector<TermColor::Utils::color> expectedColors = {
@@ -36,7 +36,7 @@ void DominantColorTest::testDominantColors() {
 }
 
 void DominantColorTest::testBGFGColors() {
-    auto bgfgColors = dominantColor_->getBGFGColors();
+    const auto bgfgColors = dominantColor_->getBGFGColors();
     QVERIFY(!bgfgColors.empty());
 
     std::vector<TermColor::Utils::color> expectedColors = {
@@ -48,10 +48,10 @@ void DominantColorTest::testBGFGColors() {
 }
 
 void DominantColorTest::testIntenseColors() {
-    auto domColors = dominantColor_->getColors();
+    const auto domColors = dominantColor_->getColors();
     QVERIFY(!domColors.empty());
 
-    auto intenseColors = dominantColor_->intenseColors(domColors);
+    const auto intenseColors = dominantColor_->intenseColors(domColors);
     QVERIFY(!intenseColors.empty());
 
     std::vector<TermColor::Utils::color> expectedColors = {

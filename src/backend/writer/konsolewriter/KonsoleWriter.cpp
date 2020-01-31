@@ -17,17 +17,17 @@ KonsoleWriter::KonsoleWriter()
         nameColors_.push_back("Color" + std::to_string(i));
 }
 
-void KonsoleWriter::writeToLocation(const std::string &name,
+void KonsoleWriter::writeToLocation(std::string_view name,
                                     const std::vector<color> &bgfg,
                                     const std::vector<color> &bgfgIntense,
                                     const std::vector<color> &regular,
                                     const std::vector<color> &intense) const {
 
-    const std::string pathToFile{ absolutePath(name) };
+    const std::string pathToFile{ absolutePath(name.data()) };
     std::ofstream f{pathToFile};
 
     if (!f)
-        throw Exception{"bad file name: " + pathToFile};
+        throw TermColorException{"bad file name: " + pathToFile};
 
     // Write general info
     f << "[General]\n";

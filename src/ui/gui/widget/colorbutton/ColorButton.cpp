@@ -6,9 +6,9 @@ namespace TermColor {
 
 using namespace TermColor::Utils;
 
-ColorButton::ColorButton(const std::string &name, const color &color, QWidget *parent)
+ColorButton::ColorButton(std::string_view name, const color &color, QWidget *parent)
     : QWidget{parent}
-    , name_{name}
+    , name_{name.data()}
     , color_{color}
 {
     setup();

@@ -15,7 +15,7 @@ public:
 
     // imagePath_ getters/setters
     void setImagePath(const QString &path);
-    const std::string getImagePath() const;
+    const std::string &getImagePath() const;
 
 private:
     ColorsModel &parent_;
@@ -30,7 +30,7 @@ void ColorsModel::ColorsModelImpl::setImagePath(const QString &path) {
     imagePath_ = pathStr.substr(7);          // removes "file://"
 }
 
-const std::string ColorsModel::ColorsModelImpl::getImagePath() const {
+const std::string &ColorsModel::ColorsModelImpl::getImagePath() const {
     return imagePath_;
 }
 

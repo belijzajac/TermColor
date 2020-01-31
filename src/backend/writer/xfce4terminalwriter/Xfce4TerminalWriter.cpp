@@ -15,21 +15,21 @@ Xfce4TerminalWriter::Xfce4TerminalWriter()
 
 }
 
-void Xfce4TerminalWriter::writeToLocation(const std::string &name,
+void Xfce4TerminalWriter::writeToLocation(std::string_view name,
                                           const std::vector<color> &bgfg,
                                           const std::vector<color> &bgfgIntense,
                                           const std::vector<color> &regular,
                                           const std::vector<color> &intense) const {
 
-    const std::string pathToFile{ absolutePath(name) };
+    const std::string pathToFile{ absolutePath(name.data()) };
     std::ofstream f{pathToFile};
 
     if (!f)
-        throw Exception{"bad file name: " + pathToFile};
+        throw TermColorException{"bad file name: " + pathToFile};
 
     // Write general info
     f << "[Scheme]\n";
-    f << "Name=" << this->fileInfo_.prefix << name << "\n";
+    f << "Name=" << this->fileInfo_.prefix << name.data() << "\n";
 
     // Write background and foreground
     const std::vector<std::string> bgfgStr {"ColorBackground=", "ColorForeground="};

@@ -19,8 +19,8 @@ int Application::run() {
     }
 }
 
-int Application::message(const std::string &message) {
-    QMessageBox::critical(nullptr, "Error", QString::fromStdString(message));
+int Application::message(std::string_view message) {
+    QMessageBox::critical(nullptr, "Error", QString::fromStdString(message.data()));
     return 1;
 }
 

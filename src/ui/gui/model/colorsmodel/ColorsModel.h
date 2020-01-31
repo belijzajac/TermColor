@@ -41,7 +41,7 @@ public slots:
 
 signals:
     void hideImageDropWidget();
-    void doProcessColors(const std::string &);
+    void doProcessColors(std::string_view);
     void modelChanged();
 
 private:
