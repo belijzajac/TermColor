@@ -1,7 +1,6 @@
 #ifndef DOMINANTCOLOR_H
 #define DOMINANTCOLOR_H
 
-#include <string>
 #include <memory>
 #include <vector>
 
@@ -30,7 +29,7 @@ public:
     ~DominantColor();
 
     // This function attempts to read to img;
-    void readImage(const std::string &name);
+    void readImage(std::string_view name);
 
     // This function obtains dominant colors using kmeans algorithm
     void performKMeans();

@@ -12,7 +12,7 @@ class DominantColor::DominantColorImpl {
 public:
     DominantColorImpl() = default;
 
-    void readImage(const std::string &name);
+    void readImage(std::string_view name);
     void performKMeans();
     const std::vector<color> getColors() const;
     const std::vector<color> getBGFGColors(bool) const;
@@ -43,11 +43,11 @@ private:
     std::vector<color> lightBGFG {{255, 255, 255}};
 };
 
-void DominantColor::DominantColorImpl::readImage(const std::string &name) {
-    img_ = cv::imread(name, 1);
+void DominantColor::DominantColorImpl::readImage(std::string_view name) {
+    img_ = cv::imread(name.data(), 1);
 
     if (img_.empty())
-        throw Exception{"Empty image (or not an image)"};
+        throw TermColorException{"Empty image (or not an image)"};
 }
 
 void DominantColor::DominantColorImpl::doKMeans(const cv::Mat &img, cv::Mat &labels, cv::Mat &centers,
@@ -73,7 +73,7 @@ void DominantColor::DominantColorImpl::performKMeans() {
 
     // An image doesn't have sufficient amount of colors (we need 8 for both regular and intense colors)
     if (clusterCount != 8)
-        throw Exception{"Image doesn't have enough colors"};
+        throw TermColorException{"Image doesn't have enough colors"};
 
     // Apply K-Mean's algorithm for regular colors
     doKMeans(rearrangedImg, labels, centers, clusterCount, 5);
@@ -204,7 +204,7 @@ DominantColor::DominantColor() : pimpl_(std::make_unique<DominantColorImpl>()) {
 
 DominantColor::~DominantColor() = default;
 
-void DominantColor::readImage(const std::string &name) {
+void DominantColor::readImage(std::string_view name) {
     pimpl_->readImage(name);
 }
 

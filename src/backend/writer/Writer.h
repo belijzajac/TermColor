@@ -13,18 +13,18 @@ public:
     static const std::string getUsername();
 
     // Writes color-scheme to file
-    virtual void writeToLocation(const std::string &name,
+    virtual void writeToLocation(std::string_view name,
                                  const std::vector<TermColor::Utils::color> &,              // BG/FG colors
                                  const std::vector<TermColor::Utils::color> &,              // Intense BG/FG colors
                                  const std::vector<TermColor::Utils::color> &,              // Regular colors
                                  const std::vector<TermColor::Utils::color> &) const = 0;   // Intense colors
 
     // Returns an absolute location to color schemes save folder
-    const std::string absolutePath(const std::string &fileName) const;
+    const std::string absolutePath(std::string_view fileName) const;
 
 private:
     // Checks if provided directory exists, if not - creates it
-    void checkDirectory(const std::string &path);
+    void checkDirectory(std::string_view path);
 
     // Holds color-scheme file information
     struct filename {
@@ -33,7 +33,7 @@ private:
     };
 
 protected:
-    Writer(const std::string &loc, const filename &fileInfo);
+    Writer(std::string_view loc, const filename &fileInfo);
 
     std::string location_;
     filename fileInfo_;

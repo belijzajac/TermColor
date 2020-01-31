@@ -15,7 +15,7 @@ LXTerminalWriter::LXTerminalWriter()
 
 }
 
-void LXTerminalWriter::writeToLocation(const std::string &name,
+void LXTerminalWriter::writeToLocation(std::string_view name,
                                        const std::vector<color> &bgfg,
                                        const std::vector<color> &bgfgIntense,
                                        const std::vector<color> &regular,
@@ -30,7 +30,7 @@ void LXTerminalWriter::writeToLocation(const std::string &name,
     std::ofstream fOut{absolutePath("_out")};
 
     if (!fIn || !fOut) {
-        throw Exception{"Errors opening files"};
+        throw TermColorException{"Errors opening files"};
     }
 
     // Read input file by line and replace each of it lines

@@ -34,9 +34,9 @@ public:
 
 private slots:
     void undoHideWidgets();
-    void onProcessColors(const std::string &imgPath);
-    void onProcessSave(const std::string &saveOption);
-    void onSaveToJson(const std::string &saveLocation);
+    void onProcessColors(std::string_view imgPath);
+    void onProcessSave(std::string_view saveOption);
+    void onSaveToJson(std::string_view saveLocation);
     void onRadioBtnClicked(int id);
 
 private:
@@ -44,7 +44,7 @@ private:
     void doConnections();
 
     // Functions to update model's data
-    void doImageColors(const std::string &imgPath);
+    void doImageColors(std::string_view imgPath);
     void doTerminals();
 
 private:
@@ -112,7 +112,7 @@ void MainWindow::MainWindowImpl::doConnections() {
     // Connect ImageDropWidget (view) to model
     connect(imageDropWidget_, SIGNAL(imageDropped(QString)), colorsModel_, SLOT(onImageDropped(QString)));
     connect(colorsModel_, SIGNAL(hideImageDropWidget()), imageDropWidget_, SLOT(hideWidget()));
-    connect(colorsModel_, SIGNAL(doProcessColors(std::string)), this, SLOT(onProcessColors(std::string)));
+    connect(colorsModel_, SIGNAL(doProcessColors(std::string_view)), this, SLOT(onProcessColors(std::string_view)));
 
     // Connect ImageDropWidget (view) to controller
     connect(imageDropWidget_, SIGNAL(onHideWidget()), this, SLOT(undoHideWidgets()));
@@ -125,8 +125,8 @@ void MainWindow::MainWindowImpl::doConnections() {
 
     // Connect ExportWidget (view) to model and back to controller (here), to do the logic
     connect(terminalsModel_, SIGNAL(modelChanged()), exportWidget_, SLOT(onModelChanged()));
-    connect(exportWidget_, SIGNAL(saveBtnClicked(std::string)), this, SLOT(onProcessSave(std::string)));
-    connect(exportWidget_, SIGNAL(saveToJsonBtnClicked(std::string)), this, SLOT(onSaveToJson(std::string)));
+    connect(exportWidget_, SIGNAL(saveBtnClicked(std::string_view)), this, SLOT(onProcessSave(std::string_view)));
+    connect(exportWidget_, SIGNAL(saveToJsonBtnClicked(std::string_view)), this, SLOT(onSaveToJson(std::string_view)));
 
     // Connect BGFGChooser (view) to controller
     connect(bgfgChooser_, SIGNAL(radioBtnClicked(int)), this, SLOT(onRadioBtnClicked(int)));
@@ -139,7 +139,7 @@ void MainWindow::MainWindowImpl::undoHideWidgets() {
     bgfgChooser_->show();
 }
 
-void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
+void MainWindow::MainWindowImpl::doImageColors(std::string_view imgPath) {
     try {
         // Passes an image to opencv's cv::imread function
         // and later performs the k-means' algorithm
@@ -162,7 +162,7 @@ void MainWindow::MainWindowImpl::doImageColors(const std::string &imgPath) {
         colorsModel_->setImgColors(dominantColors);
         colorsModel_->setBGFGColors(bgfg);
 
-    } catch (Exception &e) {
+    } catch (TermColorException &e) {
         throw;
     }
 }
@@ -199,7 +199,7 @@ void MainWindow::MainWindowImpl::doTerminals() {
     }
 }
 
-void MainWindow::MainWindowImpl::onProcessColors(const std::string &imgPath) {
+void MainWindow::MainWindowImpl::onProcessColors(std::string_view imgPath) {
     // Update model's data with new colors
     // And available terminal emulators
     doImageColors(imgPath);
@@ -218,9 +218,9 @@ const std::string currentTimestamp() {
            std::to_string(timeNow->tm_sec);
 }
 
-void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
+void MainWindow::MainWindowImpl::onProcessSave(std::string_view saveOption) {
     try {
-        const auto termType = TerminalsModel::terminalToEnum_[saveOption];
+        const auto termType = TerminalsModel::terminalToEnum_[saveOption.data()];
 
         // Construct appropriate terminal writer
         const auto writer = [&]() -> std::unique_ptr<Writer> {
@@ -235,17 +235,17 @@ void MainWindow::MainWindowImpl::onProcessSave(const std::string &saveOption) {
             return nullptr;
         };
 
-        const ColorsModel::Colors &colors = colorsModel_->getColors();
+        const auto &colors = colorsModel_->getColors();
         writer()->writeToLocation(currentTimestamp(), colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
 
-    } catch (Exception &e) {
+    } catch (TermColorException &e) {
         throw;
     }
 }
 
-void MainWindow::MainWindowImpl::onSaveToJson(const std::string &saveLocation) {
+void MainWindow::MainWindowImpl::onSaveToJson(std::string_view saveLocation) {
     const auto jsonWriter = std::make_unique<JsonWriter>();
-    const ColorsModel::Colors &colors = colorsModel_->getColors();
+    const auto &colors = colorsModel_->getColors();
     jsonWriter->writeToLocation(saveLocation, colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
 }
 

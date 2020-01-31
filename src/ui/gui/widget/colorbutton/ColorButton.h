@@ -11,7 +11,7 @@ namespace TermColor {
 class ColorButton : public QWidget {
     Q_OBJECT
 public:
-    ColorButton(const std::string &name, const TermColor::Utils::color &color, QWidget *parent = nullptr);
+    ColorButton(std::string_view name, const TermColor::Utils::color &color, QWidget *parent = nullptr);
 
     // Hovering over a button will the text to be displayed
     void registerToolTip();

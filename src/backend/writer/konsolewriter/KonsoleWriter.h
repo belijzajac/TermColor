@@ -10,7 +10,7 @@ public:
     explicit KonsoleWriter();
     ~KonsoleWriter() = default;
 
-    void writeToLocation(const std::string &name,
+    void writeToLocation(std::string_view name,
                          const std::vector<TermColor::Utils::color> &,
                          const std::vector<TermColor::Utils::color> &,
                          const std::vector<TermColor::Utils::color> &,
