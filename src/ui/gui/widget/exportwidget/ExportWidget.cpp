@@ -83,8 +83,9 @@ void ExportWidget::ExportWidgetImpl::doConnections() {
         QString fileName = QFileDialog::getSaveFileName(this,
                 tr("Export to JSON"), "/home/" + QString::fromStdString(Writer::getUsername()), tr("JSON file (*.json)"));
 
-        if (!fileName.isEmpty())
+        if (!fileName.isEmpty()) {
             emit parent_->saveToJsonBtnClicked(fileName.toStdString());
+        }
     });
 }
 
@@ -96,8 +97,9 @@ void ExportWidget::ExportWidgetImpl::onModelChanged() {
     if (state == TerminalsModel::ChangedState::None) {
         // Nothing to do...
     } else if (state == TerminalsModel::ChangedState::NewTerminals) {
-        for (const auto &term : terminals.installed_)
+        for (const auto &term : terminals.installed_) {
             comboBox_->addItem(QString::fromStdString(term));
+        }
     }
 }
 

@@ -10,8 +10,9 @@ int Application::run() {
         int code = proc();
         // Check if an exception was thrown and stored in Application::notify
         // and if so, rethrow it.
-        if (_M_e)
+        if (_M_e) {
             std::rethrow_exception(_M_e);
+        }
         return code;
     }
     catch (std::exception &e) {

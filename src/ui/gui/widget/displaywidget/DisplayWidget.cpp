@@ -153,12 +153,14 @@ void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
 
     if (state == ColorsModel::ChangedState::NewColors) {
         // Populate colorCombos_ with regular colors
-        for (unsigned long i = 0; i < colors.regular_.size(); ++i)
+        for (unsigned long i = 0; i < colors.regular_.size(); ++i) {
             colorCombos_["regular_" + std::to_string(i)] = colors.regular_.at(i);
+        }
 
         // Populate colorCombos_ with intense colors
-        for (unsigned long i = 0; i < colors.intense_.size(); ++i)
+        for (unsigned long i = 0; i < colors.intense_.size(); ++i) {
             colorCombos_["intense_" + std::to_string(i)] = colors.intense_.at(i);
+        }
 
     } else if (state == ColorsModel::ChangedState::Background) {
         // Populate colorCombos_ with foreground color

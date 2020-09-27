@@ -4,6 +4,8 @@
 #include <pwd.h>
 #include <filesystem>
 
+#include <backend/exception/Exception.h>
+
 namespace TermColor {
 
 Writer::Writer(std::string_view loc, const filename &fileInfo)
@@ -14,11 +16,14 @@ Writer::Writer(std::string_view loc, const filename &fileInfo)
 }
 
 const std::string Writer::getUsername() {
+    using namespace TermColor::Utils;
     uid_t uid{geteuid()};
-    struct passwd *pw{getpwuid(uid)};
-    if (pw)
+
+    if (struct passwd *pw{getpwuid(uid)}; pw) {
         return std::string(pw->pw_name);
-    return {};
+    }
+
+    throw TermColorException{"cannot get current logged in user's username"};
 }
 
 const std::string Writer::absolutePath(std::string_view fileName) const {
@@ -30,8 +35,9 @@ void Writer::checkDirectory(std::string_view path) {
     std::filesystem::directory_entry dirEntry{dirPath};
 
     // Create directory if it doesn't exist
-    if (!dirEntry.exists())
+    if (!dirEntry.exists()) {
         std::filesystem::create_directories(dirPath);
+    }
 }
 
 }

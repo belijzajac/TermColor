@@ -46,8 +46,9 @@ private:
 void DominantColor::DominantColorImpl::readImage(std::string_view name) {
     img_ = cv::imread(name.data(), 1);
 
-    if (img_.empty())
+    if (img_.empty()) {
         throw TermColorException{"Empty image (or not an image)"};
+    }
 }
 
 void DominantColor::DominantColorImpl::doKMeans(const cv::Mat &img, cv::Mat &labels, cv::Mat &centers,
@@ -72,8 +73,9 @@ void DominantColor::DominantColorImpl::performKMeans() {
     cv::Mat labels, centers;
 
     // An image doesn't have sufficient amount of colors (we need 8 for both regular and intense colors)
-    if (clusterCount != 8)
+    if (clusterCount != 8) {
         throw TermColorException{"Image doesn't have enough colors"};
+    }
 
     // Apply K-Mean's algorithm for regular colors
     doKMeans(rearrangedImg, labels, centers, clusterCount, 5);
@@ -106,18 +108,20 @@ int DominantColor::DominantColorImpl::getNumOfClusters() const {
         int c = (v[0] << 16) | (v[1] << 8) | (v[2]);
 
         // Count unique pixels
-        if (clusters.find(c) != clusters.end())
+        if (clusters.find(c) != clusters.end()) {
             clusters[c]++;
-        else
+        } else {
             clusters[c] = 0;
+        }
     }
 
     // We will throw away all clusters that have < 200 elements
-    for (auto it = clusters.begin(); it != clusters.end();) {
-        if (it->second < 200)
+    for (auto it = clusters.begin(); it != clusters.end(); ) {
+        if (it->second < 200) {
             it = clusters.erase(it);
-        else
+        } else {
             ++it;
+        }
     }
 
     return static_cast<int>(clusters.size());
@@ -157,9 +161,9 @@ const std::vector<color> DominantColor::DominantColorImpl::extractColors(const c
     std::vector<color> extracted;
 
     for (int row = 0; row != centers.rows; ++row) {
-        int r = static_cast<int>(centers.at<float>(row, 0));
-        int g = static_cast<int>(centers.at<float>(row, 1));
-        int b = static_cast<int>(centers.at<float>(row, 2));
+        size_t r = static_cast<int>(centers.at<float>(row, 0));
+        size_t g = static_cast<int>(centers.at<float>(row, 1));
+        size_t b = static_cast<int>(centers.at<float>(row, 2));
 
         extracted.push_back({r, g, b});
     }

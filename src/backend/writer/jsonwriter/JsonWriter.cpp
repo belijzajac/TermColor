@@ -52,43 +52,43 @@ void JsonWriter::writeToLocation(std::string_view name,
                                  const std::vector<color> &regular,
                                  const std::vector<color> &intense) const {
 
-    std::ofstream f{name.data()};
-    if (!f)
+    if (std::ofstream f{name.data()}; f) {
+        // Prepare buffer and document
+        StringBuffer stringBuff;
+        Document doc;
+
+        // Construct writer
+        PrettyWriter<StringBuffer> writer{stringBuff};
+
+        // Start writing json
+        writer.StartObject();
+
+        // RGB colors
+        writer.String("RGB");
+        writer.StartObject();
+        writeCommaSepStr(writer, "BG/FG regular colors", bgfg);
+        writeCommaSepStr(writer, "BG/FG intense colors", bgfgIntense);
+        writeCommaSepStr(writer, "Regular colors", regular);
+        writeCommaSepStr(writer, "Intense colors", intense);
+        writer.EndObject();
+
+        // HEX colors
+        writer.String("HEX");
+        writer.StartObject();
+        writeHexStr(writer, "BG/FG regular colors", bgfg);
+        writeHexStr(writer, "BG/FG intense colors", bgfgIntense);
+        writeHexStr(writer, "Regular colors", regular);
+        writeHexStr(writer, "Intense colors", intense);
+        writer.EndObject();
+
+        // End writing json
+        writer.EndObject();
+
+        // Write just generated json bufer to file
+        f << stringBuff.GetString();
+    } else {
         throw TermColorException{"bad file name: " + std::string(name.data())};
-
-    // Prepare buffer and document
-    StringBuffer stringBuff;
-    Document doc;
-
-    // Construct writer
-    PrettyWriter<StringBuffer> writer{stringBuff};
-
-    // Start writing json
-    writer.StartObject();
-
-    // RGB colors
-    writer.String("RGB");
-    writer.StartObject();
-    writeCommaSepStr(writer, "BG/FG regular colors", bgfg);
-    writeCommaSepStr(writer, "BG/FG intense colors", bgfgIntense);
-    writeCommaSepStr(writer, "Regular colors", regular);
-    writeCommaSepStr(writer, "Intense colors", intense);
-    writer.EndObject();
-
-    // HEX colors
-    writer.String("HEX");
-    writer.StartObject();
-    writeHexStr(writer, "BG/FG regular colors", bgfg);
-    writeHexStr(writer, "BG/FG intense colors", bgfgIntense);
-    writeHexStr(writer, "Regular colors", regular);
-    writeHexStr(writer, "Intense colors", intense);
-    writer.EndObject();
-
-    // End writing json
-    writer.EndObject();
-
-    // Write just generated json bufer to file
-    f << stringBuff.GetString();
+    }
 }
 
 }

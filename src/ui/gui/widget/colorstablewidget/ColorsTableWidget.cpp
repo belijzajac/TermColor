@@ -106,8 +106,9 @@ void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vecto
         btns.at(btnInd)->setColor(colors.at(btnInd));
 
         // In case we've managed to obtain less colors than there are actual buttons
-        if (btnInd >= colors.size())
+        if (btnInd >= colors.size()) {
             continue;
+        }
     }
 }
 

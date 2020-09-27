@@ -3,11 +3,12 @@
 
 #include <memory>
 #include <vector>
+#include <string_view>
 
 namespace TermColor::Utils {
 
 struct color {
-    int r, g, b;
+    size_t r, g, b;
 
     const std::string getCommaSeparatedStr() const;
     const std::string getHexStr() const;
