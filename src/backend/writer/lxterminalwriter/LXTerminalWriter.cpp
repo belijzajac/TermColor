@@ -1,9 +1,8 @@
 #include "LXTerminalWriter.h"
 
+#include "backend/exception/Exception.h"
 #include <fstream>
 #include <filesystem>
-
-#include <backend/exception/Exception.h>
 
 namespace TermColor {
 

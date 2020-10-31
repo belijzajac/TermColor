@@ -4,7 +4,7 @@ set(TERMCOLOR_SOURCES
 )
 
 add_subdirectory(backend)
-add_subdirectory(ui)
+add_subdirectory(gui)
 
 set(TERMCOLOR_TARGET "TermColor")
 

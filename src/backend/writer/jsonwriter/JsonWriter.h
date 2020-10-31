@@ -1,7 +1,7 @@
 #ifndef JSONWRITER_H
 #define JSONWRITER_H
 
-#include "../Writer.h"
+#include "backend/writer/Writer.h"
 
 namespace TermColor {
 

@@ -1,10 +1,9 @@
 #include "Writer.h"
 
+#include "backend/exception/Exception.h"
 #include <zconf.h>
 #include <pwd.h>
 #include <filesystem>
-
-#include <backend/exception/Exception.h>
 
 namespace TermColor {
 

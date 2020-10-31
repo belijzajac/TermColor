@@ -1,7 +1,7 @@
 #ifndef XFCE4TERMINALWRITER_H
 #define XFCE4TERMINALWRITER_H
 
-#include "../Writer.h"
+#include "backend/writer/Writer.h"
 
 namespace TermColor {
 

@@ -1,6 +1,6 @@
 #include "DominantColor.h"
-#include "backend/exception/Exception.h"
 
+#include "backend/exception/Exception.h"
 #include <opencv2/opencv.hpp>
 #include <algorithm>
 
@@ -100,7 +100,7 @@ int DominantColor::DominantColorImpl::getNumOfClusters() const {
     std::map<int, int> clusters;
 
     // Go though all pixels
-    for (size_t i = 0; i < img_.total(); i++) {
+    for (size_t i = 0; i < img_.total(); ++i) {
         // Access to matrix
         auto v = img_.at<cv::Vec3b>(i);
 

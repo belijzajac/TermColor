@@ -1,6 +1,6 @@
 #include "Xfce4TerminalWriter.h"
 
-#include <backend/exception/Exception.h>
+#include "backend/exception/Exception.h"
 #include <algorithm>
 #include <fstream>
 
