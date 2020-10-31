@@ -44,8 +44,9 @@ TerminalsModel::~TerminalsModel() = default;
 
 TerminalsModel::Terminals::Terminals() : changedState_{ChangedState::None} {
     // Extract supported terminal emulators from terminalToEnum_
-    for (const auto &[key, val] : terminalToEnum_)
+    for (const auto &[key, _] : terminalToEnum_) {
         supported_.push_back(key);
+    }
 }
 
 const TerminalsModel::Terminals &TerminalsModel::getTerminals() const {

@@ -114,7 +114,7 @@ void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vecto
 
 // ColorsTableWidget
 
-ColorsTableWidget::ColorsTableWidget(const ColorsModel &c, QWidget *parent) {
+ColorsTableWidget::ColorsTableWidget(const ColorsModel &c, QWidget * /*parent*/) {
     pimpl_ = std::make_unique<ColorsTableWidgetImpl>(c, this);
     this->setLayout(pimpl_->getLayout());
 }

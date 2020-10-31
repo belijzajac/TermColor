@@ -55,55 +55,52 @@ DisplayWidget::DisplayWidgetImpl::DisplayWidgetImpl(const ColorsModel &c, Displa
 }
 
 // Hard-coded a simple C++14 Exception class for demonstration purposes.
-// If I was to read a C++ source file and dynamically change the colors' of a text,
-// I'd have used the builder design pattern together with predefined colors for each C++ reserved keyword
 void DisplayWidget::DisplayWidgetImpl::initTextPieces() {
-    // Headers
-    textPiece_.emplace_back("#ifndef EXCEPTION_H \n#define ", "intense_6");
-    textPiece_.emplace_back("EXCEPTION_H \n\n", "intense_1");
+    textPiece_ = { // Headers
+                   {"#ifndef EXCEPTION_H \n#define ", "intense_6"},
+                   {"EXCEPTION_H \n\n", "intense_1"},
 
-    // Include
-    textPiece_.emplace_back("#include ", "intense_6");
-    textPiece_.emplace_back("<bits/exception.h> \n", "intense_3");
+                   // Include
+                   {"#include ", "intense_6"},
+                   {"<bits/exception.h> \n", "intense_3"},
+                   {"#include ", "intense_6"},
+                   {"<string> \n\n", "intense_3"},
 
-    // Include
-    textPiece_.emplace_back("#include ", "intense_6");
-    textPiece_.emplace_back("<string> \n\n", "intense_3");
+                   // Class definition
+                   {"class ", "regular_2"},
+                   {"Exception : ", "foreground"},
+                   {"public ", "regular_2"},
+                   {"std::exception { \n", "foreground"},
 
-    // Class definition
-    textPiece_.emplace_back("class ", "regular_2");
-    textPiece_.emplace_back("Exception : ", "foreground");
-    textPiece_.emplace_back("public ", "regular_2");
-    textPiece_.emplace_back("std::exception { \n", "foreground");
+                   // Class begin
+                   {"public ", "regular_2"},
+                   {":\n", "regular_5"},
 
-    // Class begin
-    textPiece_.emplace_back("public ", "regular_2");
-    textPiece_.emplace_back(":\n", "regular_5");
+                   // Class function
+                   {"   explicit ", "regular_2"},
+                   {"Exception(", "foreground"},
+                   {"const ", "regular_2"},
+                   {"std::string &msg) : msg_{msg} {} \n", "foreground"},
 
-    // Class function
-    textPiece_.emplace_back("   explicit ", "regular_2");
-    textPiece_.emplace_back("Exception(", "foreground");
-    textPiece_.emplace_back("const ", "regular_2");
-    textPiece_.emplace_back("std::string &msg) : msg_{msg} {} \n", "foreground");
+                   // Another class function
+                   {"   const char ", "regular_2"},
+                   {"*what() ", "foreground"},
+                   {"const ", "regular_2"},
+                   {"noexcept ", "foreground"},
+                   {"override ", "regular_2"},
+                   {"{ ", "foreground"},
+                   {"return ", "regular_5"},
+                   {"msg_.c_str(); } \n\n", "foreground"},
 
-    // Another class function
-    textPiece_.emplace_back("   const char ", "regular_2");
-    textPiece_.emplace_back("*what() ", "foreground");
-    textPiece_.emplace_back("const ", "regular_2");
-    textPiece_.emplace_back("noexcept ", "foreground");
-    textPiece_.emplace_back("override ", "regular_2");
-    textPiece_.emplace_back("{ ", "foreground");
-    textPiece_.emplace_back("return ", "regular_5");
-    textPiece_.emplace_back("msg_.c_str(); } \n\n", "foreground");
+                   // Class members
+                   {"private ", "regular_2"},
+                   {":\n", "regular_5"},
+                   {"   std::string msg_; \n}; \n\n", "foreground"},
 
-    // Class members
-    textPiece_.emplace_back("private ", "regular_2");
-    textPiece_.emplace_back(":\n", "regular_5");
-    textPiece_.emplace_back("   std::string msg_; \n}; \n\n", "foreground");
-
-    // End of class
-    textPiece_.emplace_back("#endif ", "intense_6");
-    textPiece_.emplace_back("// EXCEPTION_H", "intense_4");
+                   // End of class
+                   {"#endif ", "intense_6"},
+                   {"// EXCEPTION_H", "intense_4"}
+    };
 }
 
 void DisplayWidget::DisplayWidgetImpl::doTextDspl() {
@@ -133,7 +130,6 @@ void DisplayWidget::DisplayWidgetImpl::setDsplLook(const color &color) {
     auto palette = textDspl_->palette();
     palette.setColor(QPalette::Base, QColor::fromRgb(color.r, color.g, color.b));
     textDspl_->setPalette(palette);
-
     textDspl_->update();
 }
 
@@ -177,7 +173,7 @@ void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
 
 // DisplayWidget
 
-DisplayWidget::DisplayWidget(const ColorsModel &c, QWidget *parent) {
+DisplayWidget::DisplayWidget(const ColorsModel &c, QWidget * /*parent*/) {
     auto layout = new QVBoxLayout{this};
     pimpl_ = new DisplayWidgetImpl{c, this, layout};
     layout->addWidget(pimpl_);

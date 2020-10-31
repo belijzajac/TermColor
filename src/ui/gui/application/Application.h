@@ -9,7 +9,7 @@
 ///
 /// This class catches any exceptions thrown inside proc()
 /// and shows them using the message() function.
-/// The virtual message() function can be overriden to customize
+/// The virtual message() function can be overridden to customize
 /// how the messages are shown. The default implementation
 /// shows them using QMessageBox.
 ///
