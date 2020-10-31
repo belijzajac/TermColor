@@ -1,7 +1,7 @@
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 
-#include <bits/exception.h>
+#include <exception>
 
 namespace TermColor::Utils {
 
