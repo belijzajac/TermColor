@@ -1,7 +1,7 @@
 #ifndef KONSOLEWRITER_H
 #define KONSOLEWRITER_H
 
-#include "../Writer.h"
+#include "backend/writer/Writer.h"
 
 namespace TermColor {
 

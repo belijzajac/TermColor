@@ -1,8 +1,8 @@
 #ifndef WRITER_H
 #define WRITER_H
 
+#include "backend/dominantcolor/DominantColor.h"
 #include <string>
-#include <backend/dominantcolor/DominantColor.h>
 
 namespace TermColor {
 

@@ -1,12 +1,12 @@
-#include <ui/gui/application/Application.h>
-#include <ui/gui/MainWindow.h>
+#include "gui/utils/Application.h"
+#include "gui/MainWindow.h"
 
 using namespace TermColor;
 
 int main(int argc, char *argv[]) {
     // Create application instance
     Application app{argc, argv};
-    MainWindow gui{argc, argv};
+    MainWindow gui{};
 
     // Set application metadata
     QCoreApplication::setApplicationName("TermColor");

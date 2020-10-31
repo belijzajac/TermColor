@@ -1,6 +1,0 @@
-add_subdirectory(gui)
-
-set(TERMCOLOR_SOURCES
-  ${TERMCOLOR_SOURCES}
-  PARENT_SCOPE
-)

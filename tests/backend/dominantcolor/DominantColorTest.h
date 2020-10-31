@@ -1,10 +1,9 @@
 #ifndef DOMINANTCOLORTEST_H
 #define DOMINANTCOLORTEST_H
 
+#include "DominantColor.h"
 #include <QObject>
 #include <memory>
-
-#include "DominantColor.h"
 
 class DominantColorTest : public QObject {
     Q_OBJECT
