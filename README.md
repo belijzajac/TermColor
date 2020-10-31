@@ -4,22 +4,23 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/05fe181231ee449f98c7ad8bb49c8e62)](https://www.codacy.com/manual/belijzajac/TermColor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=belijzajac/TermColor&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-![TermColor-preview](img/TermColor_preview.gif)
+![TermColor-preview](docs/TermColor_preview.gif)
 
 [YouTube link](https://youtu.be/QqSbcSTW530)
 
 ## About
 
-A simple program written in modern C++17, Qt5 framework, and OpenCV library for dynamically generating color-schemes for terminal emulators. Main functions include:
-*   It uses the K-means clustering algorithm to detect dominant colors in an image
-*   It then brightens the latter colors to obtain intense colors
-*   It's fast (thanks to C++)
+Effortlessly generate color-schemes for terminal emulators by a drop of a picture, powered by modern C++17, Qt5 framework, and OpenCV library. Notable features:
+
+*   Uses the K-means clustering algorithm to accurately identify dominant colors in an image
+*   Takes mere seconds for a color-scheme to appear in the terminal emulator
 
 ### Supported terminal emulators
 
 *   Konsole (KDE)
 *   Xfce4 Terminal (Xfce4)
 *   LXTerminal (LXDE)
+*   JSON (save the color-scheme to a file)
 
 [Status](STATUS.md)
 

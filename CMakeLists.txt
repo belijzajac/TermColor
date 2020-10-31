@@ -29,7 +29,7 @@ find_package(Qt5 5.9.5 REQUIRED
 
 # To have a shorter path to the include paths
 include_directories(
-  ${PROJECT_SOURCE_DIR}/lib/rapidjson/include/
+  ${PROJECT_SOURCE_DIR}/external/rapidjson/include/
 )
 
 # For UNIT testing
