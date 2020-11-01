@@ -1,4 +1,4 @@
-language: generic
+language: cpp
 dist: bionic
 sudo: required
 
@@ -33,7 +33,7 @@ matrix:
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
 before_install:
-  - sudo apt-get update
+  - sudo apt update
   - sudo apt install qt5-default
   # Manually install newer version of CMake
   - mkdir -p cmake
@@ -59,7 +59,6 @@ install:
   - cd ../../
 
 script:
-  - if [[ "$CXX" == clang* ]]; then export CXXFLAGS="-stdlib=libc++"; fi
   - mkdir -p build && cd build
   - cmake ..
   - make all
