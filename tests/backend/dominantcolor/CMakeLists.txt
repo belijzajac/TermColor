@@ -21,6 +21,7 @@ target_link_libraries(${DOMINANTCOLORTEST_TARGET}
   Qt5::Core
   Qt5::Test
   ${OpenCV_LIBS}
+  std::filesystem
 )
 
 add_test(DominantColorTest

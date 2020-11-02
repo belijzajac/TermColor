@@ -2,7 +2,14 @@
 
 #include "backend/exception/Exception.h"
 #include <fstream>
+
+#if defined(__GNUC__) && !__has_include(<filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
 #include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 namespace TermColor {
 
@@ -22,8 +29,8 @@ void LXTerminalWriter::writeToLocation(std::string_view name,
                                        const std::vector<color> &intense) const {
 
     // Creates a backup config file
-    if (!std::filesystem::exists(this->absolutePath("_BACKUP"))) {
-        std::filesystem::copy_file(this->absolutePath(""), this->absolutePath("_BACKUP"));
+    if (!fs::exists(this->absolutePath("_BACKUP"))) {
+        fs::copy_file(this->absolutePath(""), this->absolutePath("_BACKUP"));
     }
 
     std::ifstream fIn{absolutePath("")};
@@ -81,8 +88,8 @@ void LXTerminalWriter::writeToLocation(std::string_view name,
     fOut.close();
 
     // Overwrite file
-    std::filesystem::rename(this->absolutePath("_out"), this->absolutePath(""));
-    std::filesystem::remove(this->absolutePath("_out"));
+    fs::rename(this->absolutePath("_out"), this->absolutePath(""));
+    fs::remove(this->absolutePath("_out"));
 }
 
 }

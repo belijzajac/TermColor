@@ -3,7 +3,14 @@
 #include "backend/exception/Exception.h"
 #include <zconf.h>
 #include <pwd.h>
+
+#if defined(__GNUC__) && !__has_include(<filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
 #include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 namespace TermColor {
 
@@ -30,12 +37,12 @@ const std::string Writer::absolutePath(std::string_view fileName) const {
 }
 
 void Writer::checkDirectory(std::string_view path) {
-    std::filesystem::path dirPath{path.data()};
-    std::filesystem::directory_entry dirEntry{dirPath};
+    fs::path dirPath{path.data()};
+    fs::directory_entry dirEntry{dirPath};
 
     // Create directory if it doesn't exist
     if (!dirEntry.exists()) {
-        std::filesystem::create_directories(dirPath);
+        fs::create_directories(dirPath);
     }
 }
 

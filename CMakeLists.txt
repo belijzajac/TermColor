@@ -27,6 +27,10 @@ find_package(Qt5 5.9.5 REQUIRED
   Widgets
 )
 
+# std::filesystem
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+find_package(Filesystem REQUIRED)
+
 # To have a shorter path to the include paths
 include_directories(
   ${PROJECT_SOURCE_DIR}/external/rapidjson/include/

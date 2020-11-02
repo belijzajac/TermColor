@@ -6,7 +6,15 @@
 #include "backend/writer/lxterminalwriter/LXTerminalWriter.h"
 #include "backend/writer/jsonwriter/JsonWriter.h"
 #include "backend/exception/Exception.h"
+
+#if defined(__GNUC__) && !__has_include(<filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
 #include <filesystem>
+namespace fs = std::filesystem;
+#endif
+
 #include <ctime>
 
 namespace TermColor {
@@ -25,7 +33,7 @@ void TerminalsController::doTerminals() {
     std::vector<std::string> terminalsFound; // Found terminals in /bin
 
     // Find supported terminals in /bin
-    for (const auto &dirEntry : std::filesystem::recursive_directory_iterator("/bin")) {
+    for (const auto &dirEntry : fs::recursive_directory_iterator("/bin")) {
         const auto strEntry = dirEntry.path().string(); // e.g. "/bin/konsole"
 
         // Loop through terminals

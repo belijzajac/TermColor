@@ -3,7 +3,14 @@
 #include <QtTest/QtTest>
 #include <QObject>
 #include <opencv2/opencv.hpp>
+
+#if defined(__GNUC__) && !__has_include(<filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
 #include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 void DominantColorTest::init() {
     dominantColor_ = std::make_unique<TermColor::DominantColor>();
@@ -16,8 +23,6 @@ void DominantColorTest::init() {
 }
 
 void DominantColorTest::cleanup() {
-    namespace fs = std::filesystem;
-
     fs::path imgPath = fs::current_path();
     imgPath += "/image.jpg";
     fs::remove(imgPath);
