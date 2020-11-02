@@ -6,16 +6,10 @@
 #include "backend/writer/lxterminalwriter/LXTerminalWriter.h"
 #include "backend/writer/jsonwriter/JsonWriter.h"
 #include "backend/exception/Exception.h"
-
-#if defined(__GNUC__) && !__has_include(<filesystem>)
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-
 #include <ctime>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 namespace TermColor {
 

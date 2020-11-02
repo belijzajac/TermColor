@@ -18,5 +18,4 @@ target_link_libraries(${TERMCOLOR_TARGET}
   Qt5::Gui
   Qt5::Widgets
   ${OpenCV_LIBS}
-  std::filesystem
 )

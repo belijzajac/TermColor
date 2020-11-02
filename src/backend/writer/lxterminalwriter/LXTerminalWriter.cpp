@@ -2,14 +2,9 @@
 
 #include "backend/exception/Exception.h"
 #include <fstream>
-
-#if defined(__GNUC__) && !__has_include(<filesystem>)
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
 #include <filesystem>
+
 namespace fs = std::filesystem;
-#endif
 
 namespace TermColor {
 
