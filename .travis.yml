@@ -59,7 +59,7 @@ install:
   - cd ../../
 
 script:
-  - if [[ ${CXX} == clang* ]]; then export CXXFLAGS="-std=c++17 -stdlib=libc++ -lc++fs"; fi
+  - if [[ ${CXX} == clang* ]]; then export CXXFLAGS="-std=c++17 -stdlib=libc++"; fi
   - mkdir -p build && cd build
   - cmake ..
   - make all
