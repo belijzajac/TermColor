@@ -1,4 +1,4 @@
-language: cpp
+language: generic
 dist: bionic
 sudo: required
 
@@ -73,7 +73,8 @@ before_install:
   - tar xf cmake-3.14.5-Linux-x86_64.tar.gz -C cmake --strip-components=1
   - export PATH=${TRAVIS_BUILD_DIR}/cmake/bin:${PATH}
   
-install: 
+install:
+  - if [[ "$CXX" == clang* ]]; then export CXXFLAGS="-stdlib=libc++"; fi
   # Check versions of C++ compilers and CMake
   - echo ${CXX}
   - echo ${CC}
