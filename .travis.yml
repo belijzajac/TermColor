@@ -18,18 +18,38 @@ matrix:
             - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
-    
-    # clang++-9 and clang-9
-    - env: CXX=clang++-9 CC=clang-9
+    # g++-10 and gcc-10
+    - env: CXX=g++10 CC=gcc-10
       addons:
         apt:
           update: true
           packages:
-            - clang-9
-            - libc++-9-dev
-            - libc++abi-9-dev
+            - g++-10
           sources:
-            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+    # clang++-10 and clang-10
+    - env: CXX=clang++-10 CC=clang-10
+      addons:
+        apt:
+          update: true
+          packages:
+            - clang-10
+            - libc++-10-dev
+            - libc++abi-10-dev
+          sources:
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+    # clang++-11 and clang-11
+    - env: CXX=clang++-11 CC=clang-11
+      addons:
+        apt:
+          update: true
+          packages:
+            - clang-11
+            - libc++-11-dev
+            - libc++abi-11-dev
+          sources:
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
 before_install:
@@ -59,7 +79,6 @@ install:
   - cd ../../
 
 script:
-  - if [[ ${CXX} == clang* ]]; then export CXXFLAGS="-std=c++17 -stdlib=libc++"; fi
   - mkdir -p build && cd build
   - cmake ..
   - make all
