@@ -1,7 +1,7 @@
 # TermColor
 
 [![Build Status](https://travis-ci.org/belijzajac/TermColor.svg?branch=master)](https://travis-ci.org/belijzajac/TermColor)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/05fe181231ee449f98c7ad8bb49c8e62)](https://www.codacy.com/manual/belijzajac/TermColor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=belijzajac/TermColor&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/0b2cf7f9e120499bba51d817cf451000)](https://www.codacy.com/gh/belijzajac/TermColor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=belijzajac/TermColor&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 ![TermColor-preview](docs/TermColor_preview.gif)
