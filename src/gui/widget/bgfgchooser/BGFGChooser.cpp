@@ -29,9 +29,10 @@ BGFGChooser::BGFGChooser(QWidget *parent) : QWidget{parent} {
 
 void BGFGChooser::doConnections() {
     // darkBtn_ (id = 0) or lightBtn_ (id = 1) is clicked
-    connect(btnGroup_, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id) {
-        if (id == 0 || id == 1)
+    connect(btnGroup_, &QButtonGroup::idClicked, [=](int id) {
+        if (id == 0 || id == 1) {
             emit radioBtnClicked(id);
+        }
     });
 }
 
