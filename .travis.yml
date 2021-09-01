@@ -86,13 +86,13 @@ install:
   - unzip opencv-3.4.2.zip && rm opencv-3.4.2.zip
   - cd opencv-3.4.2 && mkdir build && cd build
   # Build OpenCV
-  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
-  - make -j $(nproc)
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
+  - make -j$(nproc)
   - sudo make install
   - cd ../../
 
 script:
   - mkdir -p build && cd build
   - cmake ..
-  - make all
+  - make -j$(nproc) all
   - make test
