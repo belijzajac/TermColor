@@ -19,9 +19,9 @@ void Xfce4TerminalWriter::writeToLocation(std::string_view name,
                                           const std::vector<color_t> &bgfg,
                                           const std::vector<color_t> &bgfgIntense,
                                           const std::vector<color_t> &regular,
-                                          const std::vector<color_t> &intense) const {
+                                          const std::vector<color_t> &intense) {
 
-    const std::string pathToFile{ absolutePath(name.data()) };
+    const auto pathToFile{ absolutePath(name.data()) };
 
     if (std::ofstream f{pathToFile}; f) {
         // Write general info

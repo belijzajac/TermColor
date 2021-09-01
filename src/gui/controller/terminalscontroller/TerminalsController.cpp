@@ -53,7 +53,7 @@ void TerminalsController::doTerminals() {
     }
 }
 
-const std::string currentTimestamp() {
+std::string currentTimestamp() {
     std::time_t  time = std::time(nullptr);
     std::tm *timeNow  = std::localtime(&time);
 
@@ -69,7 +69,7 @@ void TerminalsController::onProcessSave(std::string_view saveOption) {
     using namespace TermColor::Utils;
 
     try {
-        const auto termType = TerminalsModel::terminalToEnum_[saveOption.data()];
+        const auto &termType = TerminalsModel::terminalToEnum_[saveOption.data()];
 
         // Construct appropriate terminal writer
         const auto writer = [&]() -> std::unique_ptr<Writer> {
@@ -93,7 +93,7 @@ void TerminalsController::onProcessSave(std::string_view saveOption) {
 }
 
 void TerminalsController::onSaveToJson(std::string_view saveLocation) {
-    const auto jsonWriter = std::make_unique<JsonWriter>();
+    auto jsonWriter = std::make_unique<JsonWriter>();
     const auto &colors = colorsModel_.getColors();
     jsonWriter->writeToLocation(saveLocation, colors.BGFG_, colors.BGFGintense_, colors.regular_, colors.intense_);
 }

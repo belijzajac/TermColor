@@ -14,7 +14,7 @@ public:
                          const std::vector<color_t> &,
                          const std::vector<color_t> &,
                          const std::vector<color_t> &,
-                         const std::vector<color_t> &) const override;
+                         const std::vector<color_t> &) override;
 
 private:
     std::vector<std::string> nameColors_;

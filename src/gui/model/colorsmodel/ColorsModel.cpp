@@ -9,7 +9,7 @@ public:
     explicit ColorsModelImpl(ColorsModel &p);
 
     // ColorsModel::Colors getters/setters
-    const ColorsModel::Colors &getColors() const { return colors_; }
+    ColorsModel::Colors &getColors() { return colors_; }
     void setImgColors(const std::vector<color_t> &colors);
     void setBGFGColors(const std::vector<color_t> &bgfg);
 
@@ -77,7 +77,7 @@ ColorsModel::~ColorsModel() = default;
 
 ColorsModel::Colors::Colors() : changedState_{ChangedState::None}, BGFG_{}, BGFGintense_{}, regular_{}, intense_{} {}
 
-const ColorsModel::Colors &ColorsModel::getColors() const {
+ColorsModel::Colors &ColorsModel::getColors() const {
     return pimpl_->getColors();
 }
 

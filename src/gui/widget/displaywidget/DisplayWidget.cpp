@@ -107,7 +107,7 @@ void DisplayWidget::DisplayWidgetImpl::doTextDspl() {
     textDspl_->clear();
 
     // Save previous text info
-    const auto oldTextColor = textDspl_->textColor();
+    const auto &oldTextColor = textDspl_->textColor();
 
     std::for_each(textPiece_.begin(), textPiece_.end(), [&oldTextColor, this](const auto &t) {
         // Extract color representing key
@@ -144,24 +144,21 @@ void DisplayWidget::DisplayWidgetImpl::setFont() {
 
 void DisplayWidget::DisplayWidgetImpl::onModelChanged() {
     const auto &colors = colorsModel_.getColors();
-    const auto state = colors.changedState_;
+    const auto &state = colors.changedState_;
 
     if (state == ColorsModel::ChangedState::NewColors) {
         // Populate colorCombos_ with regular colors
         for (unsigned long i = 0; i < colors.regular_.size(); ++i) {
             colorCombos_["regular_" + std::to_string(i)] = colors.regular_.at(i);
         }
-
         // Populate colorCombos_ with intense colors
         for (unsigned long i = 0; i < colors.intense_.size(); ++i) {
             colorCombos_["intense_" + std::to_string(i)] = colors.intense_.at(i);
         }
-
     } else if (state == ColorsModel::ChangedState::Background) {
         // Populate colorCombos_ with foreground color
         // If the key already exists, just change the foreground
         colorCombos_.try_emplace("foreground", colors.BGFG_.at(1));
-
         // Only at this point of the state we have sufficient data for the textDspl_
         setDsplLook(colors.BGFG_.at(0));
         doTextDspl();

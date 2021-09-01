@@ -21,7 +21,7 @@ void LXTerminalWriter::writeToLocation(std::string_view name,
                                        const std::vector<color_t> &bgfg,
                                        const std::vector<color_t> &bgfgIntense,
                                        const std::vector<color_t> &regular,
-                                       const std::vector<color_t> &intense) const {
+                                       const std::vector<color_t> &intense) {
 
     // Creates a backup config file
     if (!fs::exists(this->absolutePath("_BACKUP"))) {
@@ -38,10 +38,10 @@ void LXTerminalWriter::writeToLocation(std::string_view name,
     // Read input file by line and replace each of it lines
     std::string tempStr;
     int cIterNo = 0;
-    const auto bgColor{"bgcolor="};
-    const auto fgColor{"fgcolor="};
-    const auto cPresent{"color_preset="};
-    const auto cPallete{"palette_color_"}; // palette_color_0=rgb(0,0,0)
+    const char *bgColor{"bgcolor="};
+    const char *fgColor{"fgcolor="};
+    const char *cPresent{"color_preset="};
+    const char *cPallete{"palette_color_"}; // palette_color_0=rgb(0,0,0)
 
     while (std::getline(fIn, tempStr)) {
         // background

@@ -30,7 +30,7 @@ public:
     };
 
     // Methods for Colors
-    const Colors &getColors() const;
+    Colors &getColors() const;
     void setImgColors(const std::vector<color_t> &colors);
     void setBGFGColors(const std::vector<color_t> &bgfg);
 

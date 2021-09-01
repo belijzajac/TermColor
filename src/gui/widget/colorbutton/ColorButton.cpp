@@ -15,7 +15,7 @@ ColorButton::ColorButton(std::string_view name, const color_t &color, QWidget *p
 }
 
 void ColorButton::registerToolTip() {
-    const QString tooltip = QString{"(%1, %2, %3)"}.arg(color_.r).arg(color_.g).arg(color_.b);
+    const QString &tooltip = QString{"(%1, %2, %3)"}.arg(color_.r).arg(color_.g).arg(color_.b);
     btn_->setToolTip(tooltip);
 }
 

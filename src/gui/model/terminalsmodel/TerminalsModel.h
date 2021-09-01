@@ -42,7 +42,7 @@ public:
     };
 
     // Methods for Terminals
-    const Terminals &getTerminals() const;
+    Terminals &getTerminals() const;
     void insertTerminals(const std::vector<std::string> &term);
 
 signals:
