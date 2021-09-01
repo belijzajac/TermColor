@@ -20,7 +20,7 @@ private:
     void allocateButtons();
     void layoutButtons();
     void layoutOtherButtons(const std::vector<ColorButton *> &btns, int column);
-    void updateBtnsColors(const std::vector<ColorButton *> &btns, const std::vector<color> &colors);
+    void updateBtnsColors(const std::vector<ColorButton *> &btns, const std::vector<color_t> &colors);
 
     const ColorsModel &colorsModel_;
     ColorsTableWidget *parent_;
@@ -101,7 +101,7 @@ void ColorsTableWidget::ColorsTableWidgetImpl::onModelChanged() {
 }
 
 void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vector<ColorButton *> &btns,
-                                                                const std::vector<color> &colors) {
+                                                                const std::vector<color_t> &colors) {
     for (unsigned long btnInd = 0; btnInd < btns.size(); ++btnInd) {
         btns.at(btnInd)->setColor(colors.at(btnInd));
 

@@ -16,10 +16,10 @@ Xfce4TerminalWriter::Xfce4TerminalWriter()
 }
 
 void Xfce4TerminalWriter::writeToLocation(std::string_view name,
-                                          const std::vector<color> &bgfg,
-                                          const std::vector<color> &bgfgIntense,
-                                          const std::vector<color> &regular,
-                                          const std::vector<color> &intense) const {
+                                          const std::vector<color_t> &bgfg,
+                                          const std::vector<color_t> &bgfgIntense,
+                                          const std::vector<color_t> &regular,
+                                          const std::vector<color_t> &intense) const {
 
     const std::string pathToFile{ absolutePath(name.data()) };
 
@@ -30,7 +30,7 @@ void Xfce4TerminalWriter::writeToLocation(std::string_view name,
 
         // Write background and foreground
         const std::vector<std::string> bgfgStr {"ColorBackground=", "ColorForeground="};
-        std::for_each(bgfg.begin(), bgfg.end(), [=, &f, count = 0](const color &color) mutable {
+        std::for_each(bgfg.begin(), bgfg.end(), [=, &f, count = 0](const color_t &color) mutable {
             f << bgfgStr.at(count) << "rgb(" << color.getCommaSeparatedStr() << ")\n";
             ++count;
         });
@@ -39,12 +39,12 @@ void Xfce4TerminalWriter::writeToLocation(std::string_view name,
         f << "ColorPalette=";
 
         // Regular colors
-        std::for_each(regular.begin(), regular.end(), [=, &f](const color &color) {
+        std::for_each(regular.begin(), regular.end(), [=, &f](const color_t &color) {
             f << "rgb(" << color.getCommaSeparatedStr() << ");";
         });
 
         // Intense colors
-        std::for_each(intense.begin(), intense.end(), [=, &f](const color &color) {
+        std::for_each(intense.begin(), intense.end(), [=, &f](const color_t &color) {
             f << "rgb(" << color.getCommaSeparatedStr() << ");";
         });
     } else {

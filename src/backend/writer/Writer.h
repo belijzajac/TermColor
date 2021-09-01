@@ -15,10 +15,10 @@ public:
 
     // Writes color-scheme to file
     virtual void writeToLocation(std::string_view name,
-                                 const std::vector<TermColor::Utils::color> &,              // BG/FG colors
-                                 const std::vector<TermColor::Utils::color> &,              // Intense BG/FG colors
-                                 const std::vector<TermColor::Utils::color> &,              // Regular colors
-                                 const std::vector<TermColor::Utils::color> &) const = 0;   // Intense colors
+                                 const std::vector<color_t> &,              // BG/FG colors
+                                 const std::vector<color_t> &,              // Intense BG/FG colors
+                                 const std::vector<color_t> &,              // Regular colors
+                                 const std::vector<color_t> &) const = 0;   // Intense colors
 
     // Returns an absolute location to color schemes save folder
     const std::string absolutePath(std::string_view fileName) const;

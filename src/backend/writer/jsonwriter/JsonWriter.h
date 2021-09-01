@@ -11,10 +11,10 @@ public:
     ~JsonWriter() = default;
 
     void writeToLocation(std::string_view name,
-                         const std::vector<TermColor::Utils::color> &,
-                         const std::vector<TermColor::Utils::color> &,
-                         const std::vector<TermColor::Utils::color> &,
-                         const std::vector<TermColor::Utils::color> &) const override;
+                         const std::vector<color_t> &,
+                         const std::vector<color_t> &,
+                         const std::vector<color_t> &,
+                         const std::vector<color_t> &) const override;
 };
 
 }

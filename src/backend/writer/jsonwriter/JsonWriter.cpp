@@ -21,11 +21,11 @@ JsonWriter::JsonWriter()
 }
 
 // A helper function for writing comma separated color values
-void writeCommaSepStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName, const std::vector<color> &cl) {
+void writeCommaSepStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName, const std::vector<color_t> &cl) {
     writer.String(blockName.data());
     writer.StartArray();
 
-    std::for_each(cl.begin(), cl.end(), [&writer](const color &c){
+    std::for_each(cl.begin(), cl.end(), [&writer](const color_t &c){
         const char *colorStr = c.getCommaSeparatedStr().c_str();
         writer.String(colorStr);
     });
@@ -34,11 +34,11 @@ void writeCommaSepStr(PrettyWriter<StringBuffer> &writer, std::string_view block
 }
 
 // A helper function for writing colors in their hexadecimal format
-void writeHexStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName, const std::vector<color> &cl) {
+void writeHexStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName, const std::vector<color_t> &cl) {
     writer.String(blockName.data());
     writer.StartArray();
 
-    std::for_each(cl.begin(), cl.end(), [&writer](const color &c){
+    std::for_each(cl.begin(), cl.end(), [&writer](const color_t &c){
         const char *colorStr = c.getHexStr().c_str();
         writer.String(colorStr);
     });
@@ -47,10 +47,10 @@ void writeHexStr(PrettyWriter<StringBuffer> &writer, std::string_view blockName,
 }
 
 void JsonWriter::writeToLocation(std::string_view name,
-                                 const std::vector<color> &bgfg,
-                                 const std::vector<color> &bgfgIntense,
-                                 const std::vector<color> &regular,
-                                 const std::vector<color> &intense) const {
+                                 const std::vector<color_t> &bgfg,
+                                 const std::vector<color_t> &bgfgIntense,
+                                 const std::vector<color_t> &regular,
+                                 const std::vector<color_t> &intense) const {
 
     if (std::ofstream f{name.data()}; f) {
         // Prepare buffer and document

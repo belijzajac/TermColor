@@ -18,10 +18,10 @@ LXTerminalWriter::LXTerminalWriter()
 }
 
 void LXTerminalWriter::writeToLocation(std::string_view name,
-                                       const std::vector<color> &bgfg,
-                                       const std::vector<color> &bgfgIntense,
-                                       const std::vector<color> &regular,
-                                       const std::vector<color> &intense) const {
+                                       const std::vector<color_t> &bgfg,
+                                       const std::vector<color_t> &bgfgIntense,
+                                       const std::vector<color_t> &regular,
+                                       const std::vector<color_t> &intense) const {
 
     // Creates a backup config file
     if (!fs::exists(this->absolutePath("_BACKUP"))) {

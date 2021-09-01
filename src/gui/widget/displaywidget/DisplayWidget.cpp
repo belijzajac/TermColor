@@ -20,7 +20,7 @@ public:
 private:
     void initTextPieces();
     void doTextDspl();
-    void setDsplLook(const color &color);
+    void setDsplLook(const color_t &color);
     void setFont();
 
 private:
@@ -28,7 +28,7 @@ private:
     QTextEdit *textDspl_;
 
     // Possible combinations of colors
-    std::unordered_map<std::string, color> colorCombos_;          // e.g. {"regular_1", {255,255,255}}
+    std::unordered_map<std::string, color_t> colorCombos_;          // e.g. {"regular_1", {255,255,255}}
 
     // Holding each text piece (text + its color)
     std::vector<std::tuple<std::string, std::string>> textPiece_; // e.g. {"#ifndef", "regular_1"}
@@ -125,7 +125,7 @@ void DisplayWidget::DisplayWidgetImpl::doTextDspl() {
     });
 }
 
-void DisplayWidget::DisplayWidgetImpl::setDsplLook(const color &color) {
+void DisplayWidget::DisplayWidgetImpl::setDsplLook(const color_t &color) {
     auto palette = textDspl_->palette();
     palette.setColor(QPalette::Base, QColor::fromRgb(color.r, color.g, color.b));
     textDspl_->setPalette(palette);

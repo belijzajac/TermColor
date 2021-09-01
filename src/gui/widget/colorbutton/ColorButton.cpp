@@ -6,7 +6,7 @@ namespace TermColor {
 
 using namespace TermColor::Utils;
 
-ColorButton::ColorButton(std::string_view name, const color &color, QWidget *parent)
+ColorButton::ColorButton(std::string_view name, const color_t &color, QWidget *parent)
     : QWidget{parent}
     , name_{name.data()}
     , color_{color}
@@ -25,7 +25,7 @@ void ColorButton::setStylesheet() {
     setColor(this->color_);
 }
 
-void ColorButton::setColor(const color &color) {
+void ColorButton::setColor(const color_t &color) {
     color_ = color;
     registerToolTip();
 
