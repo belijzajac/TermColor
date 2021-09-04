@@ -5,8 +5,6 @@
 #include <opencv2/opencv.hpp>
 #include <filesystem>
 
-namespace fs = std::filesystem;
-
 void DominantColorTest::init() {
     dominantColor_ = std::make_unique<TermColor::DominantColor>();
 
@@ -18,13 +16,14 @@ void DominantColorTest::init() {
 }
 
 void DominantColorTest::cleanup() {
+    namespace fs = std::filesystem;
     fs::path imgPath = fs::current_path();
     imgPath += "/image.jpg";
     fs::remove(imgPath);
 }
 
 void DominantColorTest::testDominantColors() {
-    const auto domColors = dominantColor_->getColors();
+    const auto &domColors = dominantColor_->getColors();
     QVERIFY(!domColors.empty());
 
     std::vector<TermColor::Utils::color> expectedColors = {
@@ -36,7 +35,7 @@ void DominantColorTest::testDominantColors() {
 }
 
 void DominantColorTest::testBGFGColors() {
-    const auto bgfgColors = dominantColor_->getBGFGColors();
+    const auto &bgfgColors = dominantColor_->getBGFGColors();
     QVERIFY(!bgfgColors.empty());
 
     std::vector<TermColor::Utils::color> expectedColors = {
@@ -48,10 +47,10 @@ void DominantColorTest::testBGFGColors() {
 }
 
 void DominantColorTest::testIntenseColors() {
-    const auto domColors = dominantColor_->getColors();
+    const auto &domColors = dominantColor_->getColors();
     QVERIFY(!domColors.empty());
 
-    const auto intenseColors = dominantColor_->intenseColors(domColors);
+    const auto &intenseColors = dominantColor_->intenseColors(domColors);
     QVERIFY(!intenseColors.empty());
 
     std::vector<TermColor::Utils::color> expectedColors = {
