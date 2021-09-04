@@ -14,9 +14,9 @@ public:
 
     void readImage(std::string_view name);
     void performKMeans();
-    const std::vector<color> getColors() const;
-    const std::vector<color> getBGFGColors(bool) const;
-    const std::vector<color> intenseColors(const std::vector<color> &colors) const;
+    std::vector<color_t> getColors() const;
+    std::vector<color_t> getBGFGColors(bool) const;
+    std::vector<color_t> intenseColors(const std::vector<color_t> &colors) const;
 
 private:
     // Does K-Mean's algorithm
@@ -29,18 +29,18 @@ private:
     // Basically creates a copy of rearranged image in such way
     // that {r,g,b} is continuously filled down the first column,
     // instead of going further in a row
-    const cv::Mat mapAndRearrange() const;
+    cv::Mat mapAndRearrange() const;
 
     // Extracts colors from centers
-    const std::vector<color> extractColors(const cv::Mat &centers) const;
+    std::vector<color_t> extractColors(const cv::Mat &centers) const;
 
 private:
     cv::Mat img_;
-    std::vector<color> colors_;
+    std::vector<color_t> colors_;
 
     // BG and FG colors
-    std::vector<color> darkBGFG {{40, 38, 45}};
-    std::vector<color> lightBGFG {{255, 255, 255}};
+    std::vector<color_t> darkBGFG {{40, 38, 45}};
+    std::vector<color_t> lightBGFG {{255, 255, 255}};
 };
 
 void DominantColor::DominantColorImpl::readImage(std::string_view name) {
@@ -127,7 +127,7 @@ int DominantColor::DominantColorImpl::getNumOfClusters() const {
     return static_cast<int>(clusters.size());
 }
 
-const cv::Mat DominantColor::DominantColorImpl::mapAndRearrange() const {
+cv::Mat DominantColor::DominantColorImpl::mapAndRearrange() const {
     // We do this because in order to perform kmeans algorithm,
     // img_.depth() must be of type CV_32F
     cv::Mat modifiedImg(img_.total(), 3, CV_32F);
@@ -157,49 +157,43 @@ const cv::Mat DominantColor::DominantColorImpl::mapAndRearrange() const {
     return modifiedImg;
 }
 
-const std::vector<color> DominantColor::DominantColorImpl::extractColors(const cv::Mat &centers) const {
-    std::vector<color> extracted;
-
+std::vector<color_t> DominantColor::DominantColorImpl::extractColors(const cv::Mat &centers) const {
+    std::vector<color_t> extracted;
     for (int row = 0; row != centers.rows; ++row) {
         size_t r = static_cast<int>(centers.at<float>(row, 0));
         size_t g = static_cast<int>(centers.at<float>(row, 1));
         size_t b = static_cast<int>(centers.at<float>(row, 2));
-
         extracted.push_back({r, g, b});
     }
-
     return extracted;
 }
 
-const std::vector<color> DominantColor::DominantColorImpl::getColors() const {
+std::vector<color_t> DominantColor::DominantColorImpl::getColors() const {
     return colors_;
 }
 
 // Linearly interpolate between the original color and the target color (often white)
 // Formula: C = A + (B - A) * time,
 // C - in-between color, A and B - two colors, 0 <= time < 16
-const color brightenColor(const color &c, int time) {
-    const auto whiteColor = color{255, 255, 255};
-
-    return color{
+color_t brightenColor(const color_t &c, int time) {
+    const auto &whiteColor = color_t{255, 255, 255};
+    return color_t{
         c.r + (time * (whiteColor.r - c.r)) / 15,
         c.g + (time * (whiteColor.g - c.g)) / 15,
         c.b + (time * (whiteColor.b - c.b)) / 15,
     };
 }
 
-const std::vector<color> DominantColor::DominantColorImpl::intenseColors(const std::vector<color> &colors) const {
-    std::vector<color> intenseColors;
-
-    std::for_each(colors.begin(), colors.end(), [&intenseColors](const color &color){
+std::vector<color_t> DominantColor::DominantColorImpl::intenseColors(const std::vector<color_t> &colors) const {
+    std::vector<color_t> intenseColors;
+    std::for_each(colors.begin(), colors.end(), [&intenseColors](const color_t &color){
         intenseColors.push_back({brightenColor(color, 6)});
     });
-
     return intenseColors;
 }
 
-const std::vector<color> DominantColor::DominantColorImpl::getBGFGColors(bool isDark) const {
-    return (isDark)? darkBGFG : lightBGFG;
+std::vector<color_t> DominantColor::DominantColorImpl::getBGFGColors(bool isDark) const {
+    return isDark ? darkBGFG : lightBGFG;
 }
 
 /// DominantColor
@@ -216,27 +210,26 @@ void DominantColor::performKMeans() {
     pimpl_->performKMeans();
 }
 
-const std::vector<color> DominantColor::getColors() const {
+std::vector<color_t> DominantColor::getColors() const {
     return pimpl_->getColors();
 }
 
-const std::vector<color> DominantColor::intenseColors(const std::vector<color> &colors) const {
+std::vector<color_t> DominantColor::intenseColors(const std::vector<color_t> &colors) const {
     return pimpl_->intenseColors(colors);
 }
 
-const std::vector<color> DominantColor::getBGFGColors(bool isDark) const {
+std::vector<color_t> DominantColor::getBGFGColors(bool isDark) const {
     return pimpl_->getBGFGColors(isDark);
 }
 
 // color
 
-const std::string color::getCommaSeparatedStr() const {
+std::string color::getCommaSeparatedStr() const {
     return std::to_string(r) + "," + std::to_string(g) + "," + std::to_string(b);
 }
 
-const std::string color::getHexStr() const {
+std::string color::getHexStr() const {
     std::stringstream ss;
-
     ss << std::hex << r << std::hex << g << std::hex << b;
     return std::string{"#" + ss.str()};
 }

@@ -9,9 +9,9 @@ public:
     explicit ColorsModelImpl(ColorsModel &p);
 
     // ColorsModel::Colors getters/setters
-    const ColorsModel::Colors &getColors() const { return colors_; }
-    void setImgColors(const std::vector<color> &colors);
-    void setBGFGColors(const std::vector<color> &bgfg);
+    ColorsModel::Colors &getColors() { return colors_; }
+    void setImgColors(const std::vector<color_t> &colors);
+    void setBGFGColors(const std::vector<color_t> &bgfg);
 
     // imagePath_ getters/setters
     void setImagePath(const QString &path);
@@ -34,7 +34,7 @@ const std::string &ColorsModel::ColorsModelImpl::getImagePath() const {
     return imagePath_;
 }
 
-void ColorsModel::ColorsModelImpl::setImgColors(const std::vector<color> &colors) {
+void ColorsModel::ColorsModelImpl::setImgColors(const std::vector<color_t> &colors) {
     const auto size = colors.size();
 
     // Clear existing colors
@@ -51,7 +51,7 @@ void ColorsModel::ColorsModelImpl::setImgColors(const std::vector<color> &colors
 }
 
 // Does same thing as setImgColors, but with BG/FG colors
-void ColorsModel::ColorsModelImpl::setBGFGColors(const std::vector<color> &bgfg) {
+void ColorsModel::ColorsModelImpl::setBGFGColors(const std::vector<color_t> &bgfg) {
     const auto size = bgfg.size();
 
     // Clear existing colors
@@ -77,7 +77,7 @@ ColorsModel::~ColorsModel() = default;
 
 ColorsModel::Colors::Colors() : changedState_{ChangedState::None}, BGFG_{}, BGFGintense_{}, regular_{}, intense_{} {}
 
-const ColorsModel::Colors &ColorsModel::getColors() const {
+ColorsModel::Colors &ColorsModel::getColors() const {
     return pimpl_->getColors();
 }
 
@@ -88,11 +88,11 @@ void ColorsModel::onImageDropped(const QString &path) {
     emit hideImageDropWidget();
 }
 
-void ColorsModel::setImgColors(const std::vector<color> &colors) {
+void ColorsModel::setImgColors(const std::vector<color_t> &colors) {
     pimpl_->setImgColors(colors);
 }
 
-void ColorsModel::setBGFGColors(const std::vector<color> &bgfg) {
+void ColorsModel::setBGFGColors(const std::vector<color_t> &bgfg) {
     pimpl_->setBGFGColors(bgfg);
 }
 

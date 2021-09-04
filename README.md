@@ -1,6 +1,6 @@
 # TermColor
 
-[![Build Status](https://travis-ci.org/belijzajac/TermColor.svg?branch=master)](https://travis-ci.org/belijzajac/TermColor)
+[![Build Status](https://app.travis-ci.com/belijzajac/TermColor.svg?branch=master)](https://app.travis-ci.com/belijzajac/TermColor)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0b2cf7f9e120499bba51d817cf451000)](https://www.codacy.com/gh/belijzajac/TermColor/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=belijzajac/TermColor&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -58,8 +58,8 @@ unzip opencv-3.4.2.zip && rm opencv-3.4.2.zip
 cd opencv-3.4.2 && mkdir build && cd build
 
 # Build OpenCV
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
-make -j $(nproc)
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ..
+make -j$(nproc)
 make install
 ```
 
@@ -79,7 +79,7 @@ cd TermColor
 git submodule update --init --recursive
 mkdir build && cd build
 cmake ..
-make TermColor
+make -j$(nproc) TermColor
 ```
 
 ## Running

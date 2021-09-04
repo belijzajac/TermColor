@@ -20,7 +20,7 @@ private:
     void allocateButtons();
     void layoutButtons();
     void layoutOtherButtons(const std::vector<ColorButton *> &btns, int column);
-    void updateBtnsColors(const std::vector<ColorButton *> &btns, const std::vector<color> &colors);
+    void updateBtnsColors(const std::vector<ColorButton *> &btns, const std::vector<color_t> &colors);
 
     const ColorsModel &colorsModel_;
     ColorsTableWidget *parent_;
@@ -85,7 +85,7 @@ void ColorsTableWidget::ColorsTableWidgetImpl::layoutOtherButtons(const std::vec
 
 void ColorsTableWidget::ColorsTableWidgetImpl::onModelChanged() {
     const auto &colors = colorsModel_.getColors();
-    const auto state = colors.changedState_;
+    const auto &state = colors.changedState_;
 
     if (state == ColorsModel::ChangedState::NewColors) {
         // Regular colors and Intense colors
@@ -101,10 +101,9 @@ void ColorsTableWidget::ColorsTableWidgetImpl::onModelChanged() {
 }
 
 void ColorsTableWidget::ColorsTableWidgetImpl::updateBtnsColors(const std::vector<ColorButton *> &btns,
-                                                                const std::vector<color> &colors) {
+                                                                const std::vector<color_t> &colors) {
     for (unsigned long btnInd = 0; btnInd < btns.size(); ++btnInd) {
         btns.at(btnInd)->setColor(colors.at(btnInd));
-
         // In case we've managed to obtain less colors than there are actual buttons
         if (btnInd >= colors.size()) {
             continue;

@@ -16,7 +16,7 @@ Writer::Writer(std::string_view loc, const filename &fileInfo)
     checkDirectory("/home/" + getUsername() + "/" + location_);
 }
 
-const std::string Writer::getUsername() {
+std::string Writer::getUsername() {
     using namespace TermColor::Utils;
     uid_t uid{geteuid()};
 
@@ -27,7 +27,7 @@ const std::string Writer::getUsername() {
     throw TermColorException{"cannot get current logged in user's username"};
 }
 
-const std::string Writer::absolutePath(std::string_view fileName) const {
+std::string Writer::absolutePath(std::string_view fileName) {
     return "/home/" + getUsername() + "/" + location_ + fileInfo_.prefix + fileName.data() + fileInfo_.format;
 }
 

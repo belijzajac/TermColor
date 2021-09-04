@@ -11,17 +11,17 @@ public:
     virtual ~Writer() = default;
 
     // Get username of current user logged in on Linux
-    static const std::string getUsername();
+    static std::string getUsername();
 
     // Writes color-scheme to file
     virtual void writeToLocation(std::string_view name,
-                                 const std::vector<TermColor::Utils::color> &,              // BG/FG colors
-                                 const std::vector<TermColor::Utils::color> &,              // Intense BG/FG colors
-                                 const std::vector<TermColor::Utils::color> &,              // Regular colors
-                                 const std::vector<TermColor::Utils::color> &) const = 0;   // Intense colors
+                                 const std::vector<color_t> &,              // BG/FG colors
+                                 const std::vector<color_t> &,              // Intense BG/FG colors
+                                 const std::vector<color_t> &,              // Regular colors
+                                 const std::vector<color_t> &) = 0;         // Intense colors
 
     // Returns an absolute location to color schemes save folder
-    const std::string absolutePath(std::string_view fileName) const;
+    std::string absolutePath(std::string_view fileName);
 
 private:
     // Checks if provided directory exists, if not - creates it

@@ -30,8 +30,7 @@ void DropArea::dropEvent(QDropEvent *event) {
 
         // Remove new line symbol ("\r\n") in case it gets appended to the dropped mimeData
         const std::string newLn {"\r\n"};
-        const auto loc = picLocationStr.find(newLn);
-
+        const auto &loc = picLocationStr.find(newLn);
         if (loc != std::string::npos) {
             const auto goodStr = picLocationStr.substr(0, loc);
 

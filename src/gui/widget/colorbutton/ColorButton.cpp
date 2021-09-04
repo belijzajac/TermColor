@@ -6,7 +6,7 @@ namespace TermColor {
 
 using namespace TermColor::Utils;
 
-ColorButton::ColorButton(std::string_view name, const color &color, QWidget *parent)
+ColorButton::ColorButton(std::string_view name, const color_t &color, QWidget *parent)
     : QWidget{parent}
     , name_{name.data()}
     , color_{color}
@@ -15,7 +15,7 @@ ColorButton::ColorButton(std::string_view name, const color &color, QWidget *par
 }
 
 void ColorButton::registerToolTip() {
-    const QString tooltip = QString{"(%1, %2, %3)"}.arg(color_.r).arg(color_.g).arg(color_.b);
+    const QString &tooltip = QString{"(%1, %2, %3)"}.arg(color_.r).arg(color_.g).arg(color_.b);
     btn_->setToolTip(tooltip);
 }
 
@@ -25,7 +25,7 @@ void ColorButton::setStylesheet() {
     setColor(this->color_);
 }
 
-void ColorButton::setColor(const color &color) {
+void ColorButton::setColor(const color_t &color) {
     color_ = color;
     registerToolTip();
 

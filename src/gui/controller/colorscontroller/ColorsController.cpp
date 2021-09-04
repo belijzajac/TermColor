@@ -23,11 +23,11 @@ void ColorsController::doImageColors(std::string_view imgPath) {
 
         // Obtains extracted colors
         auto dominantColors = domColor->getColors();
-        const auto intenseColors = domColor->intenseColors(dominantColors);
+        const auto &intenseColors = domColor->intenseColors(dominantColors);
 
         // Obtain predefined BG/FG colors
         auto bgfg = domColor->getBGFGColors();
-        const auto bgfgIntense = domColor->intenseColors(bgfg);
+        const auto &bgfgIntense = domColor->intenseColors(bgfg);
 
         // Copy colors to one continuous vector<color> DS
         dominantColors.insert(dominantColors.end(), intenseColors.begin(), intenseColors.end());
@@ -46,7 +46,7 @@ void ColorsController::onRadioBtnClicked(int id) {
     // Dark BG/FG (id = 0) or Light BG/FG (id = 1)
     // getBGFGColors(true) ==> obtain dark BG/FG, otherwise (if false) - light BG/FG
     auto bgfg = domColor->getBGFGColors(id == 0);
-    const auto bgfgIntense = domColor->intenseColors(bgfg);
+    const auto &bgfgIntense = domColor->intenseColors(bgfg);
 
     // Copy colors to one continuous vector<color> DS
     bgfg.insert(bgfg.end(), bgfgIntense.begin(), bgfgIntense.end());

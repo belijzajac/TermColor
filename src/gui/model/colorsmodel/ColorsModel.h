@@ -23,16 +23,16 @@ public:
         Colors();
 
         ChangedState changedState_;
-        std::vector<TermColor::Utils::color> BGFG_;        // Background and Foreground colors
-        std::vector<TermColor::Utils::color> BGFGintense_; // Same as above, but intense
-        std::vector<TermColor::Utils::color> regular_;     // Regular colors
-        std::vector<TermColor::Utils::color> intense_;     // Intense colors
+        std::vector<color_t> BGFG_;        // Background and Foreground colors
+        std::vector<color_t> BGFGintense_; // Same as above, but intense
+        std::vector<color_t> regular_;     // Regular colors
+        std::vector<color_t> intense_;     // Intense colors
     };
 
     // Methods for Colors
-    const Colors &getColors() const;
-    void setImgColors(const std::vector<TermColor::Utils::color> &colors);
-    void setBGFGColors(const std::vector<TermColor::Utils::color> &bgfg);
+    Colors &getColors() const;
+    void setImgColors(const std::vector<color_t> &colors);
+    void setBGFGColors(const std::vector<color_t> &bgfg);
 
 public slots:
     void onImageDropped(const QString& path);

@@ -19,7 +19,7 @@ public:
     void disableSaveBtn();
 
     // Returns current item that is selected in comboBox_
-    const QString getComboboxItem() const;
+    QString getComboboxItem() const;
 
 private:
     void doLayout();
@@ -91,7 +91,7 @@ void ExportWidget::ExportWidgetImpl::doConnections() {
 
 void ExportWidget::ExportWidgetImpl::onModelChanged() {
     const auto &terminals = terminalsModel_.getTerminals();
-    const auto state = terminals.changedState_;
+    const auto &state = terminals.changedState_;
 
     // On first run append combo-box with new terminals
     if (state == TerminalsModel::ChangedState::None) {
@@ -110,8 +110,8 @@ void ExportWidget::ExportWidgetImpl::disableSaveBtn() {
 
 // By default, for an empty combo box or a combo box
 // in which no current item is set, this property contains an invalid QVariant
-const QString ExportWidget::ExportWidgetImpl::getComboboxItem() const {
-    const auto comboItem = comboBox_->currentData(Qt::DisplayRole);
+QString ExportWidget::ExportWidgetImpl::getComboboxItem() const {
+    const auto &comboItem = comboBox_->currentData(Qt::DisplayRole);
     return comboItem.toString();
 }
 
